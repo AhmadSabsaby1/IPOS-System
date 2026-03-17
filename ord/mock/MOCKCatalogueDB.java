@@ -37,6 +37,7 @@ public class MOCKCatalogueDB {
         return itemList;
     }
 
+    //CHANGES!!
     public Item getItemByID(String id) {
         for (Item item : itemList) {
             if (item.getId() == id){
