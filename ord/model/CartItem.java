@@ -20,6 +20,10 @@ public class CartItem {
         this.description = description;
         this.quantity = quantity;
         this.cost = cost;
+        calculateTotal();
+    }
+
+    private void calculateTotal(){
         total = quantity * cost;
     }
 
@@ -49,5 +53,10 @@ public class CartItem {
      */
     public String[] rowData(){
         return new String[]{itemId, description, Integer.toString(quantity), Double.toString(cost), Double.toString(total)};
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+        calculateTotal();
     }
 }

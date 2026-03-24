@@ -68,6 +68,6 @@ public class Item {
      * @return an array of Strings containing the data of this <code>Item</code> to be put in a <code>JTable</code>.
      */
     public String[] catalogueRowData(){
-        return new String[] {id, description, type, unit, String.valueOf(pack), String.valueOf(cost), String.valueOf(availability)};
+        return new String[] {id, description, type, unit, Integer.toString(pack), Double.toString(cost), Integer.toString(availability)};
     }
 }

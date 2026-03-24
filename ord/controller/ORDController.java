@@ -3,39 +3,55 @@ package ord.controller;
 import ord.model.CartItem;
 import ord.model.Item;
 import ord.model.ORDModel;
-import ord.view.CartView;
-import ord.view.CatalogueView;
-import ord.view.ORDMainView;
+import ord.view.*;
+
+import java.util.ArrayList;
 
 public class ORDController {
     //the main view changes from one view to another, changing screens as needed
-    ORDMainView mainView;
+    private ORDMainView mainView;
     //the view for the catalogue screen
-    CatalogueView catalogueView;
+    private CatalogueView catalogueView;
+    private HubView hubView;
+    private PreviousOrdersView previousOrdersView;
+    private OrderProgressView orderProgressView;
+
     //the view for the cart screen
-    CartView cartView;
+    private CartView cartView;
     //the model of this package
-    ORDModel model;
+    private ORDModel model;
+    private String merchantId;
+
     public ORDController() {
         catalogueView = new CatalogueView(this);
         cartView = new CartView(this);
+        previousOrdersView = new PreviousOrdersView(this);
+        orderProgressView = new OrderProgressView(this);
+        hubView = new HubView(this);
         mainView = new ORDMainView();
 
-        //adds the two views to the main view, each with its own id.
+        //adds the views to the main view, each with its own id.
+        mainView.addCardLayout(hubView, HubView.cardId());
         mainView.addCardLayout(catalogueView, CatalogueView.cardId());
         mainView.addCardLayout(cartView, CartView.cardId());
+        mainView.addCardLayout(previousOrdersView, PreviousOrdersView.cardId());
+        mainView.addCardLayout(orderProgressView, OrderProgressView.cardID());
 
         //instantiates the model
         model = new ORDModel();
 
         //populates the catalogue table with the catalogue the model provides
         catalogueView.populateCatalogue(model.getCatalogue());
+
+        //MOCK
+        merchantId = "mu001";
     }
 
+    ////////////// SCREEN CHANGES ////////////
     /**
      * Orders the main view to change the view to the cart
      */
-    public void changeScreenCart(){
+    public void goToCartScreen(){
         //first we populate the table of the cart, then we change the view
         cartView.populateTable(model.getCartList());
         mainView.changeCardView(CartView.cardId());
@@ -44,9 +60,25 @@ public class ORDController {
     /**
      * Orders the main view to change the view to the catalogue
      */
-    public void changeScreenCatalogue(){
+    public void goToCatalogueScreen(){
         mainView.changeCardView(CatalogueView.cardId());
     }
+
+    public void goToPreviousOrdersScreen(){
+        previousOrdersView.populateOrdersTable(model.getOrders(merchantId));
+        mainView.changeCardView(PreviousOrdersView.cardId());
+    }
+
+    public void goToHubScreen(){
+        mainView.changeCardView(HubView.cardId());
+    }
+
+    public void goToOrderProgressScreen() {
+        orderProgressView.populateTable(model.getOrders(merchantId));
+        mainView.changeCardView(OrderProgressView.cardID());
+    }
+
+    ////////////////////////////////////////////////////////
 
     /**
      * Returns an <code>Item</code>, searching by its id.
@@ -75,5 +107,29 @@ public class ORDController {
      */
     public boolean cartItemExists(String id){
         return model.cartItemExists(id);
+    }
+
+    public void createOrder(){
+        model.createOrder(merchantId);
+    }
+
+    public void removeAllCartItems() {
+        model.removeAllCartItems();
+    }
+
+    public double calculateGrandTotal() {
+        return model.calculateGrandTotal();
+    }
+
+    public void removeFromCart(String itemId) {
+        model.removeFromCart(itemId);
+    }
+
+    public ArrayList<CartItem> getCartList() {
+        return model.getCartList();
+    }
+
+    public void changeCartItemQuantity(String id, int quantity) {
+        model.changeCartItemQuantity(id, quantity);
     }
 }

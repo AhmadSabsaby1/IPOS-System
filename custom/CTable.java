@@ -89,4 +89,12 @@ public class CTable extends JTable {
         model.getDataVector().removeAllElements();
         model.fireTableDataChanged();
     }
+
+    /**
+     * Returns whether if the table is empty or not.
+     * @return <code>true</code> if the table is empty, <code>false</code> if it's not empty
+     */
+    public boolean isEmpty(){
+        return model.getRowCount() == 0;
+    }
 }

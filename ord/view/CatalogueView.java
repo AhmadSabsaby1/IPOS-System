@@ -5,6 +5,7 @@ import ord.controller.ORDController;
 import ord.model.Item;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class CatalogueView extends JPanel {
@@ -12,7 +13,8 @@ public class CatalogueView extends JPanel {
 
     //Swing Objects
     private JButton addToCartButton;
-    private JButton seeCartButton;
+    private JButton goToCartButton;
+    private JButton goBackButton;
     private CTable catalogueTable;
     private JLabel infoLabel;
 
@@ -26,9 +28,12 @@ public class CatalogueView extends JPanel {
         //sets the layout as a box layout. See https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
+        goBackButton = new JButton("Back to Main Menu");
+        add(goBackButton);
+
         //creates the button to see the cart
-        seeCartButton = new JButton("See Cart");
-        add(seeCartButton);
+        goToCartButton = new JButton("See Cart");
+        add(goToCartButton);
 
         //creates the button to add items to the cart
         addToCartButton = new JButton("Add To Cart");
@@ -45,7 +50,14 @@ public class CatalogueView extends JPanel {
 
         //sets the listeners for the buttons
         addToCartButton.addActionListener(e -> addToCart());
-        seeCartButton.addActionListener(e -> controller.changeScreenCart());
+        goToCartButton.addActionListener(e -> {
+            infoLabel.setText("");
+            controller.goToCartScreen();
+        });
+        goBackButton.addActionListener(e -> {
+            infoLabel.setText("");
+            controller.goToHubScreen();
+        });
     }
 
     public void populateCatalogue(ArrayList<Item> items){
