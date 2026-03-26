@@ -21,7 +21,7 @@ public class ORDModel {
         // The real DB/API won't return a
         // list of Items, but some raw data that this method
         // will have to transform into an ArrayList of Items, THEN return
-        return catalogueDB.getCatalogue();
+        return catalogueDB.getCatalogue();kkk
     }
 
     public Item getItemByID(String id){

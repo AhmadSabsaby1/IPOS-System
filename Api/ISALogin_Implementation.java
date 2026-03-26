@@ -1,3 +1,5 @@
+package Api;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -20,12 +22,14 @@ public class ISALogin_Implementation implements ISALoginAPI {
 
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().build().uri(URI.create(ISA_LOGIN_API_URL)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_LOGIN_API_URL)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
                 System.out.println("Login successfully.");
+                /// Either im splitting it or will be split in the login package
+                String merchant = response.body();
                 return true;
             } else {
                 System.out.println("Wrong username or password, status code: " + response.statusCode());
@@ -40,8 +44,6 @@ public class ISALogin_Implementation implements ISALoginAPI {
 
         }
 
-
-        return false;
     }
 
 

@@ -1,4 +1,4 @@
-package IPOS_CADetailedModel;
+package Api;
 
 import java.util.HashMap;
 

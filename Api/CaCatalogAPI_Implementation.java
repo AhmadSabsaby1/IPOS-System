@@ -1,4 +1,4 @@
-package IPOS_CADetailedModel;
+package Api;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -8,62 +8,58 @@ import java.rmi.MarshalledObject;
 import java.util.HashMap;
 import java.util.ArrayList;
 import ord.mock.MOCKCatalogueDB;
+import ord.model.Item;
+
 
 public class CaCatalogAPI_Implementation implements ICACatalogAPI {
 
-    private MOCKCatalogue InternalDB = new MOCKCatalogueDB();
+    private MOCKCatalogueDB InternalDB = new MOCKCatalogueDB();
 
     @Override
     public String[] getCatalogue() {
 
-        ArrayList<Catalogue> list = InternalDB.getCatalogue();
+        ArrayList<Item> list = InternalDB.getCatalogue();
 
         String[] catalogue = new String[list.size()];
 
-        stringBuilder sb = new StringBuilder("[");
+        StringBuilder sb = new StringBuilder("[");
 
 /// reads each item row one by one in the DB useing the getters in item.java then adding it to the JSON string
         for (int i = 0; i < list.size(); i++) {
-            Catalogue item = list.get(i);
+            Item currentItem = list.get(i);
 
             String[] row = currentItem.catalogueRowData();
 
-            catalogue[i] = String.join(", ", row)
+            catalogue[i] = String.join(", ", row);
 
-            jsonBuilder.append("{").append("\"id\":\"").append(item.getID()).append("\",")
-                    .append("\"description\":\"").append(item.getDescription()).append("\",")
-                    .append("\"package Type\":\"").append(item.getType()).append("\",")
-                    .append("\"Unit\":\"").append(item.getUnit()).append("\",")
-                    .append("\"Units in a Pack\":\"").append(item.getPack()).append("\",")
-                    .append("\"Package Cost\":\"").append(item.getCost()).append("\",")
-                    .append("\"Availability\":\"").append(item.getAvailability()).append("\",")
-                    .append("\"packs\":\"").append(item.getLimit()).append("}");
+            sb.append("{").append("\"id\":\"").append(currentItem.getId()).append("\",")
+                    .append("\"description\":\"").append(currentItem.getDescription()).append("\",")
+                    .append("\"package Type\":\"").append(currentItem.getType()).append("\",")
+                    .append("\"Unit\":\"").append(currentItem.getUnit()).append("\",")
+                    .append("\"Units in a Pack\":\"").append(currentItem.getPack()).append("\",")
+                    .append("\"Package Cost\":\"").append(currentItem.getCost()).append("\",")
+                    .append("\"Availability\":\"").append(currentItem.getAvailability()).append("\",")
+                    .append("\"packs\":\"").append(currentItem.getLimit()).append("}");
 
-            if (i < items.size() - 1) {
-                jsonBuilder.append(",");
-                jsonBuilder.append("]")
+            if (i < list.size() - 1) {
+                sb.append(",");
+            }
+        }
+        sb.append("]");
                 try {
                     /** we would replace the URL with the actual one from team ISA once we get it
                     *might need to check with them if they use different format
                      */
 
                     HttpClient client = HttpClient.newHttpClient();
-                    HttpRequest request = HttpRequest.newBuilder().uri(URI.Create("https://api.ISA.com/get catalogue")).header("content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonBuilder.toString())).build();
+                    HttpRequest request = HttpRequest.newBuilder().uri(URI.create("https://api.ISA.com/get catalogue")).header("content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(sb.toString())).build();
                     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
                 } catch (Exception e) {
                     System.out.println("couldnt reach team ISA Catalogue API: " + e.getMessage());
                 }
 
-                return catalogue;
-
-            }
-        }
-
-
-
-
-
+        return catalogue;
 
 	}
 
@@ -75,6 +71,7 @@ public class CaCatalogAPI_Implementation implements ICACatalogAPI {
      */
     @Override
     public boolean sendOrderDetails(HashMap<Integer, Integer> products, int OrderID, String shippingAddress) {
+        /// inc
 
         System.out.println("Order ID: " + OrderID);
         System.out.println("Shipping Address: " + shippingAddress);
@@ -84,8 +81,6 @@ public class CaCatalogAPI_Implementation implements ICACatalogAPI {
             int quantity = products.get(itemID);
             System.out.println("Item ID: " + itemID + ", Quantity: " + quantity);
         }
-
-
 
         return true;
     }

@@ -1,11 +1,15 @@
+package Api;
+
+import java.util.HashMap;
+
 public interface ISAOrderAPI {
 
 	/**
 	 * Sends to the SA an order that consists of a product and its quantiy.
-	 * @param productID The product's ID of the order
-	 * @param quantity  The quantity of the products of the order
+	 * @param merchantID The merchant's ID of the order
+	 * @param orderDetails The product's ID of the order and its quantity, stored in a HashMap where the key is the product's ID and the value is the quantity of that product in the order
 	 */
-	abstract boolean placeOrder(int productID, int quantity);
+	abstract boolean placeOrder(int merchantID, HashMap<Integer, Integer> orderDetails);
 
 	/**
 	 * Requests to the SA the progress of an order.

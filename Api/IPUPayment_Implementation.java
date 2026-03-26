@@ -1,10 +1,12 @@
+package Api;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 
-public class IPUPayment_realImplementation implements IPUPaymentAPI {
+public class IPUPayment_Implementation implements IPUPaymentAPI {
 
     private static final String IPU_PAYMENT_API_URL = "https://api.ipupayment.com/submitPayment";
     /// once we get the actual URL from the other teams we would replace them
@@ -22,7 +24,7 @@ public class IPUPayment_realImplementation implements IPUPaymentAPI {
 
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().build().uri(URI.create(IPU_PAYMENT_API_URL)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(IPU_PAYMENT_API_URL)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -42,7 +44,5 @@ public class IPUPayment_realImplementation implements IPUPaymentAPI {
 
         }
 
-
-        return false;
     }
 }
