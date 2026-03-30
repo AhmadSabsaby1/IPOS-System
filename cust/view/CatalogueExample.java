@@ -1,16 +1,14 @@
-package ord.view;
+package cust.view;
 
 import custom.CTable;
 import custom.TitleLabel;
 import ord.controller.ORDController;
-import ord.model.CartItem;
 import ord.model.Item;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 
-public class CatalogueView extends JPanel {
+public class CatalogueExample extends JPanel {
     private ORDController controller;
 
     //Swing Objects
@@ -30,7 +28,7 @@ public class CatalogueView extends JPanel {
         return "CatalogueView";
     }
 
-    public CatalogueView(ORDController controller) {
+    public CatalogueExample(ORDController controller) {
         this.controller = controller;
 
         GroupLayout layout = new GroupLayout(this);

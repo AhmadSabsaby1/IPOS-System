@@ -1,25 +1,22 @@
-package ord.model;
+package cust.model;
 
-public class CartItem {
+public class OrderItem {
     private String itemId;
     private String description;
     private int quantity;
     private double cost;
     private double total;
 
-    /**
-     * A helper method that returns the list of labels for each of the columns in the cart's table.
-     * @return an array of Strings containing the labels for a <code>JTable</code>
-     */
-    static public String[] cartItemColumndId(){
+    static public String[] cartItemColumnId(){
         return new String[] {"Item ID", "Description", "Quantity", "Unit Cost, £", "Total, £"};
     }
 
-    public CartItem(String itemId, String description, int quantity, double cost) {
+    public OrderItem(String itemId, String description, int quantity, double cost) {
         this.itemId = itemId;
         this.description = description;
         this.quantity = quantity;
         this.cost = cost;
+
         calculateTotal();
     }
 
@@ -27,6 +24,7 @@ public class CartItem {
         total = quantity * cost;
     }
 
+    /// ///////////// GETTER /////////////////
     public String getItemId() {
         return itemId;
     }
@@ -46,13 +44,10 @@ public class CartItem {
     public double getTotal() {
         return total;
     }
+    /// /////////////////////////////////
 
-    /**
-     * Returns the data for a row in the cart's table.
-     * @return an array of Strings containing the data of this <code>CartItem</code> to be put in a <code>JTable</code>.
-     */
-    public String[] rowData(){
-        return new String[]{itemId, description, Integer.toString(quantity), Double.toString(cost), Double.toString(total)};
+    public String[] getOrderedItemRowData(){
+        return new String[]{"", "", "", itemId, description, String.valueOf(quantity), String.valueOf(cost), String.valueOf(total)};
     }
 
     public void setQuantity(int quantity) {

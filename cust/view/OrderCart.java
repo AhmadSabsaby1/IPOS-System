@@ -1,17 +1,23 @@
-package ord.view;
+package cust.view;
 
+import cust.controller.CUSTController;
+import cust.model.AccountHolder;
+import cust.model.LocalItem;
+import cust.model.OrderItem;
 import custom.CTable;
-import ord.controller.ORDController;
-import ord.model.CartItem;
-import ord.model.Item;
+import custom.TitleLabel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
-public class CartView extends JPanel {
-    private ORDController controller;
+public class OrderCart extends JPanel {
+    private CUSTController controller;
+    private String accountId;
 
     //Swing Objects
+    private TitleLabel titleLabel;
+    private JLabel accountLabel;
     private JButton backToCatalogueButton;
     private JButton createOrderButton;
     private JButton clearCartButton;
@@ -22,16 +28,16 @@ public class CartView extends JPanel {
     private JLabel infoLabel;
 
     static public String cardId(){
-        return "CartView";
+        return "OrderCartView";
     }
-
-    public CartView(ORDController controller) {
+    public OrderCart(CUSTController controller) {
         this.controller = controller;
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
 
         //creates the button to go back to the catalogue
+        titleLabel = new TitleLabel("Cart");
         backToCatalogueButton = new JButton("Back to the Catalogue");
         createOrderButton = new JButton("Create Order");
         clearCartButton = new JButton("Clear Cart");
@@ -39,12 +45,16 @@ public class CartView extends JPanel {
         changeQuantityButton = new JButton("Change Quantity");
         infoLabel = new JLabel();
         totalLabel = new JLabel();
-        cartTable = new CTable(CartItem.cartItemColumndId());
+        cartTable = new CTable(OrderItem.cartItemColumnId());
+        accountLabel = new JLabel();
+        accountLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
 
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addComponent(titleLabel)
+                .addComponent(accountLabel)
                 .addComponent(backToCatalogueButton)
                 .addComponent(clearCartButton)
                 .addGroup(layout.createSequentialGroup()
@@ -57,7 +67,12 @@ public class CartView extends JPanel {
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
+                .addComponent(titleLabel)
+                .addGap(20)
+                .addComponent(accountLabel)
+                .addGap(20)
                 .addComponent(backToCatalogueButton)
+                .addGap(40)
                 .addComponent(clearCartButton)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(changeQuantityButton)
@@ -69,13 +84,34 @@ public class CartView extends JPanel {
         );
 
         //creates the listener for the button to change the view back to the catalogue
-        backToCatalogueButton.addActionListener(e -> controller.goToCatalogueScreen());
+        backToCatalogueButton.addActionListener(e -> controller.goToCreateOrderScreen());
         createOrderButton.addActionListener(e -> createOrder());
         clearCartButton.addActionListener(e -> clearCart());
         removeItemButton.addActionListener(e -> removeItem());
         changeQuantityButton.addActionListener(e -> changeQuantity());
     }
 
+    public void populateTable(ArrayList<OrderItem> cartItems){
+        infoLabel.setText("");
+        totalLabel.setText("");
+
+        //we remove the elements so it won't add the cart list to the table
+        // each time we enter this view
+        cartTable.removeTableElements();
+        for(OrderItem i : cartItems){
+            cartTable.addRow(i.getOrderedItemRowData());
+        }
+
+        if (!cartItems.isEmpty())
+            calculateGrandTotal();
+    }
+
+    public void fillAccountDetails(AccountHolder account) {
+        accountLabel.setText("Account Name: " + account.getName());
+        accountId = account.getAccountId();
+    }
+
+    /// ////////// PRIVATE ///////////////////////
     private void changeQuantity(){
         if (cartTable.getSelectedRow() == -1){
             infoLabel.setText("No item selected");
@@ -83,7 +119,7 @@ public class CartView extends JPanel {
         }
 
         int quantity;
-        Item item = getSelectedItem();
+        LocalItem item = getSelectedItem();
         if (item == null) //it should never be null, but just in case
             return;
 
@@ -126,7 +162,7 @@ public class CartView extends JPanel {
             controller.removeAllCartItems();
             infoLabel.setText("");
             totalLabel.setText("");
-            controller.goToCatalogueScreen();
+            controller.goToCreateOrderScreen();
         }
     }
 
@@ -145,27 +181,12 @@ public class CartView extends JPanel {
             if (controller.isCartEmpty()){
                 infoLabel.setText("");
                 totalLabel.setText("");
-                controller.goToCatalogueScreen();
+                controller.goToCreateOrderScreen();
             }
 
             infoLabel.setText(itemName + " removed from cart");
             populateTable(controller.getCartList());
         }
-    }
-
-    public void populateTable(ArrayList<CartItem> cartItems){
-        infoLabel.setText("");
-        totalLabel.setText("");
-
-        //we remove the elements so it won't add the cart list to the table
-        // each time we enter this view
-        cartTable.removeTableElements();
-        for(CartItem i : cartItems){
-            cartTable.addRow(i.rowData());
-        }
-
-        if (!cartItems.isEmpty())
-            calculateGrandTotal();
     }
 
     private void calculateGrandTotal(){
@@ -182,11 +203,12 @@ public class CartView extends JPanel {
         cartTable.removeTableElements();
         infoLabel.setText("Order Created");
         totalLabel.setText("");
-        controller.createOrder();
+        controller.createOrder(accountId);
     }
 
-    private Item getSelectedItem(){
+    private LocalItem getSelectedItem(){
         //this returns an Item created from the id of the table
         return controller.getItemByID(cartTable.getSelectedRowColumn(0));
     }
+
 }

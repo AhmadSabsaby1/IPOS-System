@@ -1,35 +1,40 @@
 package ord.model;
 
-import ord.mock.MOCKCatalogueDB;
+import ord.mock.MOCKISAOrderAPI;
 
 import java.util.ArrayList;
 
 public class ORDModel {
     //the mock DB to test the code
-    private MOCKCatalogueDB catalogueDB;
+    private MOCKISAOrderAPI ISAOrderAPIController;
+    
+    private ArrayList<Item> catalogue;
 
     //the cart list of items
     private ArrayList<CartItem> cartList;
 
     public ORDModel() {
-        catalogueDB = new MOCKCatalogueDB();
+        ISAOrderAPIController = new MOCKISAOrderAPI();
         cartList = new ArrayList<>();
+        catalogue = ISAOrderAPIController.getCatalogue();
     }
 
     public ArrayList<Item> getCatalogue(){
-        //KEEP IN MIND
-        // The real DB/API won't return a
-        // list of Items, but some raw data that this method
-        // will have to transform into an ArrayList of Items, THEN return
-        return catalogueDB.getCatalogue();kkk
+        return catalogue;
     }
 
-    public Item getItemByID(String id){
-        //KEEP IN MIND
-        //The real DB/API won't return a
-        // list of Items, but some raw data that this method
-        // will have to transform into an Item, THEN return
-        return catalogueDB.getItemByID(id);
+    public ArrayList<Order> getOrders(String merchantId){
+        return ISAOrderAPIController.getOrders(merchantId);
+    }
+
+    public Item getItemByID(String id) {
+        for (Item item : catalogue) {
+            if (item.getId() == id){
+                return item;
+            }
+        }
+
+        return null;
     }
 
     public CartItem addToCart(String id, int quantity){
@@ -38,15 +43,7 @@ public class ORDModel {
             return null;
 
         //if not in the cart, we get the item to be added from the DB/API
-        //KEEP IN MIND that the real DB/API won't return an Item, as I
-        // said above (see getItemByID method)
-        Item item = catalogueDB.getItemByID(id);
-
-        //we create a new cart item using the item's description and cost.
-        // With a real DB/API we might not need to create an actual Item
-        // instance to do this, but for the purposes of this example, I'm
-        // creating one
-        CartItem ci = new CartItem(id, item.getDescription(), quantity, item.cost);
+        CartItem ci = new CartItem(id, getItemByID(id).getDescription(), quantity, getItemByID(id).getCost());
         cartList.add(ci);
 
         //we return the newly created item. This might be useful in the
@@ -66,5 +63,59 @@ public class ORDModel {
         }
 
         return false;
+    }
+
+    public void createOrder(String merchantId){
+        ISAOrderAPIController.createOrder(merchantId, cartList);
+        cartList = new ArrayList<>();
+    }
+
+    public void removeAllCartItems() {
+        cartList.clear();
+    }
+
+    public double calculateGrandTotal() {
+        double total = 0;
+        for (CartItem item : cartList) {
+            total += item.getTotal();
+        }
+        return total;
+    }
+
+    public void removeFromCart(String itemId) {
+        for(CartItem item : cartList){
+            if (item.getItemId().equals(itemId)){
+                cartList.remove(item);
+                return;
+            }
+        }
+    }
+
+    public void changeCartItemQuantity(String id, int quantity) {
+        for (CartItem item : cartList) {
+            if (item.getItemId().equals(id)) {
+                item.setQuantity(quantity);
+            }
+        }
+    }
+
+    public boolean isCartEmpty() {
+        return cartList.isEmpty();
+    }
+
+    public ArrayList<Item> searchByField(String field, String searchText) {
+        searchText = searchText.toLowerCase();
+        ArrayList<Item> found = new ArrayList<>();
+        for (Item item : catalogue) {
+            if (field.equals(Item.ITEM_ID)) {
+                if (item.getId().toLowerCase().contains(searchText))
+                    found.add(item);
+            }else if (field.equals(Item.DESCRIPTION)) {
+                if (item.getDescription().toLowerCase().contains(searchText))
+                    found.add(item);
+            }
+        }
+
+        return found;
     }
 }

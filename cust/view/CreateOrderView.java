@@ -1,17 +1,17 @@
-package ord.view;
+package cust.view;
 
+import cust.controller.CUSTController;
+import cust.model.AccountHolder;
+import cust.model.LocalItem;
 import custom.CTable;
 import custom.TitleLabel;
-import ord.controller.ORDController;
-import ord.model.CartItem;
-import ord.model.Item;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 
-public class CatalogueView extends JPanel {
-    private ORDController controller;
+public class CreateOrderView extends JPanel {
+    private CUSTController controller;
+    private int accountIndex = -1;
 
     //Swing Objects
     private JButton addToCartButton;
@@ -19,6 +19,7 @@ public class CatalogueView extends JPanel {
     private JButton backButton;
     private JButton removeSearch;
     private CTable catalogueTable;
+    private CTable accountTable;
     private JLabel infoLabel;
     private TitleLabel titleLabel;
 
@@ -27,41 +28,31 @@ public class CatalogueView extends JPanel {
     private JButton searchButton;
 
     static public String cardId(){
-        return "CatalogueView";
+        return "CreateOrderView";
     }
 
-    public CatalogueView(ORDController controller) {
+    public CreateOrderView(CUSTController controller) {
         this.controller = controller;
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
 
-        titleLabel = new TitleLabel("Catalogue");
-
+        titleLabel = new TitleLabel("Create an Order");
         backButton = new JButton("Back to Main Menu");
-
-        //creates the button to see the cart
         goToCartButton = new JButton("See Cart");
-
-        //creates the button to add items to the cart
         addToCartButton = new JButton("Add To Cart");
-
-        //a label to show information to the user, if things where added, any errors, etc.
         infoLabel = new JLabel();
 
         //search bar
         searchTextField = new JTextField(10);
-
-        fieldListComboBox = new JComboBox<>(new String[]{Item.DESCRIPTION, Item.ITEM_ID});
-
+        fieldListComboBox = new JComboBox<>(new String[]{LocalItem.DESCRIPTION, LocalItem.ITEM_ID});
         searchButton = new JButton("Search");
-
         removeSearch = new JButton("Remove Search");
 
-        //creates the table for the catalogue and sets the labels for the columns
-        catalogueTable = new CTable(Item.catalogueColumnId());
-        //remember that we don't add the catalogue table to the panel, but its JScrollPane
-        //add(catalogueTable.getScrollPane());
+        catalogueTable = new CTable(LocalItem.catalogueColumnId());
+        accountTable = new CTable(AccountHolder.accountColumnId());
+
+        JLabel selectAccountLabel = new JLabel("Select an Account");
 
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
@@ -73,6 +64,8 @@ public class CatalogueView extends JPanel {
                         .addGap(50)
                         .addComponent(goToCartButton)
                 )
+                .addComponent(selectAccountLabel)
+                .addComponent(accountTable.getScrollPane())
                 .addGroup(layout.createSequentialGroup()
                         .addComponent(searchButton, 100, 100, 100)
                         .addComponent(searchTextField, 200, 200, 200)
@@ -92,6 +85,9 @@ public class CatalogueView extends JPanel {
                         .addComponent(goToCartButton)
                 )
                 .addGap(30)
+                .addComponent(selectAccountLabel)
+                .addComponent(accountTable.getScrollPane(), 100, 100, 100)
+                .addGap(30)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(searchButton)
                         .addComponent(searchTextField)
@@ -108,30 +104,55 @@ public class CatalogueView extends JPanel {
         goToCartButton.addActionListener(e -> goToCart());
         backButton.addActionListener(e -> {
             infoLabel.setText("");
-            controller.goToHubScreen();
+            accountIndex = -1;
+            controller.removeAllCartItems();
+            controller.goToOrderManagerScreen();
         });
 
         searchButton.addActionListener(e -> search());
         removeSearch.addActionListener(e -> removeSearch());
     }
 
-    public void populateCatalogue(ArrayList<Item> items){
+    public void populateCatalogue(ArrayList<LocalItem> items){
         //puts every element of the item list in the table
         catalogueTable.removeTableElements();
 
-        for (Item item : items){
+        for (LocalItem item : items){
             catalogueTable.addRow(item.catalogueRowData());
         }
     }
 
+    public void populateAccounts(ArrayList<AccountHolder> accounts){
+        //puts every element of the item list in the table
+        accountTable.removeTableElements();
+
+        for (AccountHolder a : accounts){
+            accountTable.addRow(a.accountRowData());
+        }
+
+        if (accountIndex != -1){
+            accountTable.setRowSelectionInterval(accountIndex, accountIndex);
+        }
+    }
+
+    public void setAccountIndex(int index){
+        accountIndex = index;
+    }
+
+    /// ///////////// PRIVATES /////////////////
+
     private void goToCart(){
-        if (controller.isCartEmpty()){
+        if (accountTable.getSelectedRow() == -1){
+            infoLabel.setText("You must select an account holder");
+            return;
+        }else if (controller.isCartEmpty()){
             infoLabel.setText("The cart is empty");
             return;
         }
 
         infoLabel.setText("");
-        controller.goToCartScreen();
+        accountIndex = accountTable.getSelectedRow();
+        controller.goToCartScreen(accountTable.getSelectedRowColumn(0));
     }
 
     private void removeSearch(){
@@ -156,7 +177,7 @@ public class CatalogueView extends JPanel {
         }
 
         int quantity;
-        Item item = getSelectedItem();
+        LocalItem item = getSelectedItem();
         if (item == null) //it should never be null, but just in case
             return;
 
@@ -194,7 +215,7 @@ public class CatalogueView extends JPanel {
         infoLabel.setText(quantity + " units of " + catalogueTable.getSelectedRowColumn(1) + " added to the cart");
     }
 
-    private Item getSelectedItem(){
+    private LocalItem getSelectedItem(){
         //this returns an Item created from the id of the table
         return controller.getItemByID(catalogueTable.getSelectedRowColumn(0));
     }

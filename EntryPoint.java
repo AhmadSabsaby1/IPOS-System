@@ -1,7 +1,8 @@
+import cust.controller.CUSTController;
 import ord.controller.ORDController;
 
 public class EntryPoint {
     public static void main(String[] args) {
-        ORDController ordController = new ORDController();
+        CUSTController controller = new CUSTController();
     }
 }
