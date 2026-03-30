@@ -29,32 +29,26 @@ public class CUSTModel {
                 "AH001",
                 "Cesar E.",
                 "Croydon",
-                "Shiny",
+                AccountHolder.CardType.DEBIT,
                 "1234",
                 "4321",
                 "01/27",
                 180,
-                "discountType?",
-                17,
-                "status?",
-                "no_need",
-                "no_need"
+                AccountHolder.DiscountType.FIXED,
+                17
         ));
 
         accountHolders.add(new AccountHolder(
                 "AH002",
                 "Arthur C.",
                 "Camelot",
-                "Old",
+                AccountHolder.CardType.CREDIT,
                 "5678",
                 "8765",
                 "07/28",
                 500,
-                "discountType?",
-                5,
-                "status?",
-                "no_need",
-                "no_need"
+                AccountHolder.DiscountType.FLEXIBLE,
+                5
         ));
     }
     private void MOCK_createCatalogue(){
@@ -187,10 +181,6 @@ public class CUSTModel {
         return false;
     }
 
-    public void removeAllOrderItems() {
-        cartList.clear();
-    }
-
     public double calculateGrandTotal() {
         double total = 0;
         for (OrderItem item : cartList) {
@@ -204,14 +194,6 @@ public class CUSTModel {
             if (item.getItemId().equals(itemId)){
                 cartList.remove(item);
                 return;
-            }
-        }
-    }
-
-    public void changeOrderItemQuantity(String id, int quantity) {
-        for (OrderItem item : cartList) {
-            if (item.getItemId().equals(id)) {
-                item.setQuantity(quantity);
             }
         }
     }

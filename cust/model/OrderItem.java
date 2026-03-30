@@ -50,6 +50,10 @@ public class OrderItem {
         return new String[]{"", "", "", itemId, description, String.valueOf(quantity), String.valueOf(cost), String.valueOf(total)};
     }
 
+    public String[] getItemRowData(){
+        return new String[]{itemId, description, String.valueOf(quantity), String.valueOf(cost), String.valueOf(total)};
+    }
+
     public void setQuantity(int quantity) {
         this.quantity = quantity;
         calculateTotal();

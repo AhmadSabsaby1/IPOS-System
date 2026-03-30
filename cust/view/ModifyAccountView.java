@@ -2,7 +2,6 @@ package cust.view;
 
 import cust.controller.CUSTController;
 import cust.model.AccountHolder;
-import custom.TitleLabel;
 
 import javax.swing.*;
 
@@ -48,6 +47,8 @@ public class ModifyAccountView extends ModifyCreateAccountView {
         discountTypeComp.setFieldData(data.getDiscountType());
         discountComp.setFieldData(Double.toString(data.getDiscount()));
         statusComp.setFieldData(data.getStatus());
+        status1stComp.setFieldData(data.getStatus1stReminder().toString());
+        status2ndComp.setFieldData(data.getStatus2ndReminder().toString());
     }
 
     @Override
@@ -58,7 +59,7 @@ public class ModifyAccountView extends ModifyCreateAccountView {
     private void deleteButtonPressed(){
         int dialogButton = JOptionPane.YES_NO_OPTION;
         int dialogResult = JOptionPane.showConfirmDialog(this, "Do you want to delete this account?", "Are you sure?", dialogButton);
-        if(dialogResult == 0) {
+        if (dialogResult == 0) {
             controller.deleteAccount(idComp.getData());
             controller.goToAccountHolderManagerScreen();
         }

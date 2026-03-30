@@ -20,6 +20,10 @@ public class CreateAccountView extends ModifyCreateAccountView {
         infoLabel = new JLabel();
         createAccountButton = new JButton("Create this Account");
 
+        statusComp.setVisible(false);
+        status1stComp.setVisible(false);
+        status2ndComp.setVisible(false);
+
         GroupLayout.ParallelGroup horizontal = layout.createParallelGroup(GroupLayout.Alignment.LEADING);
         GroupLayout.SequentialGroup vertical = layout.createSequentialGroup();
 
@@ -48,7 +52,6 @@ public class CreateAccountView extends ModifyCreateAccountView {
         balanceComp.removeData();
         discountTypeComp.removeData();
         discountComp.removeData();
-        statusComp.removeData();
     }
 
     private void backButtonPressed(){
@@ -90,9 +93,6 @@ public class CreateAccountView extends ModifyCreateAccountView {
         if (discountComp.isBlank())
             blankComps.add(discountComp);
 
-        if (statusComp.isBlank())
-            blankComps.add(statusComp);
-
         if (!blankComps.isEmpty()){
             infoLabel.setText("Some of the fields are blank: ");
             for (FieldComp field : blankComps){
@@ -102,14 +102,13 @@ public class CreateAccountView extends ModifyCreateAccountView {
             controller.createAccount(new AccountHolder(
                     nameComp.getData(),
                     addressComp.getData(),
-                    cardTypeComp.getData(),
+                    AccountHolder.CardType.getValue(cardTypeComp.getData()),
                     firstFourComp.getData(),
                     lastFourComp.getData(),
                     expiryDateComp.getData(),
                     Double.parseDouble(balanceComp.getData()),
-                    discountTypeComp.getData(),
-                    Double.parseDouble(discountComp.getData()),
-                    statusComp.getData()
+                    AccountHolder.DiscountType.getValue(discountTypeComp.getData()),
+                    Double.parseDouble(discountComp.getData())
                ));
             removeAllData();
             controller.goToAccountHolderManagerScreen();

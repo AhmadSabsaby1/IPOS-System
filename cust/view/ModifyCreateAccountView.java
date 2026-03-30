@@ -39,17 +39,17 @@ public class ModifyCreateAccountView extends JPanel {
         idComp = new FieldComp(AccountHolder.ACCOUNT_ID).notModifiable();
         nameComp = new FieldComp(AccountHolder.NAME);
         addressComp = new FieldComp(AccountHolder.ADDRESS);
-        cardTypeComp = new FieldComp(AccountHolder.CARD_TYPE);
-        firstFourComp = new FieldComp(AccountHolder.FIRST_DIGITS).isInt();
-        lastFourComp = new FieldComp(AccountHolder.LAST_DIGITS).isInt();
+        cardTypeComp = new FieldComp(AccountHolder.CARD_TYPE).isChoice(AccountHolder.CardType.getOptions());
+        firstFourComp = new FieldComp(AccountHolder.FIRST_DIGITS).isInt4Digits();
+        lastFourComp = new FieldComp(AccountHolder.LAST_DIGITS).isInt4Digits();
         expiryDateComp = new FieldComp(AccountHolder.EXPIRY_DATE);
         balanceComp = new FieldComp(AccountHolder.BALANCE).isDouble();
-        discountTypeComp = new FieldComp(AccountHolder.DISCOUNT_TYPE);
+        discountTypeComp = new FieldComp(AccountHolder.DISCOUNT_TYPE).isChoice(AccountHolder.DiscountType.getOptions());
         discountComp = new FieldComp(AccountHolder.DISCOUNT).isDouble();
-        statusComp = new FieldComp(AccountHolder.STATUS);
+        statusComp = new FieldComp(AccountHolder.STATUS).isChoice(AccountHolder.AccountStatus.getOptions());
 
-        status1stComp = new FieldComp(AccountHolder.STATUS_1ST);
-        status2ndComp = new FieldComp(AccountHolder.STATUS_2ND);
+        status1stComp = new FieldComp(AccountHolder.STATUS_1ST).isChoice(AccountHolder.ReminderStatus.getOptions()).notModifiable();
+        status2ndComp = new FieldComp(AccountHolder.STATUS_2ND).isChoice(AccountHolder.ReminderStatus.getOptions()).notModifiable();
 
         layout = new GroupLayout(this);
         setLayout(layout);
@@ -89,6 +89,8 @@ public class ModifyCreateAccountView extends JPanel {
                 .addComponent(discountTypeComp)
                 .addComponent(discountComp)
                 .addComponent(statusComp)
+                .addComponent(status1stComp)
+                .addComponent(status2ndComp)
         ;
 
         vertical
@@ -102,6 +104,8 @@ public class ModifyCreateAccountView extends JPanel {
                 .addComponent(discountTypeComp)
                 .addComponent(discountComp)
                 .addComponent(statusComp)
+                .addComponent(status1stComp)
+                .addComponent(status2ndComp)
         ;
     }
 
@@ -110,9 +114,16 @@ public class ModifyCreateAccountView extends JPanel {
 
     protected class FieldComp extends JPanel {
         private String fieldName;
-        private boolean _isDouble;
-        private boolean _isInt;
         private String data;
+        private FieldType fieldType;
+        private String[] choices;
+
+        private enum FieldType {
+            STRING,
+            INT_4_DIGITS,
+            DOUBLE,
+            CHOICE;
+        }
 
         //Swing Objects
         private JLabel fieldLabel;
@@ -120,8 +131,7 @@ public class ModifyCreateAccountView extends JPanel {
 
         public FieldComp(String fieldName) {
             this.fieldName = fieldName;
-            _isDouble = false;
-            _isInt = false;
+            fieldType = FieldType.STRING;
             data = "";
 
             fieldLabel = new JLabel();
@@ -159,9 +169,11 @@ public class ModifyCreateAccountView extends JPanel {
         public void modifyField() {
             String newFieldInput;
 
-            if (_isDouble || _isInt) {
+            if (fieldType == FieldType.DOUBLE || fieldType == FieldType.INT_4_DIGITS) {
                 newFieldInput = modifyNumericField();
-            } else {
+            } else if (fieldType == FieldType.CHOICE){
+                newFieldInput = modifyChoiceField();
+            }else {
                 newFieldInput = modifyStringField();
             }
 
@@ -177,12 +189,12 @@ public class ModifyCreateAccountView extends JPanel {
         }
 
         public FieldComp isDouble() {
-            _isDouble = true;
+            fieldType = FieldType.DOUBLE;
             return this;
         }
 
-        public FieldComp isInt() {
-            _isInt = true;
+        public FieldComp isInt4Digits() {
+            fieldType = FieldType.INT_4_DIGITS;
             return this;
         }
 
@@ -204,6 +216,12 @@ public class ModifyCreateAccountView extends JPanel {
             return fieldName;
         }
 
+        public FieldComp isChoice(String[] choices) {
+            fieldType = FieldType.CHOICE;
+            this.choices = choices;
+            return this;
+        }
+
         /// /////////// PRIVATE METHODS ////////////
         private String modifyStringField() {
             String newFieldInput = JOptionPane.showInputDialog("Enter the new " + fieldName);
@@ -216,7 +234,7 @@ public class ModifyCreateAccountView extends JPanel {
         }
 
         private String modifyNumericField() {
-            double quantity;
+            double quantity = 0;
             String quantityInput = JOptionPane.showInputDialog("Enter the new " + fieldName);
 
             if (quantityInput == null || quantityInput.isEmpty()) {
@@ -225,9 +243,9 @@ public class ModifyCreateAccountView extends JPanel {
             }
 
             try {
-                if (_isDouble)
+                if (fieldType == FieldType.DOUBLE)
                     quantity = Double.parseDouble(quantityInput);
-                else
+                else if (fieldType == FieldType.INT_4_DIGITS)
                     quantity = Integer.parseInt(quantityInput);
             } catch (NumberFormatException ex) {
                 //TODO put some text to signify the quantity is not valid
@@ -235,15 +253,45 @@ public class ModifyCreateAccountView extends JPanel {
             }
 
             //check if the user introduced a 0 or a negative number
-            if (quantity < 1) {
+            if (quantity < 0) {
                 //TODO put some text to signify the quantity is not valid
                 return null;
             }
 
-            if (_isDouble)
-                return Double.toString(quantity);
-            else
-                return Integer.toString(Double.valueOf(quantity).intValue());
+            String r = "";
+            if (fieldType == FieldType.DOUBLE)
+                r = Double.toString(quantity);
+            else{
+                r = Integer.toString(Double.valueOf(quantity).intValue());
+                if (quantity < 10)
+                    r = "000" + r;
+                else if (quantity < 100)
+                    r = "00" + r;
+                else if (quantity < 1000)
+                    r = "0" + r;
+                else if (quantity == 0)
+                    r = "0000";
+            }
+
+            return r;
+        }
+
+
+        private String modifyChoiceField() {
+            String newFieldInput = (String) JOptionPane.showInputDialog(
+                    this,
+                    "Enter the new " + fieldName,
+                    "Input",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    choices,
+                    "");
+            if (newFieldInput == null || newFieldInput.isEmpty()) {
+                //cancelled or empty
+                return null;
+            }
+
+            return newFieldInput;
         }
         /// //////////////////////////////////
 

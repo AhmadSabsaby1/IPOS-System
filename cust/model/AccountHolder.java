@@ -1,5 +1,7 @@
 package cust.model;
 
+import javax.smartcardio.Card;
+
 public class AccountHolder {
     public static String ACCOUNT_ID = "Account ID";
     public static String NAME = "Name";
@@ -19,28 +21,106 @@ public class AccountHolder {
     private String accountId;
     private String name;
     private String address;
-    private String cardType;
+    private CardType cardType;
     private String firstFour;
     private String lastFour;
     private String expiryDate;
     private double balance;
-    private String discountType;
+    private DiscountType discountType;
     private double discount;
-    private String status;
-    private String status1stReminder;
-    private String status2ndReminder;
+    private AccountStatus status;
+    private ReminderStatus status1stReminder;
+    private ReminderStatus status2ndReminder;
 
     static public String[] accountColumnId(){
         return new String[] {"Account ID", "Name", "Status"};
     }
 
-    public enum Status {
+    /// ////////////// ENUMS ///////////////////////
+
+    public enum DiscountType{
+        FIXED("fixed"),
+        FLEXIBLE("flexible");
+
+        public String discountType;
+
+        public static String[] getOptions(){
+            return new String[] {FIXED.toString(), FLEXIBLE.toString()};
+        }
+
+        public static DiscountType getValue(String discountType){
+            if (discountType.equals(FIXED.toString())){
+                return FIXED;
+            }else if (discountType.equals(FLEXIBLE.toString())){
+                return FLEXIBLE;
+            }
+
+            return null;
+        }
+
+        DiscountType(String discountType){
+            this.discountType = discountType;
+        }
+
+        @Override
+        public String toString(){
+            return discountType;
+        }
+    }
+
+    public enum CardType{
+        CREDIT("credit"),
+        DEBIT("debit");
+
+        private String cardType;
+
+        public static String[] getOptions() {
+            return new String[] {CREDIT.toString(), DEBIT.toString()};
+        }
+
+        public static CardType getValue(String cardType){
+            if (cardType.equals(CREDIT.toString())){
+                return CREDIT;
+            }else if (cardType.equals(DEBIT.toString())){
+                return DEBIT;
+            }
+
+            return null;
+        }
+
+        CardType(String cardType){
+            this.cardType = cardType;
+        }
+
+        @Override
+        public String toString(){
+            return cardType;
+        }
+    }
+
+    public enum AccountStatus {
         NORMAL("normal"),
         SUSPENDED("suspended"),
         IN_DEFAULT("in_default");
 
         private final String text;
-        Status(String status) {
+
+        public static String[] getOptions() {
+            return new String[] {NORMAL.toString(), SUSPENDED.toString(), IN_DEFAULT.toString()};
+        }
+
+        public static AccountStatus getValue(String status){
+            if (status.equals(NORMAL.toString())){
+                return NORMAL;
+            }else if (status.equals(SUSPENDED.toString())){
+                return SUSPENDED;
+            }else if (status.equals(IN_DEFAULT.toString())){
+                return IN_DEFAULT;
+            }
+
+            return null;
+        }
+        AccountStatus(String status) {
             this.text = status;
         }
 
@@ -50,7 +130,39 @@ public class AccountHolder {
         }
     }
 
-    public AccountHolder(String accountId, String name, String address, String cardType, String firstFour, String lastFour, String expiryDate, double balance, String discountType, double discount, String status, String status1stReminder, String status2ndReminder) {
+    public enum ReminderStatus {
+        NO_NEED("no_need"),
+        SENT("sent"),
+        DUE("due");
+
+        public static String[] getOptions() {
+            return new String[] {NO_NEED.toString(), SENT.toString(), DUE.toString()};
+        }
+        private final String text;
+        ReminderStatus(String status) {
+            this.text = status;
+        }
+
+        public static ReminderStatus getValue(String status) {
+            if (status.equals(NO_NEED.toString())){
+                return NO_NEED;
+            }else if (status.equals(SENT.toString())){
+                return SENT;
+            }else if (status.equals(DUE.toString())){
+                return DUE;
+            }
+
+            return null;
+        }
+
+        @Override
+        public String toString() {
+            return text;
+        }
+    }
+    /// ////////////// END OF ENUMS ///////////////////////////
+
+    public AccountHolder(String accountId, String name, String address, CardType cardType, String firstFour, String lastFour, String expiryDate, double balance, DiscountType discountType, double discount) {
         this.accountId = accountId;
         this.name = name;
         this.address = address;
@@ -61,12 +173,13 @@ public class AccountHolder {
         this.balance = balance;
         this.discountType = discountType;
         this.discount = discount;
-        this.status = status;
-        this.status1stReminder = status1stReminder;
-        this.status2ndReminder = status2ndReminder;
+
+        this.status = AccountStatus.NORMAL;
+        this.status1stReminder = ReminderStatus.NO_NEED;
+        this.status2ndReminder = ReminderStatus.NO_NEED;
     }
 
-    public AccountHolder(String name, String address, String cardType, String firstFour, String lastFour, String expiryDate, double balance, String discountType, double discount, String status) {
+    public AccountHolder(String name, String address, CardType cardType, String firstFour, String lastFour, String expiryDate, double balance, DiscountType discountType, double discount) {
         accountId = "Placeholder";
         this.name = name;
         this.address = address;
@@ -77,10 +190,10 @@ public class AccountHolder {
         this.balance = balance;
         this.discountType = discountType;
         this.discount = discount;
-        this.status = status;
 
-        status1stReminder = "";
-        status2ndReminder = "";
+        this.status = AccountStatus.NORMAL;
+        this.status1stReminder = ReminderStatus.NO_NEED;
+        this.status2ndReminder = ReminderStatus.NO_NEED;
     }
 
     /// /////////// GETTERS ////////////////
@@ -97,7 +210,7 @@ public class AccountHolder {
     }
 
     public String getCardType() {
-        return cardType;
+        return cardType.toString();
     }
 
     public String getFirstFour() {
@@ -117,7 +230,7 @@ public class AccountHolder {
     }
 
     public String getDiscountType() {
-        return discountType;
+        return discountType.toString();
     }
 
     public double getDiscount() {
@@ -125,14 +238,14 @@ public class AccountHolder {
     }
 
     public String getStatus() {
-        return status;
+        return status.toString();
     }
 
-    public String getStatus1stReminder() {
+    public ReminderStatus getStatus1stReminder() {
         return status1stReminder;
     }
 
-    public String getStatus2ndReminder() {
+    public ReminderStatus getStatus2ndReminder() {
         return status2ndReminder;
     }
 
@@ -146,7 +259,7 @@ public class AccountHolder {
         else if (field.equals(ADDRESS))
             address = value;
         else if (field.equals(CARD_TYPE))
-            cardType = value;
+            cardType = CardType.getValue(value);
         else if (field.equals(FIRST_DIGITS))
             firstFour = value;
         else if (field.equals(LAST_DIGITS))
@@ -156,18 +269,18 @@ public class AccountHolder {
         else if (field.equals(BALANCE))
             balance = Double.parseDouble(value);
         else if (field.equals(DISCOUNT_TYPE))
-            discountType = value;
+            discountType = DiscountType.getValue(value);
         else if (field.equals(DISCOUNT))
             discount = Double.parseDouble(value);
         else if (field.equals(STATUS))
-            status = value;
+            status = AccountStatus.getValue(value);
         else if (field.equals(STATUS_1ST))
-            status1stReminder = value;
+            status1stReminder = ReminderStatus.getValue(value);
         else if (field.equals(STATUS_2ND))
-            status2ndReminder = value;
+            status2ndReminder = ReminderStatus.getValue(value);
     }
 
     public String[] accountRowData(){
-        return new String[] {accountId, name, status};
+        return new String[] {accountId, name, status.toString()};
     }
 }

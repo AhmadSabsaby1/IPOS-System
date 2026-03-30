@@ -99,7 +99,7 @@ public class OrderCart extends JPanel {
         // each time we enter this view
         cartTable.removeTableElements();
         for(OrderItem i : cartItems){
-            cartTable.addRow(i.getOrderedItemRowData());
+            cartTable.addRow(i.getItemRowData());
         }
 
         if (!cartItems.isEmpty())

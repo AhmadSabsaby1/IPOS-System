@@ -9,26 +9,6 @@ public class Order {
     private double cost;
     private String orderDate;
     private ArrayList<OrderItem> itemsOrdered;
-    private Reminder status1stReminder;
-    private Reminder status2ndReminder;
-    private ReminderDate date1stReminder;
-    private ReminderDate date2ndReminder;
-
-    public enum Reminder {
-        NO_NEED("no_need"),
-        DUE("due"),
-        SENT("sent");
-
-        private final String text;
-        Reminder(String text){
-            this.text = text;
-        }
-
-        @Override
-        public String toString() {
-            return text;
-        }
-    }
 
     static public String[] ordersByAccountColumnId(){
         return new String[] {"Order ID", "Cost, £", "Ordered", "ItemID", "Description", "Quantity", "Unit cost, £", "Amount, £"};
