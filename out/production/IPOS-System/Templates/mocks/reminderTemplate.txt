@@ -1,0 +1,30 @@
+Client: [MERCHANT_NAME]
+[MERCHANT_ADDRESS]										
+		 									
+												
+ 												
+Phone: [PHONE]
+Fax: [FAX]
+												5th January 2003[CURRENT_DATE]
+Dear CUSTOMER,
+
+
+					 REMINDER[REMINDER_NO] - INVOICE NO.: 197362[INVOICE_NO]
+			CUSTOMER Account: 0000235[ACCOUNT_ID] 			Total Amount: 294.00[AMOUNT]
+
+
+According to our records, it appears that we have not yet received payment of the above invoice, which was raised
+against [CUSTOMER_NAME]. on [PURCHASE_DATE], for pharmaceutical goods from [MERCHANT_NAME], order
+[ORDER_NUMBER].
+
+
+We would appreciate payment at your earliest convenience.
+
+If you have already sent a payment to us recently, please accept our apologies.
+
+
+
+					Yours sincerely,
+ 					
+
+						[MANAGER_NAME]

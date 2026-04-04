@@ -12,6 +12,7 @@ public class HubView extends JPanel {
     private TitleLabel titleLabel;
     private JButton accountButton;
     private JButton ordersButton;
+    private JButton templatesButton;
 
     static public String cardId(){
         return "HubView";
@@ -23,6 +24,7 @@ public class HubView extends JPanel {
         titleLabel = new TitleLabel("CUST - Manage Account Holders and Orders");
         accountButton = new JButton("Manage Account Holders");
         ordersButton = new JButton("Manage Orders");
+        templatesButton = new JButton("Manage Templates");
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
@@ -35,6 +37,7 @@ public class HubView extends JPanel {
                 .addGroup(layout.createSequentialGroup()
                         .addComponent(accountButton)
                         .addComponent(ordersButton)
+                        .addComponent(templatesButton)
                 )
         );
 
@@ -44,10 +47,12 @@ public class HubView extends JPanel {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(accountButton, 50, 50, 50)
                         .addComponent(ordersButton, 50, 50, 50)
+                        .addComponent(templatesButton, 50, 50, 50)
                 )
         );
 
         accountButton.addActionListener(e->controller.goToAccountHolderManagerScreen());
         ordersButton.addActionListener(e->controller.goToOrderManagerScreen());
+        templatesButton.addActionListener(e->controller.goToTemplateManagerScreen());
     }
 }

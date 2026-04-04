@@ -239,4 +239,9 @@ public class CUSTModel {
 
         return false;
     }
+
+    public Object getTemplates() {
+
+        return null;
+    }
 }
