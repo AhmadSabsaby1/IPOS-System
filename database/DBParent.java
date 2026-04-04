@@ -21,30 +21,40 @@ class DBParent {
         con = DriverManager.getConnection(databaseUrl, username, password);
     }
 
-    // Personal testing;
+    // Personal testing; Uncommenting all of it will not work, be sure you understand what everything does
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
 //        DBLocalStock stock = new DBLocalStock();
-//        stock.newProduct("1003434", "Paracetamol", "Box", "mg", 1000, 200, 20, 10, 2);
-//        stock.newProduct("1003390", "Ibuprofen", "Box", "mg", 2000, 300, 50, 30, 5);
-
-//        String accountID = "ACC1012";
+//        stock.newProduct("Para", "Box", "mg", 1000, 200, 20, 10, 2);
+//        stock.newProduct("Ibuprofen", "Box", "mg", 2000, 300, 50, 30, 5);
+//
+//        stock.deleteProduct("0000001");
+//        stock.deleteProduct("0000002");
 
 //        DBAccountHolders dbAcc = new DBAccountHolders();
-//        dbAcc.createAccount(accountID, "John", "Another address", 0, 3000, "Fixed", 1, 0,0,0,0,0, "Normal", "No need", "No need");
+//        dbAcc.createAccount("John", "Another address", 0, 3000, "Fixed", 1, 0,0,0,0,0, "Normal", "No need", "No need");
+//        dbAcc.createAccount("John", "Another address", 0, 3000, "Fixed", 1, 0,0,0,0,0, "Normal", "No need", "No need");
+//
+//        ResultSet rs = dbAcc.getAccounts();
+//        rs.next();
+//        System.out.println(rs.getString(1));
+//        rs.next();
+//        System.out.println(rs.getString(1));
+//        dbAcc.deleteAccount("ACC0001");
+//        dbAcc.deleteAccount("ACC0002");
 
 //        DBTransactions db = new DBTransactions();
 //
-//        String orderID = "IP1044";
+//        String orderID = "IP0001";
+//        db.newTransaction("Card", 0, "Debit", 4092, 1234, 529, "Test address idc");
 //
-//        db.deleteOrder(orderID);
-//
-//        db.newTransaction(orderID, "Card", 0, "Debit", 4092, 1234, 529, "Test address idc");
 //        System.out.println(db.getTransactions());
 //        db.setAmountReceived(orderID, 1500);
 //        db.addOrderItem(orderID, "1003434", 2);
 //        db.addOrderItem(orderID, "1003390", 1);
-//        db.newAccountTransaction(orderID, accountID);
 //
+//        db.deleteOrder(orderID);
+//        //db.newAccountTransaction(orderID, accountID);
+
 //        ResultSet rs = db.getOrderInfo(orderID);
 //        while (rs.next()) {
 //            System.out.println(rs.getString(rs.findColumn("accountID")));

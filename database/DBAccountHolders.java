@@ -142,13 +142,14 @@ public class DBAccountHolders extends DBParent {
     }
 
     // Creates new record for a new account. For the columns of unused discount type, use 0
-    public void createAccount(String accountID, String name, String address, int balance,
-                              int balanceLimit, String discountType, double discount, double tier1Discount,
+    public String createAccount(String name, String address, int balance, int balanceLimit,
+                              String discountType, double discount, double tier1Discount,
                               int tier1Threshold, double tier2Discount, int tier2Threshold, double tier3Discount,
                               String status, String status1stReminder, String status2ndReminder) throws SQLException {
         String sql = "INSERT INTO AccountHolders VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement query = con.prepareStatement(sql);
-        query.setString(1, accountID);
+        String id = getUniqueID();
+        query.setString(1, id);
         query.setString(2, name);
         query.setString(3, address);
         query.setInt(4, balance);
@@ -164,6 +165,7 @@ public class DBAccountHolders extends DBParent {
         query.setString(14, status1stReminder);
         query.setString(15, status2ndReminder);
         query.executeUpdate();
+        return id;
     }
 
     // Deletes a record of a specified account holder
@@ -182,5 +184,22 @@ public class DBAccountHolders extends DBParent {
         return query.executeQuery();
     }
 
+
+    // Used to generate a unique ID when creating a new record.
+    private String getUniqueID() throws SQLException {
+        String sql = "SELECT accountID FROM AccountHolders ORDER BY accountID";
+        PreparedStatement query = con.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        int currentNum = 1;
+        while (rs.next()) {
+            String id = rs.getString("accountID");
+            int num = Integer.parseInt(id.substring(3));
+            if (num > currentNum) {
+                break;
+            }
+            currentNum++;
+        }
+        return "ACC" + String.format("%04d", currentNum);
+    }
 
 }

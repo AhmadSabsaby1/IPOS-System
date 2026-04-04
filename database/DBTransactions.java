@@ -29,12 +29,13 @@ public class DBTransactions extends DBParent {
     // Creates new record of a transaction. This does NOT create a corresponding record
     // in AccountHolders_Transactions and LocalStock_Transactions (See newAccountTransaction
     // and addOrderItem)
-    public void newTransaction(String orderID, String paymentType, int amountReceived,
-                               String cardType, int firstFour, int lastFour,
-                               int expiryDate, String shippingAddress) throws SQLException {
+    public String newTransaction(String paymentType, int amountReceived, String cardType,
+                               int firstFour, int lastFour, int expiryDate,
+                               String shippingAddress) throws SQLException {
         String sql = "INSERT INTO Transactions VALUES (?,?,?,?,?,?,?,?)";
         PreparedStatement query = con.prepareStatement(sql);
-        query.setString(1, orderID);
+        String id = getUniqueID();
+        query.setString(1, id);
         query.setString(2, paymentType);
         query.setInt(3, amountReceived);
         query.setString(4, cardType);
@@ -43,6 +44,7 @@ public class DBTransactions extends DBParent {
         query.setInt(7, expiryDate);
         query.setString(8, shippingAddress);
         query.executeUpdate();
+        return id;
     }
 
     // Creates a record of AccountHolders_Transactions linking a specified account holder
@@ -93,5 +95,21 @@ public class DBTransactions extends DBParent {
         return query.executeQuery();
     }
 
+    // Used to generate a unique ID when creating a new record.
+    private String getUniqueID() throws SQLException {
+        String sql = "SELECT orderID FROM Transactions ORDER BY orderID";
+        PreparedStatement query = con.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        int currentNum = 1;
+        while (rs.next()) {
+            String id = rs.getString("orderID");
+            int num = Integer.parseInt(id.substring(2));
+            if (num > currentNum) {
+                break;
+            }
+            currentNum++;
+        }
+        return "IP" + String.format("%04d", currentNum);
+    }
 
 }

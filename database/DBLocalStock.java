@@ -25,12 +25,13 @@ public class DBLocalStock extends DBParent{
     }
 
     // Creates new record for a new product
-    public void newProduct(String itemID, String description, String packageType, String unit,
+    public String newProduct(String description, String packageType, String unit,
                            int unitsInAPack, int packageCost, int availability,
                            int stockLimit, int retailMarkUpRate) throws SQLException {
         String sql = "INSERT INTO LocalStock VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement query = con.prepareStatement(sql);
-        query.setString(1, itemID);
+        String id = getUniqueID();
+        query.setString(1, id);
         query.setString(2, description);
         query.setString(3, packageType);
         query.setString(4, unit);
@@ -40,6 +41,7 @@ public class DBLocalStock extends DBParent{
         query.setInt(8, stockLimit);
         query.setInt(9, retailMarkUpRate);
         query.executeUpdate();
+        return id;
     }
 
     // Deletes the record of a specified product
@@ -62,6 +64,23 @@ public class DBLocalStock extends DBParent{
         }
         Statement query = con.createStatement();
         return query.executeQuery(sql.toString());
+    }
+
+    // Used to generate a unique ID when creating a new record.
+    private String getUniqueID() throws SQLException {
+        String sql = "SELECT itemID FROM LocalStock ORDER BY itemID";
+        PreparedStatement query = con.prepareStatement(sql);
+        ResultSet rs = query.executeQuery();
+        int currentNum = 1;
+        while (rs.next()) {
+            String id = rs.getString("itemID");
+            int num = Integer.parseInt(id);
+            if (num > currentNum) {
+                break;
+            }
+            currentNum++;
+        }
+        return String.format("%07d", currentNum);
     }
 
 }
