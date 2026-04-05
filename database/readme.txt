@@ -6,7 +6,9 @@ Local MySQL database set up:
 
 Link MySQL and Intellij:
 1. (Intellij, right side) Database -> New -> Data Source -> MySQL
-2. Set up with URL
+2. Set up with URL:
+    2a. Fill in user (default is root), password and Database (choose iposca)
+    2b. Apply (If errors occur, try refreshing)
 3. Put the correct URL, username and password in DBParent class (Keep
 the ?useSSL=false at the end, it did not work on my end without it)
 
@@ -52,7 +54,7 @@ CREATE TABLE AccountHolders
     tier1Discount DOUBLE unsigned,
     tier1Threshold INT unsigned,
     tier2Discount DOUBLE unsigned,
-    tier1Threshold INT unsigned,
+    tier2Threshold INT unsigned,
     tier3Discount DOUBLE unsigned,
     status VARCHAR(10),
     status1stReminder VARCHAR(7),
