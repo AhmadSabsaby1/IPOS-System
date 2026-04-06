@@ -6,7 +6,8 @@ import javax.swing.*;
 
 /**
  * Main – entry point for the IPOS-CA Login package.
- *this class starts the application.
+ * Run this class to start the application.
+ * Credentials are loaded from the MySQL database (configured in DBParent).
  */
 public class Main {
     public static void main(String[] args) {
