@@ -1,8 +1,8 @@
 package users.db;
 
 import database.DBUsers;
-import ipos.ca.login.model.User;
-import ipos.ca.login.model.UserRole;
+import users.model.User;
+import users.model.UserRole;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,8 +15,7 @@ import java.util.Optional;
  * Replaces MockUserDB entirely. All DB errors are caught here and logged
  * so the controllers stay clean.
  *
- * Note: DBUsers (and DBParent) do NOT validate nulls — that is done here
- * before any DB call is made, as stated in the README.
+
  */
 public class UserDB {
 
@@ -155,11 +154,8 @@ public class UserDB {
     // Private helpers
     // -----------------------------------------------------------------------
 
-    /**
-     * Maps a ResultSet row to a User object.
-     * The DB schema is: username, password, role — no ID column.
-     * We use username as the unique key (it is the PK in the Users table).
-     */
+
+
     private static User mapRow(ResultSet rs, String username, String roleStr) throws SQLException {
         String password = rs.getString("password");
         UserRole role;

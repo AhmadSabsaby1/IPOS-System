@@ -1,9 +1,9 @@
 package users.view;
 
-import ipos.ca.login.controller.LoginController;
-import ipos.ca.login.controller.UserAdminController;
-import ipos.ca.login.model.User;
-import ipos.ca.login.model.UserRole;
+import users.controller.LoginController;
+import users.controller.UserAdminController;
+import users.model.User;
+import users.model.UserRole;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -94,9 +94,9 @@ public class UserManagementFrame extends JFrame {
         List<User> users = adminCtrl.getAllUsers();
         for (User u : users) {
             tableModel.addRow(new Object[]{
-                u.getUsername(),
-                u.getPassword(),
-                u.getRole().name()
+                    u.getUsername(),
+                    u.getPassword(),
+                    u.getRole().name()
             });
         }
     }

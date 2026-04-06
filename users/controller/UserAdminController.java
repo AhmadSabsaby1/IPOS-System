@@ -1,9 +1,9 @@
 package users.controller;
 
-import ipos.ca.login.db.UserDB;
-import ipos.ca.login.model.Session;
-import ipos.ca.login.model.User;
-import ipos.ca.login.model.UserRole;
+import users.db.UserDB;
+import users.model.Session;
+import users.model.User;
+import users.model.UserRole;
 
 import java.util.List;
 
@@ -66,7 +66,7 @@ public class UserAdminController {
         return Session.getInstance().hasRole(UserRole.ADMIN);
     }
 
-    /** Mock email – replace with real IPOS-PU COMMS call when ready. */
+
     private void sendWelcomeEmail(String username) {
         System.out.println("[MockEmail] Credentials emailed to user: " + username);
     }

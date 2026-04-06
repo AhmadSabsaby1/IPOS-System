@@ -1,15 +1,14 @@
 package users.controller;
 
-import ipos.ca.login.db.UserDB;
-import ipos.ca.login.model.Session;
-import ipos.ca.login.model.User;
-import ipos.ca.login.model.UserRole;
+import users.db.UserDB;
+import users.model.Session;
+import users.model.User;
+import users.model.UserRole;
 
 import java.util.Optional;
 
 /**
  * LoginController – business logic for UC15 (Login) and UC16 (Logout).
- * The view calls these methods; this class knows nothing about Swing.
  */
 public class LoginController {
 

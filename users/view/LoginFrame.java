@@ -1,8 +1,8 @@
 package users.view;
 
-import ipos.ca.login.controller.LoginController;
-import ipos.ca.login.model.User;
-import ipos.ca.login.model.UserRole;
+import users.controller.LoginController;
+import users.model.User;
+import users.model.UserRole;
 
 import javax.swing.*;
 import java.awt.*;

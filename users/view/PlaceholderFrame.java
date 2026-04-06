@@ -1,16 +1,15 @@
 package users.view;
 
-import ipos.ca.login.controller.LoginController;
-import ipos.ca.login.model.User;
+import users.controller.LoginController;
+import users.model.User;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
  * PlaceholderFrame – shown after Pharmacist or Manager logs in.
- * Your team-mates' packages (sales, stock, reports, etc.) will replace
- * the placeholder panels with real content.
- *
+
+
  * This frame demonstrates UC16 (Logout) and role-based routing.
  */
 public class PlaceholderFrame extends JFrame {
@@ -30,7 +29,7 @@ public class PlaceholderFrame extends JFrame {
 
         JLabel note = new JLabel(
                 "<html><center>Your role-specific panels go here.<br>"
-                + "Connect your package to this frame.</center></html>",
+                        + "Connect your package to this frame.</center></html>",
                 SwingConstants.CENTER);
 
         JButton logoutBtn = new JButton("Logout (UC16)");
