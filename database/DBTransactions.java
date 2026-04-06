@@ -30,7 +30,7 @@ public class DBTransactions extends DBParent {
     // in AccountHolders_Transactions and LocalStock_Transactions (See newAccountTransaction
     // and addOrderItem)
     public String newTransaction(String paymentType, double amountReceived, String cardType,
-                               int firstFour, int lastFour, int expiryDate,
+                               int firstFour, int lastFour, String expiryDate,
                                String shippingAddress) throws SQLException {
         String sql = "INSERT INTO Transactions VALUES (?,?,?,?,?,?,?,?)";
         PreparedStatement query = con.prepareStatement(sql);
@@ -41,7 +41,7 @@ public class DBTransactions extends DBParent {
         query.setString(4, cardType);
         query.setInt(5, firstFour);
         query.setInt(6, lastFour);
-        query.setInt(7, expiryDate);
+        query.setString(7, expiryDate);
         query.setString(8, shippingAddress);
         query.executeUpdate();
         return id;

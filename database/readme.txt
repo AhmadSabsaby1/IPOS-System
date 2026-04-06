@@ -84,7 +84,7 @@ CREATE TABLE Transactions
     cardType VARCHAR(10),
     firstFour INT unsigned,
     LastFour INT unsigned,
-    expiryDate INT unsigned,
+    expiryDate VARCHAR(4),
     shippingAddress VARCHAR(45),
     PRIMARY KEY (orderID)
 );
