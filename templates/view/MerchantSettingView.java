@@ -1,13 +1,17 @@
 package templates.view;
 
+import templates.controller.TemplateController;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
 
+import static templates.model.TemplateModel.loadMerchantDetails;
+
 public class MerchantSettingView extends JPanel{
 
-    private cust.controller.CUSTController controller;
+    private TemplateController controller;
 
     private JTextField nameField = new JTextField(20);
     private JTextField emailField = new JTextField(20);
@@ -25,7 +29,7 @@ public class MerchantSettingView extends JPanel{
         return "MerchantSettingView";
     }
 
-    public MerchantSettingView(cust.controller.CUSTController controller) {
+    public MerchantSettingView(TemplateController controller) {
         this.controller = controller;
         setLayout(new GridBagLayout());
         GridBagConstraints grid = new GridBagConstraints();
@@ -70,7 +74,7 @@ public class MerchantSettingView extends JPanel{
         grid.gridx = 1; add(saveButton, grid);
 
 
-        String[] data = templates.controller.TemplateController.loadMerchantDetails();
+        String[] data = loadMerchantDetails();
 
         /// fills in the fields with the loaded info
         if (data.length >= 5) {

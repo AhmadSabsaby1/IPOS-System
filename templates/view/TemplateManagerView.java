@@ -1,8 +1,10 @@
-package cust.view;
+package templates.view;
 
-import cust.controller.CUSTController;
+
 import cust.model.AccountHolder;
 import custom.TitleLabel;
+import templates.controller.TemplateController;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,11 +12,9 @@ import java.awt.event.ItemEvent;
 import java.io.File;
 import java.time.LocalDate;
 
-import static templates.controller.TemplateController.loadMerchantDetails;
-import static templates.controller.TemplateController.loadTemplate;
 
 public class TemplateManagerView extends JPanel {
-    private CUSTController controller;
+    private TemplateController controller;
 
     /// UI Components
     private TitleLabel titleLabel;
@@ -28,7 +28,7 @@ public class TemplateManagerView extends JPanel {
         return "TemplateManagerView";
     }
 
-    public TemplateManagerView(CUSTController controller) {
+    public TemplateManagerView(TemplateController controller) {
         this.controller = controller;
 
         titleLabel = new TitleLabel("Template Manager");
@@ -64,7 +64,7 @@ public class TemplateManagerView extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
 
 
-        backButton.addActionListener(e -> controller.goToHubScreen());
+        /*backButton.addActionListener(e -> controller.goToHubScreen());*/
         merchantSettingsButton.addActionListener(e -> controller.goToMerchantSettings());
 
         /// Logic to save the edits
@@ -108,7 +108,7 @@ public class TemplateManagerView extends JPanel {
 
 
 ///REMINDER METHOD
-    public void generateReminder(AccountHolder customer, String invoiceNo, String orderNo, double amount, String purchaseDate){
+   /* public void generateReminder(AccountHolder customer, String invoiceNo, String orderNo, double amount, String purchaseDate){
         String template = loadTemplate("reminderTemplate");
 
 
@@ -142,6 +142,6 @@ public class TemplateManagerView extends JPanel {
 
 
 
-    }
+    }*/
 
 }

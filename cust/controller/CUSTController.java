@@ -2,7 +2,6 @@ package cust.controller;
 
 import cust.model.*;
 import cust.view.*;
-import templates.view.MerchantSettingView;
 
 import java.util.ArrayList;
 
@@ -20,8 +19,7 @@ public class CUSTController {
     private SeeOrdersView seeOrdersView;
     private CreateOrderView createOrderView;
     private OrderCart orderCart;
-    private TemplateManagerView templateMangerView;
-    private MerchantSettingView merchantSettingView;
+
 
     public CUSTController(){
         mainView = new CUSTMainView();
@@ -34,8 +32,7 @@ public class CUSTController {
         seeOrdersView = new SeeOrdersView(this);
         createOrderView = new CreateOrderView(this);
         orderCart = new OrderCart(this);
-        templateMangerView = new TemplateManagerView(this);
-        merchantSettingView = new MerchantSettingView(this);
+
 
 
         //add the views' cards to the main view
@@ -48,8 +45,7 @@ public class CUSTController {
         mainView.addCardLayout(seeOrdersView, SeeOrdersView.cardId());
         mainView.addCardLayout(createOrderView, CreateOrderView.cardId());
         mainView.addCardLayout(orderCart, OrderCart.cardId());
-        mainView.addCardLayout(templateMangerView, TemplateManagerView.cardId());
-        mainView.addCardLayout(merchantSettingView, MerchantSettingView.cardId());
+
 
         model = new CUSTModel();
     }
@@ -63,15 +59,7 @@ public class CUSTController {
         accountManagerView.populateAccountTable(getAccountHolders());
         mainView.changeCardView(AccountManagerView.cardId());
     }
-
-    public void goToTemplateManagerScreen(){
-        templateMangerView.populateTemplates(model.getTemplates());
-        mainView.changeCardView(TemplateManagerView.cardId());
-    }
-    public void goToMerchantSettings() {
-        merchantSettingView.populateTemplates(model.getTemplates());
-        mainView.changeCardView(MerchantSettingView.cardId());
-    }
+    
 
     public void goToModifyAccountHolderScreen(String id){
         modifyAccountView.fillAccountData(model.getAccountById(id));
@@ -173,23 +161,7 @@ public class CUSTController {
     public void createOrder(String accountHolderId){
         model.createOrder(accountHolderId);
     }
-//////////////////////////////////////////////////////////////////////////////////////////////////
-    public void saveTemplate(String selectedType, String updatedTemplate) {
-        templates.controller.TemplateController.saveTemplate(selectedType, updatedTemplate);
-    }
 
-    public String loadTemplate(String selectedType) {
-        return templates.controller.TemplateController.loadTemplate(selectedType);
-    }
-
-
-    public void saveMerchantDetails(String name, String email, String address, String phone, String currentLogoPath) {
-        templates.controller.TemplateController.saveMerchantDetails(name, email, address, phone, currentLogoPath);
-    }
-
-    public void loadMerchantDetails(String name, String email, String address, String phone, String currentLogoPath){
-            templates.controller.TemplateController.loadMerchantDetails();
-    }
 
 
 }
