@@ -66,6 +66,17 @@ public class DBLocalStock extends DBParent{
         return query.executeQuery(sql.toString());
     }
 
+    // Returns the records that have the specified item name (description).
+    // Not case-sensitive and will return any name that contains the string,
+    // including partial matches (E.G: getItemInfoByName("ara") will return
+    // the record for Paracetamol
+    public ResultSet getItemInfoByName(String itemName) throws SQLException {
+        String sql = "SELECT * FROM LocalStock WHERE UPPER(description) LIKE UPPER(?)";
+        PreparedStatement query = con.prepareStatement(sql);
+        query.setString(1, "%"+itemName +"%");
+        return query.executeQuery();
+    }
+
     // Used to generate a unique ID when creating a new record.
     private String getUniqueID() throws SQLException {
         String sql = "SELECT itemID FROM LocalStock ORDER BY itemID";

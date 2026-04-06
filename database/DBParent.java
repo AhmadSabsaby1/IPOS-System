@@ -24,8 +24,13 @@ class DBParent {
     // Personal testing; Uncommenting all of it will not work, be sure you understand what everything does
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
 //        DBLocalStock stock = new DBLocalStock();
-//        stock.newProduct("Para", "Box", "mg", 1000, 200, 20, 10, 2);
+//        stock.newProduct("Paracetamol", "Box", "mg", 1000, 200, 20, 10, 2);
 //        stock.newProduct("Ibuprofen", "Box", "mg", 2000, 300, 50, 30, 5);
+//
+//        ResultSet rs = stock.getItemInfoByName("ara");
+//        while (rs.next()) {
+//            System.out.println(rs.getString("description"));
+//        }
 //
 //        stock.deleteProduct("0000001");
 //        stock.deleteProduct("0000002");
