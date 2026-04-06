@@ -11,11 +11,9 @@ import java.nio.file.Paths;
 public class TemplateController {
     private MerchantSettingView merchantSettingView;
     private TemplateManagerView templateMangerView;
-    private TemplateModel model;
     private TemplateMainView mainView;
 
     public TemplateController(){
-        model = new TemplateModel();
 
         templateMangerView = new TemplateManagerView(this);
         merchantSettingView = new MerchantSettingView(this);
