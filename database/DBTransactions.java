@@ -18,10 +18,10 @@ public class DBTransactions extends DBParent {
 
     // Updates the amount received for a specified transaction.
     // Does NOT ensure that only account holders' transactions can be changed
-    public void setAmountReceived(String orderID, int amountReceived) throws SQLException {
+    public void setAmountReceived(String orderID, double amountReceived) throws SQLException {
         String sql = "UPDATE Transactions SET amountReceived = ? WHERE orderID = ?";
         PreparedStatement query = con.prepareStatement(sql);
-        query.setInt(1, amountReceived);
+        query.setDouble(1, amountReceived);
         query.setString(2, orderID);
         query.executeUpdate();
     }
@@ -29,7 +29,7 @@ public class DBTransactions extends DBParent {
     // Creates new record of a transaction. This does NOT create a corresponding record
     // in AccountHolders_Transactions and LocalStock_Transactions (See newAccountTransaction
     // and addOrderItem)
-    public String newTransaction(String paymentType, int amountReceived, String cardType,
+    public String newTransaction(String paymentType, double amountReceived, String cardType,
                                int firstFour, int lastFour, int expiryDate,
                                String shippingAddress) throws SQLException {
         String sql = "INSERT INTO Transactions VALUES (?,?,?,?,?,?,?,?)";
@@ -37,7 +37,7 @@ public class DBTransactions extends DBParent {
         String id = getUniqueID();
         query.setString(1, id);
         query.setString(2, paymentType);
-        query.setInt(3, amountReceived);
+        query.setDouble(3, amountReceived);
         query.setString(4, cardType);
         query.setInt(5, firstFour);
         query.setInt(6, lastFour);

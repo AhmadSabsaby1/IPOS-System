@@ -70,7 +70,7 @@ public class DBLocalStock extends DBParent{
     // Not case-sensitive and will return any name that contains the string,
     // including partial matches (E.G: getItemInfoByName("ara") will return
     // the record for Paracetamol
-    public ResultSet getItemInfoByName(String itemName) throws SQLException {
+    public ResultSet getItemByName(String itemName) throws SQLException {
         String sql = "SELECT * FROM LocalStock WHERE UPPER(description) LIKE UPPER(?)";
         PreparedStatement query = con.prepareStatement(sql);
         query.setString(1, "%"+itemName +"%");

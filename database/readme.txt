@@ -80,7 +80,7 @@ CREATE TABLE Transactions
 (
     orderID VARCHAR(8) NOT NULL,
     paymentType VARCHAR(4),
-    amountReceived INT unsigned,
+    amountReceived DOUBLE unsigned,
     cardType VARCHAR(10),
     firstFour INT unsigned,
     LastFour INT unsigned,
