@@ -26,7 +26,7 @@ public class DBLocalStock extends DBParent{
 
     // Creates new record for a new product
     public String newProduct(String description, String packageType, String unit,
-                           int unitsInAPack, int packageCost, int availability,
+                           int unitsInAPack, double packageCost, int availability,
                            int stockLimit, int retailMarkUpRate) throws SQLException {
         String sql = "INSERT INTO LocalStock VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement query = con.prepareStatement(sql);
@@ -36,7 +36,7 @@ public class DBLocalStock extends DBParent{
         query.setString(3, packageType);
         query.setString(4, unit);
         query.setInt(5, unitsInAPack);
-        query.setInt(6, packageCost);
+        query.setDouble(6, packageCost);
         query.setInt(7, availability);
         query.setInt(8, stockLimit);
         query.setInt(9, retailMarkUpRate);

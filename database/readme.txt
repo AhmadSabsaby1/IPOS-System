@@ -69,7 +69,7 @@ CREATE TABLE LocalStock
     packageType VARCHAR(12),
     unit VARCHAR(8),
     unitsInAPack INT unsigned,
-    packageCost INT unsigned,
+    packageCost DOUBLE unsigned,
     availability INT unsigned,
     stockLimit INT unsigned,
     retailMarkUpRate INT unsigned,
