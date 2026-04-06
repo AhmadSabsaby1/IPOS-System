@@ -43,7 +43,7 @@ public class ORDModel {
             return null;
 
         //if not in the cart, we get the item to be added from the DB/API
-        CartItem ci = new CartItem(id, getItemByID(id).getDescription(), quantity, getItemByID(id).cost);
+        CartItem ci = new CartItem(id, getItemByID(id).getDescription(), quantity, getItemByID(id).getCost());
         cartList.add(ci);
 
         //we return the newly created item. This might be useful in the

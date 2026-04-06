@@ -132,4 +132,16 @@ public class ORDController {
     public void changeCartItemQuantity(String id, int quantity) {
         model.changeCartItemQuantity(id, quantity);
     }
+
+    public ArrayList<Item> searchByField(String string, String text) {
+        return null;
+    }
+
+    public ArrayList<Item> getCatalogue() {
+        return null;
+    }
+
+    public boolean isCartEmpty() {
+        return false;
+    }
 }

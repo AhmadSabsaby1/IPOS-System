@@ -5,20 +5,30 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.rmi.MarshalledObject;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.ArrayList;
-import ord.mock.MOCKCatalogueDB;
+import database.DBLocalStock;
 import ord.model.Item;
 
 
 public class CaCatalogAPI_Implementation implements ICACatalogAPI {
 
-    private MOCKCatalogueDB InternalDB = new MOCKCatalogueDB();
+    private DBLocalStock InternalDB = new DBLocalStock();
+
+    public CaCatalogAPI_Implementation() throws SQLException, ClassNotFoundException {
+        super();
+    }
 
     @Override
     public String[] getCatalogue() {
 
-        ArrayList<Item> list = InternalDB.getCatalogue();
+        ArrayList<Item> list = null;
+        try {
+            list = (ArrayList<Item>) InternalDB.getStock();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         String[] catalogue = new String[list.size()];
 
