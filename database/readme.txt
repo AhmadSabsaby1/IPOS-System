@@ -47,7 +47,7 @@ CREATE TABLE AccountHolders
     accountID VARCHAR(7) NOT NULL,
     name VARCHAR(45) NOT NULL,
     address VARCHAR(45) NOT NULL,
-    balance INT unsigned,
+    balance DOUBLE unsigned,
     balanceLimit INT unsigned,
     discountType VARCHAR(10),
     discount DOUBLE unsigned,

@@ -34,10 +34,10 @@ public class DBAccountHolders extends DBParent {
     }
 
     // Updates the current balance of a specified account holder
-    public void setBalance(String accountID, int balance) throws SQLException {
+    public void setBalance(String accountID, double balance) throws SQLException {
         String sql = "UPDATE AccountHolders SET balance = ? WHERE accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
-        query.setInt(1, balance);
+        query.setDouble(1, balance);
         query.setString(2, accountID);
         query.executeUpdate();
     }
@@ -142,7 +142,7 @@ public class DBAccountHolders extends DBParent {
     }
 
     // Creates new record for a new account. For the columns of unused discount type, use 0
-    public String createAccount(String name, String address, int balance, int balanceLimit,
+    public String createAccount(String name, String address, double balance, int balanceLimit,
                               String discountType, double discount, double tier1Discount,
                               int tier1Threshold, double tier2Discount, int tier2Threshold, double tier3Discount,
                               String status, String status1stReminder, String status2ndReminder) throws SQLException {
@@ -152,7 +152,7 @@ public class DBAccountHolders extends DBParent {
         query.setString(1, id);
         query.setString(2, name);
         query.setString(3, address);
-        query.setInt(4, balance);
+        query.setDouble(4, balance);
         query.setInt(5, balanceLimit);
         query.setString(6, discountType);
         query.setDouble(7, discount);
