@@ -85,6 +85,8 @@ public class MerchantSettingView extends JPanel{
                 updateLogoPreview(this.logoPath);
             }
         }
+
+
         browseLogoButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Select Merchant Logo");
@@ -117,9 +119,7 @@ public class MerchantSettingView extends JPanel{
 
     }
 
-    /**
-     * Helper to scale the image and update the preview label
-     */
+///UPDATES THE LOGO WEHN NEW IMAGE IS ADDED
     private void updateLogoPreview(String path) {
         ImageIcon image = new ImageIcon(path);
         // Scale to 100x100
@@ -128,7 +128,7 @@ public class MerchantSettingView extends JPanel{
         logo.setText("");
     }
 
-    // This method is required by your Interface/Logic but can stay empty if not used for UI population
+
     public void populateTemplates(Object templates) {}
 }
 

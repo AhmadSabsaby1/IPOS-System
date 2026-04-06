@@ -4,7 +4,6 @@ Client: [MERCHANT_NAME]
 												
  												
 Phone: [PHONE]
-Fax: [FAX]
 												5th January 2003[CURRENT_DATE]
 Dear CUSTOMER,
 
@@ -27,4 +26,4 @@ If you have already sent a payment to us recently, please accept our apologies.
 					Yours sincerely,
  					
 
-						[MANAGER_NAME]
+						[MERCHANT_NAME]

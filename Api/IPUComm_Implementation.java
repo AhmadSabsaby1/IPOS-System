@@ -8,7 +8,7 @@ import java.net.http.HttpResponse;
 
 public class IPUComm_Implementation implements IPUCommAPI {
 
-    private static final String IPU_COMM_URL = "https://api.ipucomm.com/commapi";
+    private static final String IPU_COMM_URL = "http://localhost:8080";
     /// once we get the actual URL from the other teams we would replace them
 
     @Override
@@ -21,7 +21,7 @@ public class IPUComm_Implementation implements IPUCommAPI {
 
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().build().uri(URI.create(IPU_COMM_URL)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(IPU_COMM_URL)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -42,7 +42,6 @@ public class IPUComm_Implementation implements IPUCommAPI {
         }
 
 
-        return false;
     }
 
 
@@ -55,7 +54,7 @@ public class IPUComm_Implementation implements IPUCommAPI {
 
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().build().uri(URI.create(IPU_COMM_URL)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(IPU_COMM_URL)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 

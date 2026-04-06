@@ -1,11 +1,17 @@
 package cust.view;
 
 import cust.controller.CUSTController;
+import cust.model.AccountHolder;
 import custom.TitleLabel;
-import templates.controller.TemplateController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import java.io.File;
+import java.time.LocalDate;
+
+import static templates.controller.TemplateController.loadMerchantDetails;
+import static templates.controller.TemplateController.loadTemplate;
 
 public class TemplateManagerView extends JPanel {
     private CUSTController controller;
@@ -13,8 +19,8 @@ public class TemplateManagerView extends JPanel {
     /// UI Components
     private TitleLabel titleLabel;
     private JButton backButton;
-    private JButton saveButton; /// To save edits
-    private JTextArea templateEditor; /// Where the editing happens
+    private JButton saveButton;
+    private JTextArea templateEditor;
     private JComboBox<String> templateSelector;
     private JButton merchantSettingsButton;
 
@@ -57,7 +63,7 @@ public class TemplateManagerView extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        ///Action Listeners
+
         backButton.addActionListener(e -> controller.goToHubScreen());
         merchantSettingsButton.addActionListener(e -> controller.goToMerchantSettings());
 
@@ -88,9 +94,54 @@ public class TemplateManagerView extends JPanel {
 
     public void populateTemplates(Object templates) {
     }
+///customer id
+/// purchase date
+/// order number
+/// Amount spent
+/// invoice number
+/// merchant name
+/// customer name
+/// manager name
+/// current date
+/// phone number
+/// merchant adress
 
-    public void generateReminder(){
+
+///REMINDER METHOD
+    public void generateReminder(AccountHolder customer, String invoiceNo, String orderNo, double amount, String purchaseDate){
+        String template = loadTemplate("reminderTemplate");
+
+
         String[] merchant = loadMerchantDetails();
+        String merchantName = merchant[0];
+        String merchantEmail = merchant[1];
+        String merchantAddress =merchant[2];
+        String merchantPhone = merchant[3];
+
+
+
+        String reminder = template.replace("[MERCHANT_NAME]",merchantName)
+                .replace("[MERCHANT_ADDRESS]", merchantAddress)
+                .replace("[PHONE]", merchantPhone)
+                .replace("[CURRENT_DATE]", LocalDate.now().toString())
+                .replace("[INVOICE_NO]", invoiceNo)
+                .replace("[ACCOUNT_ID]",customer.getAccountId())
+                .replace("[AMOUNT]",String.format(String.valueOf(amount)))
+                .replace("[CUSTOMER_NAME]", customer.getName())
+                .replace("[PURCHASE_DATE]", purchaseDate)
+                .replace("[MERCHANT_EMAIL]", merchantEmail)
+                .replace("[ORDER_NUMBER]",orderNo);
+
+        saveGeneratedReminder(customer.getAccountId(), reminder);
+    }
+
+
+    public void saveGeneratedReminder(String customerId, String reminder){
+        String  PATH = "templates/mocks/";
+        File file = new File(PATH,customerId +"txt");
+
+
 
     }
+
 }
