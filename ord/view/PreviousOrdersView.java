@@ -1,19 +1,16 @@
 package ord.view;
 
 import custom.CTable;
-import custom.TitleLabel;
 import ord.controller.ORDController;
 import ord.model.Order;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 
 public class PreviousOrdersView extends JPanel {
     private ORDController controller;
 
     //Swing Objects
-    private TitleLabel titleLabel;
     private JButton backButton;
     private CTable ordersTable;
     private JLabel totalsLabel;
@@ -25,33 +22,16 @@ public class PreviousOrdersView extends JPanel {
     public PreviousOrdersView(ORDController controller) {
         this.controller = controller;
 
-        titleLabel = new TitleLabel("See Previous Orders");
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
         backButton = new JButton("Back to Main Menu");
+        add(backButton);
+
         totalsLabel = new JLabel();
-        totalsLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+        add(totalsLabel);
+
         ordersTable = new CTable(Order.previousOrdersColumnId());
-
-        GroupLayout layout = new GroupLayout(this);
-        setLayout(layout);
-
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-
-        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(titleLabel)
-                .addComponent(backButton)
-                .addComponent(ordersTable.getScrollPane())
-                .addComponent(totalsLabel)
-        );
-
-        layout.setVerticalGroup(layout.createSequentialGroup()
-                .addComponent(titleLabel)
-                .addGap(40)
-                .addComponent(backButton)
-                .addGap(40)
-                .addComponent(ordersTable.getScrollPane(), 100, 200, 200)
-                .addComponent(totalsLabel)
-        );
+        add(ordersTable.getScrollPane());
 
         backButton.addActionListener(e -> controller.goToHubScreen());
     }

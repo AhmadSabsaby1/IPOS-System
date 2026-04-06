@@ -1,7 +1,6 @@
 package ord.view;
 
 import custom.CTable;
-import custom.TitleLabel;
 import ord.controller.ORDController;
 import ord.model.Order;
 
@@ -12,7 +11,6 @@ public class OrderProgressView extends JPanel {
     private ORDController controller;
 
     //Swing Objects
-    private TitleLabel titleLabel;
     private JButton backButton;
     private CTable progressTable;
 
@@ -23,29 +21,13 @@ public class OrderProgressView extends JPanel {
     public OrderProgressView(ORDController controller) {
         this.controller = controller;
 
-        titleLabel = new TitleLabel("See Orders Progress");
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
         backButton = new JButton("Back to Main Menu");
+        add(backButton);
+
         progressTable = new CTable(Order.orderProgressColumnId());
-
-        GroupLayout layout = new GroupLayout(this);
-        setLayout(layout);
-
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-
-        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(titleLabel)
-                .addComponent(backButton)
-                .addComponent(progressTable.getScrollPane())
-        );
-
-        layout.setVerticalGroup(layout.createSequentialGroup()
-                .addComponent(titleLabel)
-                .addGap(40)
-                .addComponent(backButton)
-                .addGap(40)
-                .addComponent(progressTable.getScrollPane(), 100, 200, 200)
-        );
+        add(progressTable.getScrollPane());
 
         backButton.addActionListener(e -> controller.goToHubScreen());
     }

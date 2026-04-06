@@ -41,7 +41,7 @@ public class ORDController {
         model = new ORDModel();
 
         //populates the catalogue table with the catalogue the model provides
-        catalogueView.populateCatalogue(getCatalogue());
+        catalogueView.populateCatalogue(model.getCatalogue());
 
         //MOCK
         merchantId = "mu001";
@@ -89,10 +89,6 @@ public class ORDController {
         return model.getItemByID(id);
     }
 
-    public ArrayList<Item> getCatalogue(){
-        return model.getCatalogue();
-    }
-
     /**
      * Adds an item to the cart.
      * @param id the internal id of the item to be added to the cart
@@ -135,13 +131,5 @@ public class ORDController {
 
     public void changeCartItemQuantity(String id, int quantity) {
         model.changeCartItemQuantity(id, quantity);
-    }
-
-    public boolean isCartEmpty() {
-        return model.isCartEmpty();
-    }
-
-    public ArrayList<Item> searchByField(String field, String searchText) {
-        return model.searchByField(field, searchText);
     }
 }

@@ -1,9 +1,7 @@
 package ord.view;
 
 import custom.CTable;
-import custom.TitleLabel;
 import ord.controller.ORDController;
-import ord.model.CartItem;
 import ord.model.Item;
 
 import javax.swing.*;
@@ -16,15 +14,9 @@ public class CatalogueView extends JPanel {
     //Swing Objects
     private JButton addToCartButton;
     private JButton goToCartButton;
-    private JButton backButton;
-    private JButton removeSearch;
+    private JButton goBackButton;
     private CTable catalogueTable;
     private JLabel infoLabel;
-    private TitleLabel titleLabel;
-
-    private JTextField searchTextField;
-    private JComboBox<String> fieldListComboBox;
-    private JButton searchButton;
 
     static public String cardId(){
         return "CatalogueView";
@@ -33,120 +25,46 @@ public class CatalogueView extends JPanel {
     public CatalogueView(ORDController controller) {
         this.controller = controller;
 
-        GroupLayout layout = new GroupLayout(this);
-        setLayout(layout);
+        //sets the layout as a box layout. See https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-        titleLabel = new TitleLabel("Catalogue");
-
-        backButton = new JButton("Back to Main Menu");
+        goBackButton = new JButton("Back to Main Menu");
+        add(goBackButton);
 
         //creates the button to see the cart
         goToCartButton = new JButton("See Cart");
+        add(goToCartButton);
 
         //creates the button to add items to the cart
         addToCartButton = new JButton("Add To Cart");
+        add(addToCartButton);
 
         //a label to show information to the user, if things where added, any errors, etc.
         infoLabel = new JLabel();
-
-        //search bar
-        searchTextField = new JTextField(10);
-
-        fieldListComboBox = new JComboBox<>(new String[]{Item.DESCRIPTION, Item.ITEM_ID});
-
-        searchButton = new JButton("Search");
-
-        removeSearch = new JButton("Remove Search");
+        add(infoLabel);
 
         //creates the table for the catalogue and sets the labels for the columns
         catalogueTable = new CTable(Item.catalogueColumnId());
         //remember that we don't add the catalogue table to the panel, but its JScrollPane
-        //add(catalogueTable.getScrollPane());
-
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-
-        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(titleLabel)
-                .addGroup(layout.createSequentialGroup()
-                        .addComponent(backButton)
-                        .addGap(50)
-                        .addComponent(goToCartButton)
-                )
-                .addGroup(layout.createSequentialGroup()
-                        .addComponent(searchButton, 100, 100, 100)
-                        .addComponent(searchTextField, 200, 200, 200)
-                        .addComponent(fieldListComboBox, 100, 100, 100)
-                        .addComponent(removeSearch)
-                )
-                .addComponent(catalogueTable.getScrollPane())
-                .addComponent(infoLabel)
-                .addComponent(addToCartButton)
-        );
-
-        layout.setVerticalGroup(layout.createSequentialGroup()
-                .addComponent(titleLabel)
-                .addGap(30)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(backButton)
-                        .addComponent(goToCartButton)
-                )
-                .addGap(30)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(searchButton)
-                        .addComponent(searchTextField)
-                        .addComponent(fieldListComboBox)
-                        .addComponent(removeSearch)
-                )
-                .addComponent(catalogueTable.getScrollPane(), 100, 200, 200)
-                .addComponent(infoLabel)
-                .addComponent(addToCartButton)
-        );
+        add(catalogueTable.getScrollPane());
 
         //sets the listeners for the buttons
         addToCartButton.addActionListener(e -> addToCart());
-        goToCartButton.addActionListener(e -> goToCart());
-        backButton.addActionListener(e -> {
+        goToCartButton.addActionListener(e -> {
+            infoLabel.setText("");
+            controller.goToCartScreen();
+        });
+        goBackButton.addActionListener(e -> {
             infoLabel.setText("");
             controller.goToHubScreen();
         });
-
-        searchButton.addActionListener(e -> search());
-        removeSearch.addActionListener(e -> removeSearch());
     }
 
     public void populateCatalogue(ArrayList<Item> items){
         //puts every element of the item list in the table
-        catalogueTable.removeTableElements();
-
         for (Item item : items){
             catalogueTable.addRow(item.catalogueRowData());
         }
-    }
-
-    private void goToCart(){
-        if (controller.isCartEmpty()){
-            infoLabel.setText("The cart is empty");
-            return;
-        }
-
-        infoLabel.setText("");
-        controller.goToCartScreen();
-    }
-
-    private void removeSearch(){
-        if (searchTextField.getText().isEmpty())
-            return;
-
-        searchTextField.setText("");
-        populateCatalogue(controller.getCatalogue());
-    }
-
-    private void search(){
-        if (searchTextField.getText().isEmpty())
-            return;
-
-        populateCatalogue(controller.searchByField(fieldListComboBox.getSelectedItem().toString(), searchTextField.getText()));
     }
 
     private void addToCart(){

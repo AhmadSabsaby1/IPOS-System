@@ -12,7 +12,7 @@ public class CartView extends JPanel {
     private ORDController controller;
 
     //Swing Objects
-    private JButton backToCatalogueButton;
+    private JButton seeCatalogueButton;
     private JButton createOrderButton;
     private JButton clearCartButton;
     private JButton removeItemButton;
@@ -28,48 +28,38 @@ public class CartView extends JPanel {
     public CartView(ORDController controller) {
         this.controller = controller;
 
-        GroupLayout layout = new GroupLayout(this);
-        setLayout(layout);
+        //sets the layout as a box layout. See https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         //creates the button to go back to the catalogue
-        backToCatalogueButton = new JButton("Back to the Catalogue");
+        seeCatalogueButton = new JButton("Back to the Catalogue");
+        add(seeCatalogueButton);
+
         createOrderButton = new JButton("Create Order");
+        add(createOrderButton);
+
         clearCartButton = new JButton("Clear Cart");
+        add(clearCartButton);
+
         removeItemButton = new JButton("Remove Item");
+        add(removeItemButton);
+
         changeQuantityButton = new JButton("Change Quantity");
+        add(changeQuantityButton);
+
         infoLabel = new JLabel();
+        add(infoLabel);
+
+        //creates the label showing the total cost of the order
         totalLabel = new JLabel();
+        add(totalLabel);
+
+        //creates the table that shows the items in the cart
         cartTable = new CTable(CartItem.cartItemColumndId());
-
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-
-        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(backToCatalogueButton)
-                .addComponent(clearCartButton)
-                .addGroup(layout.createSequentialGroup()
-                        .addComponent(changeQuantityButton)
-                        .addComponent(removeItemButton)
-                )
-                .addComponent(cartTable.getScrollPane())
-                .addComponent(totalLabel)
-                .addComponent(createOrderButton)
-        );
-
-        layout.setVerticalGroup(layout.createSequentialGroup()
-                .addComponent(backToCatalogueButton)
-                .addComponent(clearCartButton)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(changeQuantityButton)
-                        .addComponent(removeItemButton)
-                )
-                .addComponent(cartTable.getScrollPane(), 100, 100, 100)
-                .addComponent(totalLabel)
-                .addComponent(createOrderButton)
-        );
+        add(cartTable.getScrollPane());
 
         //creates the listener for the button to change the view back to the catalogue
-        backToCatalogueButton.addActionListener(e -> controller.goToCatalogueScreen());
+        seeCatalogueButton.addActionListener(e -> controller.goToCatalogueScreen());
         createOrderButton.addActionListener(e -> createOrder());
         clearCartButton.addActionListener(e -> clearCart());
         removeItemButton.addActionListener(e -> removeItem());
@@ -124,9 +114,8 @@ public class CartView extends JPanel {
         if(dialogResult == 0) {
             cartTable.removeTableElements();
             controller.removeAllCartItems();
-            infoLabel.setText("");
+            infoLabel.setText("Cart cleared from items");
             totalLabel.setText("");
-            controller.goToCatalogueScreen();
         }
     }
 
@@ -142,12 +131,6 @@ public class CartView extends JPanel {
         int dialogResult = JOptionPane.showConfirmDialog(this, "Do you want to remove " + itemName + " from the cart?", "Are you sure?", dialogButton);
         if(dialogResult == 0) {
             controller.removeFromCart(cartTable.getSelectedRowColumn(0));
-            if (controller.isCartEmpty()){
-                infoLabel.setText("");
-                totalLabel.setText("");
-                controller.goToCatalogueScreen();
-            }
-
             infoLabel.setText(itemName + " removed from cart");
             populateTable(controller.getCartList());
         }

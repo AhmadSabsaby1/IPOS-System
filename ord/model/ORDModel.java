@@ -43,7 +43,7 @@ public class ORDModel {
             return null;
 
         //if not in the cart, we get the item to be added from the DB/API
-        CartItem ci = new CartItem(id, getItemByID(id).getDescription(), quantity, getItemByID(id).getCost());
+        CartItem ci = new CartItem(id, getItemByID(id).getDescription(), quantity, getItemByID(id).cost);
         cartList.add(ci);
 
         //we return the newly created item. This might be useful in the
@@ -97,25 +97,5 @@ public class ORDModel {
                 item.setQuantity(quantity);
             }
         }
-    }
-
-    public boolean isCartEmpty() {
-        return cartList.isEmpty();
-    }
-
-    public ArrayList<Item> searchByField(String field, String searchText) {
-        searchText = searchText.toLowerCase();
-        ArrayList<Item> found = new ArrayList<>();
-        for (Item item : catalogue) {
-            if (field.equals(Item.ITEM_ID)) {
-                if (item.getId().toLowerCase().contains(searchText))
-                    found.add(item);
-            }else if (field.equals(Item.DESCRIPTION)) {
-                if (item.getDescription().toLowerCase().contains(searchText))
-                    found.add(item);
-            }
-        }
-
-        return found;
     }
 }
