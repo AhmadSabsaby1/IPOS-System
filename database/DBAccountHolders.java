@@ -1,6 +1,8 @@
 package database;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class DBAccountHolders extends DBParent {
 
@@ -8,18 +10,14 @@ public class DBAccountHolders extends DBParent {
         super();
     }
 
-    /**
-     * Returns all records of AccountHolders
-     */
+    // Returns all records of AccountHolders
     public ResultSet getAccounts() throws SQLException {
         String sql = "SELECT * FROM AccountHolders";
         PreparedStatement query = con.prepareStatement(sql);
         return query.executeQuery();
     }
 
-    /**
-     * Updates the name of a specified account holder
-     */
+    // Updates the name of a specified account holder
     public void setName(String accountID, String name) throws SQLException {
         String sql = "UPDATE AccountHolders SET name = ? WHERE accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -27,9 +25,8 @@ public class DBAccountHolders extends DBParent {
         query.setString(2, accountID);
         query.executeUpdate();
     }
-    /**
-     * Updates the address of a specified account holder
-     */
+
+    // Updates the address of a specified account holder
     public void setAddress(String accountID, String address) throws SQLException {
         String sql = "UPDATE AccountHolders SET address = ? WHERE accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -38,20 +35,16 @@ public class DBAccountHolders extends DBParent {
         query.executeUpdate();
     }
 
-    /**
-     * Updates the current balance of a specified account holder
-     */
-    public void setBalance(String accountID, double balance) throws SQLException {
+    // Updates the current balance of a specified account holder
+    public void setBalance(String accountID, int balance) throws SQLException {
         String sql = "UPDATE AccountHolders SET balance = ? WHERE accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
-        query.setDouble(1, balance);
+        query.setInt(1, balance);
         query.setString(2, accountID);
         query.executeUpdate();
     }
 
-    /**
-     * Updates the total balance limit of a specified account holder
-     */
+    // Updates the total balance limit of a specified account holder
     public void setBalanceLimit(String accountID, int balanceLimit) throws SQLException {
         String sql = "UPDATE AccountHolders SET balanceLimit = ? WHERE accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -60,9 +53,7 @@ public class DBAccountHolders extends DBParent {
         query.executeUpdate();
     }
 
-    /**
-     * Updates the discount type of a specified account holder
-     */
+    // Updates the discount type of a specified account holder
     public void setDiscountType(String accountID, String discountType) throws SQLException {
         String sql = "UPDATE AccountHolders SET discountType = ? WHERE accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -71,9 +62,7 @@ public class DBAccountHolders extends DBParent {
         query.executeUpdate();
     }
 
-    /**
-     * Updates the fixed discount of a specified account holder
-     */
+    // Updates the fixed discount of a specified account holder
     public void setFixedDiscount(String accountID, double discount) throws SQLException {
         String sql = "UPDATE AccountHolders SET discount = ? WHERE accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -82,9 +71,7 @@ public class DBAccountHolders extends DBParent {
         query.executeUpdate();
     }
 
-    /**
-     * Updates the first tier discount of a specified account holder
-     */
+    // Updates the first tier discount of a specified account holder
     public void setTier1Discount(String accountID, double tier1Discount) throws SQLException {
         String sql = "UPDATE AccountHolders SET tier1Discount = ? WHERE accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -93,9 +80,7 @@ public class DBAccountHolders extends DBParent {
         query.executeUpdate();
     }
 
-    /**
-     * Updates the first discount threshold of a specified account holder
-     */
+    // Updates the first discount threshold of a specified account holder
     public void setTier1Threshold(String accountID, int tier1Threshold) throws SQLException {
         String sql = "UPDATE AccountHolders SET tier1Threshold = ? WHERE accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -104,9 +89,7 @@ public class DBAccountHolders extends DBParent {
         query.executeUpdate();
     }
 
-    /**
-     * Updates the second tier discount of a specified account holder
-     */
+    // Updates the second tier discount of a specified account holder
     public void setTier2Discount(String accountID, double tier2Discount) throws SQLException {
         String sql = "UPDATE AccountHolders SET tier2Discount = ? WHERE accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -115,9 +98,7 @@ public class DBAccountHolders extends DBParent {
         query.executeUpdate();
     }
 
-    /**
-     * Updates the second discount threshold of a specified account holder
-     */
+    // Updates the second discount threshold of a specified account holder
     public void setTier2Threshold(String accountID, int tier2Threshold) throws SQLException {
         String sql = "UPDATE AccountHolders SET tier2Threshold = ? WHERE accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -126,9 +107,7 @@ public class DBAccountHolders extends DBParent {
         query.executeUpdate();
     }
 
-    /**
-     * Updates the third tier discount of a specified account holder
-     */
+    // Updates the third tier discount of a specified account holder
     public void setTier3Discount(String accountID, double tier3Discount) throws SQLException {
         String sql = "UPDATE AccountHolders SET tier3Discount = ? WHERE accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -137,9 +116,7 @@ public class DBAccountHolders extends DBParent {
         query.executeUpdate();
     }
 
-    /**
-     * Updates the account status of a specified account holder
-     */
+    // Updates the account status of a specified account holder
     public void setStatus(String accountID, String status) throws SQLException {
         String sql = "UPDATE AccountHolders SET status = ? WHERE accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -148,9 +125,7 @@ public class DBAccountHolders extends DBParent {
         query.executeUpdate();
     }
 
-    /**
-     * Updates the status of the first reminder for a specified account holder
-     */
+    // Updates the status of the first reminder for a specified account holder
     public void setStatus1stReminder(String accountID, String status) throws SQLException {
         String sql = "UPDATE AccountHolders SET status1stReminder = ? WHERE accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -159,9 +134,7 @@ public class DBAccountHolders extends DBParent {
         query.executeUpdate();
     }
 
-    /**
-     * Updates the status of the second reminder for a specified account holder
-     */
+    // Updates the status of the second reminder for a specified account holder
     public void setStatus2ndReminder(String accountID, String status) throws SQLException {
         String sql = "UPDATE AccountHolders SET status2ndReminder = ? WHERE accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -170,31 +143,18 @@ public class DBAccountHolders extends DBParent {
         query.executeUpdate();
     }
 
-    /**
-     * Updates the phone number of a specified account holder
-     */
-    public void setPhoneNumber(String accountID, String phoneNum) throws SQLException {
-        String sql = "UPDATE AccountHolders SET phoneNum = ? WHERE accountID = ?";
-        PreparedStatement query = con.prepareStatement(sql);
-        query.setString(1, phoneNum);
-        query.setString(2, accountID);
-        query.executeUpdate();
-    }
-
-    /**
-     * Creates new record for a new account. For the columns of unused discount type, use 0
-     */
-    public String createAccount(String name, String address, double balance, int balanceLimit, String discountType,
-                                double discount, double tier1Discount, int tier1Threshold, double tier2Discount,
-                                int tier2Threshold, double tier3Discount, String status, String status1stReminder,
-                                String status2ndReminder, String phoneNum) throws SQLException {
-        String sql = "INSERT INTO AccountHolders VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    // Creates new record for a new account. For the columns of unused discount type, use 0
+    public String createAccount(String name, String address, int balance, int balanceLimit,
+                              String discountType, double discount, double tier1Discount,
+                              int tier1Threshold, double tier2Discount, int tier2Threshold, double tier3Discount,
+                              String status, String status1stReminder, String status2ndReminder) throws SQLException {
+        String sql = "INSERT INTO AccountHolders VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement query = con.prepareStatement(sql);
         String id = getUniqueID();
         query.setString(1, id);
         query.setString(2, name);
         query.setString(3, address);
-        query.setDouble(4, balance);
+        query.setInt(4, balance);
         query.setInt(5, balanceLimit);
         query.setString(6, discountType);
         query.setDouble(7, discount);
@@ -206,14 +166,11 @@ public class DBAccountHolders extends DBParent {
         query.setString(13, status);
         query.setString(14, status1stReminder);
         query.setString(15, status2ndReminder);
-        query.setString(16, phoneNum);
         query.executeUpdate();
         return id;
     }
 
-    /**
-     * Deletes a record of a specified account holder
-     */
+    // Deletes a record of a specified account holder
     public void deleteAccount(String accountID) throws SQLException {
         String sql = "DELETE FROM AccountHolders WHERE accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -221,9 +178,7 @@ public class DBAccountHolders extends DBParent {
         query.executeUpdate();
     }
 
-    /**
-     * Returns a record of AccountHolders with a specified account ID
-     */
+    // Returns a record of AccountHolders with a specified account ID
     public ResultSet getCustomerInfo(String accountID) throws SQLException {
         String sql = "SELECT * FROM AccountHolders WHERE accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -231,9 +186,8 @@ public class DBAccountHolders extends DBParent {
         return query.executeQuery();
     }
 
-    /**
-     * Used to generate a unique ID when creating a new record.
-     */
+
+    // Used to generate a unique ID when creating a new record.
     private String getUniqueID() throws SQLException {
         String sql = "SELECT accountID FROM AccountHolders ORDER BY accountID";
         PreparedStatement query = con.prepareStatement(sql);
