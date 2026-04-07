@@ -86,6 +86,7 @@ CREATE TABLE Transactions
     LastFour INT unsigned,
     expiryDate VARCHAR(4),
     shippingAddress VARCHAR(45),
+    orderDate VARCHAR(10),
     PRIMARY KEY (orderID)
 );
 
