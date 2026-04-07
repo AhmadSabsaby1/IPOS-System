@@ -20,7 +20,7 @@ public class DBTransactions extends DBParent {
 
     /**
      * Updates the amount received for a specified transaction.
-     *Does NOT ensure that only account holders' transactions can be changed
+     * Does NOT ensure that only account holders' transactions can be changed
      */
     public void setAmountReceived(String orderID, double amountReceived) throws SQLException {
         String sql = "UPDATE Transactions SET amountReceived = ? WHERE orderID = ?";
@@ -30,9 +30,11 @@ public class DBTransactions extends DBParent {
         query.executeUpdate();
     }
 
-    // Creates new record of a transaction. This does NOT create a corresponding record
-    // in AccountHolders_Transactions and LocalStock_Transactions (See newAccountTransaction
-    // and addOrderItem)
+    /**
+     * Creates new record of a transaction. This does NOT create a corresponding record
+     * in AccountHolders_Transactions and LocalStock_Transactions (See newAccountTransaction
+     * and addOrderItem)
+     */
     public String newTransaction(String paymentType, double amountReceived, String cardType,
                                int firstFour, int lastFour, String expiryDate,
                                String shippingAddress) throws SQLException {
@@ -51,8 +53,10 @@ public class DBTransactions extends DBParent {
         return id;
     }
 
-    // Creates a record of AccountHolders_Transactions linking a specified account holder
-    // to a specified transaction
+    /**
+     * Creates a record of AccountHolders_Transactions linking a specified account holder
+     * to a specified transaction
+     */
     public void newAccountTransaction(String orderID, String accountID) throws SQLException {
         String sql = "INSERT INTO AccountHolders_Transactions VALUES (?,?)";
         PreparedStatement query = con.prepareStatement(sql);
@@ -61,8 +65,10 @@ public class DBTransactions extends DBParent {
         query.executeUpdate();
     }
 
-    // Creates a record to LocalStock_Transactions of specified item in a specified order.
-    // When adding multiple items to the same order, call this method multiple times
+    /**
+     * Creates a record to LocalStock_Transactions of specified item in a specified order.
+     * When adding multiple items to the same order, call this method multiple times
+     */
     public void addOrderItem(String orderID, String itemID, int quantity) throws SQLException {
         String sql = "INSERT INTO LocalStock_Transactions VALUES (?,?,?)";
         PreparedStatement query = con.prepareStatement(sql);
@@ -72,8 +78,10 @@ public class DBTransactions extends DBParent {
         query.executeUpdate();
     }
 
-    // Deletes the record of a specified order AND the corresponding records in
-    // LocalStock_Transactions and AccountHolders_Transactions
+    /**
+     * Deletes the record of a specified order AND the corresponding records in
+     * LocalStock_Transactions and AccountHolders_Transactions
+     */
     public void deleteOrder(String orderID) throws SQLException {
         String sql1 = "DELETE FROM LocalStock_Transactions WHERE orderID = ?";
         PreparedStatement query1 = con.prepareStatement(sql1);
@@ -112,7 +120,9 @@ public class DBTransactions extends DBParent {
         return query.executeQuery();
     }
 
-    // Used to generate a unique ID when creating a new record.
+    /**
+     * Used to generate a unique ID when creating a new record.
+     */
     private String getUniqueID() throws SQLException {
         String sql = "SELECT orderID FROM Transactions ORDER BY orderID";
         PreparedStatement query = con.prepareStatement(sql);
