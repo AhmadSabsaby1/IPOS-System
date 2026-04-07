@@ -171,13 +171,24 @@ public class DBAccountHolders extends DBParent {
     }
 
     /**
+     * Updates the phone number of a specified account holder
+     */
+    public void setPhoneNumber(String accountID, String phoneNum) throws SQLException {
+        String sql = "UPDATE AccountHolders SET phoneNum = ? WHERE accountID = ?";
+        PreparedStatement query = con.prepareStatement(sql);
+        query.setString(1, phoneNum);
+        query.setString(2, accountID);
+        query.executeUpdate();
+    }
+
+    /**
      * Creates new record for a new account. For the columns of unused discount type, use 0
      */
-    public String createAccount(String name, String address, double balance, int balanceLimit,
-                              String discountType, double discount, double tier1Discount,
-                              int tier1Threshold, double tier2Discount, int tier2Threshold, double tier3Discount,
-                              String status, String status1stReminder, String status2ndReminder) throws SQLException {
-        String sql = "INSERT INTO AccountHolders VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    public String createAccount(String name, String address, double balance, int balanceLimit, String discountType,
+                                double discount, double tier1Discount, int tier1Threshold, double tier2Discount,
+                                int tier2Threshold, double tier3Discount, String status, String status1stReminder,
+                                String status2ndReminder, String phoneNum) throws SQLException {
+        String sql = "INSERT INTO AccountHolders VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement query = con.prepareStatement(sql);
         String id = getUniqueID();
         query.setString(1, id);
@@ -195,6 +206,7 @@ public class DBAccountHolders extends DBParent {
         query.setString(13, status);
         query.setString(14, status1stReminder);
         query.setString(15, status2ndReminder);
+        query.setString(16, phoneNum);
         query.executeUpdate();
         return id;
     }

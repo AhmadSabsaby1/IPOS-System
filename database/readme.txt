@@ -59,6 +59,7 @@ CREATE TABLE AccountHolders
     status VARCHAR(10),
     status1stReminder VARCHAR(7),
     status2ndReminder VARCHAR(7),
+    phoneNum VARCHAR(20),
     PRIMARY KEY (accountID)
 );
 
@@ -108,3 +109,31 @@ CREATE TABLE LocalStock_Transactions
     FOREIGN KEY (orderID) REFERENCES Transactions(orderID),
     PRIMARY KEY (itemID, orderID)
 );
+
+SAMPLE DATA INSERT: (This can be done any time after the database is created as long as no primary keys are duplicated)
+
+INSERT INTO Users VALUES
+('sysdba', 'masterkey', 'Administrator'),
+('manager', 'Get_it_done', 'Director of Operations/Manager'),
+('accountant', 'Count_money', 'Senior accountant'),
+('clerk', 'Paperwork', 'Accountant');
+
+INSERT INTO AccountHolders VALUES
+('ACC0001', 'Ms Eva Bauyer', '1, Liverpool street, London EC2V 8NS', 0, 500, 'Fixed', 0.03, 0, 0, 0, 0, 0, 'normal', 'no need', 'no need', '02073218001'),
+('ACC0002', 'Ms Glynne Morisson', '1, Liverpool street, London EC2V 8NS', 0, 500, 'Variable',0, 0, 100, 0.01, 300, 0.02, 'normal', 'no need', 'no need', '02073218001');
+
+INSERT INTO LocalStock VALUES
+('10000001', 'Paracetamol', 'Box', 'Caps', 20, 0.10, 121, 10, 100),
+('10000002', 'Aspirin', 'Box', 'Caps', 20, 0.50, 201, 15, 100),
+('10000003', 'Analgin', 'Box', 'Caps', 10, 1.20, 25, 10, 100),
+('10000004', 'Celebrex, caps 100 mg', 'Box', 'Caps', 10, 10.00, 43, 10, 100),
+('10000005', 'Celebrex, caps 200 mg', 'Box', 'Caps', 10, 18.50, 35, 5, 100),
+('10000006', 'Retin-A Tretin, 30 g', 'Box', 'Caps', 20, 25.00, 28, 10, 100),
+('10000007', 'Lipitor TB, 20 mg', 'Box', 'Caps', 30, 15.50, 10, 10, 100),
+('10000008', 'Claritin CR, 60g', 'Box', 'Caps', 20, 19.50, 21, 10, 100),
+('20000004', 'Iodine tincture', 'Bottle', 'Ml', 100, 0.30, 35, 10, 100),
+('20000005', 'Rhynol', 'Bottle', 'Ml', 200, 2.50, 14, 15, 100),
+('30000001', 'Ospen', 'Box', 'Caps', 20, 10.50, 78, 10, 100),
+('30000002', 'Amopen', 'Box', 'Caps', 30, 15.00, 90, 15, 100),
+('40000001', 'Vitamin C', 'Box', 'Caps', 30, 1.20, 22, 15, 100),
+('40000002', 'Vitamin B12', 'Box', 'Caps', 30, 1.30, 43, 15, 100);
