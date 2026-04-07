@@ -8,16 +8,20 @@ public class DBTransactions extends DBParent {
         super();
     }
 
-    // Returns all records of Transactions and the corresponding records of
-    // LocalStock_Transactions
+    /**
+     * Returns all records of Transactions and the corresponding records of
+     * LocalStock_Transactions and AccountHolders_Transactions (The orderIDs and accountID)
+     */
     public ResultSet getTransactions() throws SQLException {
         String sql = "SELECT * FROM Transactions LEFT JOIN LocalStock_Transactions AS Products ON Transactions.orderID = Products.orderID LEFT JOIN AccountHolders_Transactions AS Accounts ON Transactions.orderID = Accounts.orderID";
         PreparedStatement query = con.prepareStatement(sql);
         return query.executeQuery();
     }
 
-    // Updates the amount received for a specified transaction.
-    // Does NOT ensure that only account holders' transactions can be changed
+    /**
+     * Updates the amount received for a specified transaction.
+     *Does NOT ensure that only account holders' transactions can be changed
+     */
     public void setAmountReceived(String orderID, double amountReceived) throws SQLException {
         String sql = "UPDATE Transactions SET amountReceived = ? WHERE orderID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -87,11 +91,24 @@ public class DBTransactions extends DBParent {
         query3.executeUpdate();
     }
 
-    // Returns the record of a specified transaction and the corresponding products in it
+    /**
+     * Returns the record of a specified transaction and the corresponding products in it
+     */
     public ResultSet getOrderInfo(String orderID) throws SQLException {
         String sql = "SELECT * FROM Transactions LEFT JOIN LocalStock_Transactions AS Products ON Transactions.orderID = Products.orderID LEFT JOIN AccountHolders_Transactions AS Accounts ON Transactions.orderID = Accounts.orderID WHERE Transactions.orderID = ?";
         PreparedStatement query = con.prepareStatement(sql);
         query.setString(1, orderID);
+        return query.executeQuery();
+    }
+
+    /**
+     * Returns all records of Transactions and the corresponding records of
+     * LocalStock_Transactions and AccountHolders_Transactions with the specified accountID
+     */
+    public ResultSet getTransactionsByAccountID(String accountID) throws SQLException {
+        String sql = "SELECT * FROM Transactions LEFT JOIN LocalStock_Transactions AS Products ON Transactions.orderID = Products.orderID LEFT JOIN AccountHolders_Transactions AS Accounts ON Transactions.orderID = Accounts.orderID WHERE Accounts.accountID = ?";
+        PreparedStatement query = con.prepareStatement(sql);
+        query.setString(1, accountID);
         return query.executeQuery();
     }
 
