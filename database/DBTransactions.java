@@ -112,10 +112,10 @@ public class DBTransactions extends DBParent {
 
     /**
      * Returns all records of Transactions and the corresponding records of
-     * LocalStock_Transactions and AccountHolders_Transactions with the specified accountID
+     * ONLY AccountHolders_Transactions (not LocalStock_Transactions) with the specified accountID
      */
     public ResultSet getTransactionsByAccountID(String accountID) throws SQLException {
-        String sql = "SELECT * FROM Transactions LEFT JOIN LocalStock_Transactions AS Products ON Transactions.orderID = Products.orderID LEFT JOIN AccountHolders_Transactions AS Accounts ON Transactions.orderID = Accounts.orderID WHERE Accounts.accountID = ?";
+        String sql = "SELECT * FROM Transactions LEFT JOIN AccountHolders_Transactions AS Accounts ON Transactions.orderID = Accounts.orderID WHERE Accounts.accountID = ?";
         PreparedStatement query = con.prepareStatement(sql);
         query.setString(1, accountID);
         return query.executeQuery();
