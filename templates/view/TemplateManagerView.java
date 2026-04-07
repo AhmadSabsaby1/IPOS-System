@@ -42,7 +42,7 @@ public class TemplateManagerView extends JPanel {
         JScrollPane scrollPane = new JScrollPane(templateEditor);
 
         /// Selector to switch templates
-        String[] options = {"invoiceTemplate", "reminderTemplate"};
+        String[] options = {"invoiceTemplate", "1streminderTemplate", "2ndreminderTemplate"};
         templateSelector = new JComboBox<>(options);
 
         setTemplateText(controller.loadTemplate((String) templateSelector.getSelectedItem()));

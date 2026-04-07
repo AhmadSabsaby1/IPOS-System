@@ -1,0 +1,28 @@
+Client: [MERCHANT_NAME]
+[MERCHANT_ADDRESS]										
+		 									
+												
+ 												
+Phone: [PHONE]
+												[CURRENT_DATE]
+Dear CUSTOMER,
+
+
+					SECOND REMINDER - INVOICE NO.:[INVOICE_NO]
+			CUSTOMER Account:[ACCOUNT_ID] 				Total Amount:[AMOUNT]
+
+
+It appears that we still have not yet received payment of the above invoice, which was raised against Cosymed Ltd
+on [PURCHASE_DATE], for ordering pharmaceutical goods from InfoPharma Ltd, order [ORDER_NO], despite the
+reminder sent to you on [DATE_1ST_REMINDER_SENT].
+
+We would appreciate it if you would settle this invoice in full by return. 
+
+If you have already sent a payment to us recently, please accept our apologies.
+
+
+
+					Yours sincerely,
+ 					
+
+						[MERCHANT_NAME]

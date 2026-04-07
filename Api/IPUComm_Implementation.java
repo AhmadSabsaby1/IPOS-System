@@ -8,7 +8,7 @@ import java.net.http.HttpResponse;
 
 public class IPUComm_Implementation implements IPUCommAPI {
 
-    private static final String IPU_COMM_URL = "http://localhost:8080";
+    private static final String IPU_COMM_URL = "http://172.20.10.9:8083/api/email/send";
     /// once we get the actual URL from the other teams we would replace them
 
     @Override

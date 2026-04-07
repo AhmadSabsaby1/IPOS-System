@@ -6,7 +6,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class ISALogin_Implementation implements ISALoginAPI {
-    private static final String ISA_LOGIN_API_URL = "https://api.isaLogin.com/login";
+    private static final String ISA_LOGIN_API_URL = "http://127.0.0.1:8000/api";
     /// once we get the actual URL from the other teams we would replace them
 
 
