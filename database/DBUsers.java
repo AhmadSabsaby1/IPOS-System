@@ -8,14 +8,18 @@ public class DBUsers extends DBParent {
         super();
     }
 
-    // Returns all records of User
+    /**
+     * Returns all records of User
+     */
     public ResultSet getUsers() throws SQLException {
         String sql = "SELECT * FROM Users";
         PreparedStatement query = con.prepareStatement(sql);
         return query.executeQuery();
     }
 
-    // Returns a record of the specified user
+    /**
+     * Returns a record of the specified user
+     */
     public ResultSet getUserInfo(String username) throws SQLException {
         String sql = "SELECT * FROM Users WHERE username = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -23,7 +27,9 @@ public class DBUsers extends DBParent {
         return query.executeQuery();
     }
 
-    // Updates the username of a specified user
+    /**
+     * Updates the username of a specified user
+     */
     public void setUsername(String oldUsername, String newUsername) throws SQLException {
         String sql = "UPDATE Users SET username = ? WHERE username = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -32,7 +38,9 @@ public class DBUsers extends DBParent {
         query.executeUpdate();
     }
 
-    // Updates the password of a specified user
+    /**
+     * Updates the password of a specified user
+     */
     public void setPassword(String username, String password) throws SQLException {
         String sql = "UPDATE Users SET password = ? WHERE username = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -41,7 +49,9 @@ public class DBUsers extends DBParent {
         query.executeUpdate();
     }
 
-    // Updates the role of a specified user
+    /**
+     * Updates the role of a specified user
+     */
     public void setRole(String username, String role) throws SQLException {
         String sql = "UPDATE Users SET role = ? WHERE username = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -50,7 +60,9 @@ public class DBUsers extends DBParent {
         query.executeUpdate();
     }
 
-    // Creates new record for a new User
+    /**
+     * Creates new record for a new User
+     */
     public void createNewUser(String username, String password, String role) throws SQLException {
         String sql = "INSERT INTO Users VALUES(?, ?, ?)";
         PreparedStatement query = con.prepareStatement(sql);
@@ -60,7 +72,9 @@ public class DBUsers extends DBParent {
         query.executeUpdate();
     }
 
-    // Deletes a specified user
+    /**
+     * Deletes a specified user
+     */
     public void deleteUser(String username) throws SQLException {
         String sql = "DELETE FROM Users WHERE username = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -68,7 +82,9 @@ public class DBUsers extends DBParent {
         query.executeUpdate();
     }
 
-    // Returns all records of User with a specified role
+    /**
+     * Returns all records of User with a specified role
+     */
     public ResultSet getFullRoles(String role) throws SQLException {
         String sql = "SELECT * FROM Users WHERE role = ?";
         PreparedStatement query = con.prepareStatement(sql);

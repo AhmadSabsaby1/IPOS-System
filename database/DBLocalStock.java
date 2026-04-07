@@ -8,14 +8,18 @@ public class DBLocalStock extends DBParent{
         super();
     }
 
-    // Returns all records of LocalStock
+    /**
+     * Returns all records of LocalStock
+     */
     public ResultSet getStock() throws SQLException {
         String sql = "SELECT * FROM LocalStock";
         PreparedStatement query = con.prepareStatement(sql);
         return query.executeQuery();
     }
 
-    // Updates the total (availability) of one product via itemID
+    /**
+     * Updates the total (availability) of one product via itemID
+     */
     public void updateStock(String itemID, int availability) throws SQLException {
         String sql = "UPDATE LocalStock SET availability = ? WHERE ItemID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -24,7 +28,9 @@ public class DBLocalStock extends DBParent{
         query.executeUpdate();
     }
 
-    // Creates new record for a new product
+    /**
+     * Creates new record for a new product
+     */
     public String newProduct(String description, String packageType, String unit,
                            int unitsInAPack, double packageCost, int availability,
                            int stockLimit, int retailMarkUpRate) throws SQLException {
@@ -43,8 +49,9 @@ public class DBLocalStock extends DBParent{
         query.executeUpdate();
         return id;
     }
-
-    // Deletes the record of a specified product
+    /**
+     * Deletes the record of a specified product
+     */
     public void deleteProduct(String itemID) throws SQLException {
         String sql = "DELETE FROM LocalStock WHERE ItemID = ?";
         PreparedStatement query = con.prepareStatement(sql);
@@ -52,8 +59,10 @@ public class DBLocalStock extends DBParent{
         query.executeUpdate();
     }
 
-    // Takes any number of itemIDs and returns records of all products with
-    // the specified IDs
+    /**
+     * Takes any number of itemIDs and returns records of all products with
+     * the specified IDs
+     */
     public ResultSet getItemInfo(String ...itemIDs) throws SQLException {
         StringBuilder sql = new StringBuilder("SELECT * FROM LocalStock");
         if (itemIDs.length > 0) {
@@ -66,10 +75,12 @@ public class DBLocalStock extends DBParent{
         return query.executeQuery(sql.toString());
     }
 
-    // Returns the records that have the specified item name (description).
-    // Not case-sensitive and will return any name that contains the string,
-    // including partial matches (E.G: getItemInfoByName("ara") will return
-    // the record for Paracetamol
+    /**
+     * Returns the records that have the specified item name (description).
+     * Not case-sensitive and will return any name that contains the string,
+     * including partial matches (E.G: getItemInfoByName("ara") will return
+     * the record for Paracetamol
+     */
     public ResultSet getItemByName(String itemName) throws SQLException {
         String sql = "SELECT * FROM LocalStock WHERE UPPER(description) LIKE UPPER(?)";
         PreparedStatement query = con.prepareStatement(sql);
@@ -77,7 +88,9 @@ public class DBLocalStock extends DBParent{
         return query.executeQuery();
     }
 
-    // Used to generate a unique ID when creating a new record.
+    /**
+     * Used to generate a unique ID when creating a new record.
+     */
     private String getUniqueID() throws SQLException {
         String sql = "SELECT itemID FROM LocalStock ORDER BY itemID";
         PreparedStatement query = con.prepareStatement(sql);
