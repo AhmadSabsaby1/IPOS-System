@@ -4,12 +4,12 @@ Client: [MERCHANT_NAME]
 												
  												
 Phone: [PHONE]
-												5th January 2003[CURRENT_DATE]
+												[CURRENT_DATE]
 Dear CUSTOMER,
 
 
-					 REMINDER[REMINDER_NO] - INVOICE NO.: 197362[INVOICE_NO]
-			CUSTOMER Account: 0000235[ACCOUNT_ID] 			Total Amount: 294.00[AMOUNT]
+					 REMINDER - INVOICE NO.:[INVOICE_NO]
+			CUSTOMER Account:[ACCOUNT_ID] 				Total Amount:[AMOUNT]
 
 
 According to our records, it appears that we have not yet received payment of the above invoice, which was raised

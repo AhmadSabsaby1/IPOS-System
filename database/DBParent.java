@@ -14,9 +14,9 @@ class DBParent {
     // Change the attributes below to your local MySQL Server to connect to it
     // If you get an error that starts with "Establishing SSL connection..." you can put
     // ?useSSL=false after the localhost:port part and that should fix it.
-    String databaseUrl = "jdbc:mysql://localhost:3306/IPOSCA?useSSL=false";
+    String databaseUrl = "jdbc:mysql://localhost:3306/IPOSCA?useSSL=false&allowPublicKeyRetrieval=true";
     String username = "root";
-    String password = "root";
+    String password = "lamin";
 
     public DBParent() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");

@@ -1,10 +1,12 @@
 import cust.controller.CUSTController;
+import cust.model.CUSTModel;
 import ord.controller.ORDController;
-import templates.controller.TemplateController;
 
 public class EntryPoint {
     public static void main(String[] args) {
-        TemplateController TemplateController = new TemplateController();
+        CUSTController CUSTController = new CUSTController();
+        ORDController ORDController = new ORDController();
+
 
 
     }
