@@ -182,13 +182,24 @@ public class DBAccountHolders extends DBParent {
     }
 
     /**
+     * Updates the email of a specified account holder
+     */
+    public void setEmail(String accountID, String email) throws SQLException {
+        String sql = "UPDATE AccountHolders SET email = ? WHERE accountID = ?";
+        PreparedStatement query = con.prepareStatement(sql);
+        query.setString(1, email);
+        query.setString(2, accountID);
+        query.executeUpdate();
+    }
+
+    /**
      * Creates new record for a new account. For the columns of unused discount type, use 0
      */
     public String createAccount(String name, String address, double balance, int balanceLimit, String discountType,
                                 double discount, double tier1Discount, int tier1Threshold, double tier2Discount,
                                 int tier2Threshold, double tier3Discount, String status, String status1stReminder,
-                                String status2ndReminder, String phoneNum) throws SQLException {
-        String sql = "INSERT INTO AccountHolders VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                                String status2ndReminder, String phoneNum, String email) throws SQLException {
+        String sql = "INSERT INTO AccountHolders VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement query = con.prepareStatement(sql);
         String id = getUniqueID();
         query.setString(1, id);
@@ -207,6 +218,7 @@ public class DBAccountHolders extends DBParent {
         query.setString(14, status1stReminder);
         query.setString(15, status2ndReminder);
         query.setString(16, phoneNum);
+        query.setString(17, email);
         query.executeUpdate();
         return id;
     }
