@@ -60,6 +60,7 @@ CREATE TABLE AccountHolders
     status1stReminder VARCHAR(7),
     status2ndReminder VARCHAR(7),
     phoneNum VARCHAR(20),
+    email VARCHAR(45),
     PRIMARY KEY (accountID)
 );
 
@@ -119,8 +120,8 @@ INSERT INTO Users VALUES
 ('clerk', 'Paperwork', 'Accountant');
 
 INSERT INTO AccountHolders VALUES
-('ACC0001', 'Ms Eva Bauyer', '1, Liverpool street, London EC2V 8NS', 0, 500, 'Fixed', 0.03, 0, 0, 0, 0, 0, 'normal', 'no need', 'no need', '02073218001'),
-('ACC0002', 'Ms Glynne Morisson', '1, Liverpool street, London EC2V 8NS', 0, 500, 'Variable',0, 0, 100, 0.01, 300, 0.02, 'normal', 'no need', 'no need', '02073218001');
+('ACC0001', 'Ms Eva Bauyer', '1, Liverpool street, London EC2V 8NS', 0, 500, 'Fixed', 0.03, 0, 0, 0, 0, 0, 'normal', 'no need', 'no need', '02073218001', 'evabauyer@gmail.com'),
+('ACC0002', 'Ms Glynne Morisson', '1, Liverpool street, London EC2V 8NS', 0, 500, 'Variable',0, 0, 100, 0.01, 300, 0.02, 'normal', 'no need', 'no need', '02073218001', 'morrisonglynne@gmail.com');
 
 INSERT INTO LocalStock VALUES
 ('10000001', 'Paracetamol', 'Box', 'Caps', 20, 0.10, 121, 10, 100),

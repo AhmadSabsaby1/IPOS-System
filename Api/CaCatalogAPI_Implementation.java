@@ -16,6 +16,7 @@ import ord.model.Item;
 public class CaCatalogAPI_Implementation implements ICACatalogAPI {
 
     private DBLocalStock InternalDB = new DBLocalStock();
+    private static final String ISA_CATALOG_API_URL = "https://webhook.site/e2225256-8db6-4234-ba8e-af3a51faa852";
 
     public CaCatalogAPI_Implementation() throws SQLException, ClassNotFoundException {
         super();
@@ -78,7 +79,7 @@ public class CaCatalogAPI_Implementation implements ICACatalogAPI {
 
                     HttpClient client = HttpClient.newHttpClient( );
                     ///THIS WORKS!!
-                    HttpRequest request = HttpRequest.newBuilder().uri(URI.create("https://webhook.site/5cf3ace0-37e4-415b-aeda-b502c7c0edd0")).header("content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(sb.toString())).build();
+                    HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_CATALOG_API_URL)).header("content-Type", "getCatalogue/json").POST(HttpRequest.BodyPublishers.ofString(sb.toString())).build();
                     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
                 } catch (Exception e) {
@@ -97,18 +98,48 @@ public class CaCatalogAPI_Implementation implements ICACatalogAPI {
      */
     @Override
     public boolean sendOrderDetails(HashMap<Integer, Integer> products, int OrderID, String shippingAddress) {
-        /// inc
 
-        System.out.println("Order ID: " + OrderID);
-        System.out.println("Shipping Address: " + shippingAddress);
-        System.out.println("Number of products: " + products.size());
-        System.out.println("Products:");
-        for (Integer itemID : products.keySet()){
-            int quantity = products.get(itemID);
-            System.out.println("Item ID: " + itemID + ", Quantity: " + quantity);
+        /// I THINK THIS SHOULD SEND TO TEMA ISA
+        StringBuilder sb = new StringBuilder();
+        sb.append("{").append("\"orderId\":\"").append(OrderID).append("\",")
+                .append("\"shippingAddress\":\"").append(shippingAddress).append("\",")
+                .append("\"products\":[");
+
+        int i = 0;
+        for (int itemId : products.keySet()) {
+            int quantity = products.get(itemId);
+            sb.append("{").append("\"productId\":\"").append(itemId).append("\",")
+                    .append("\"quantity\":\"").append(quantity).append("\"}");
+            if (i < products.size() - 1) {
+                sb.append(",");
+            }
+            i++;
+        }
+        sb.append("]}");
+
+        try{
+
+            HttpClient client = HttpClient.newHttpClient( );
+            ///THIS WORKS!!
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_CATALOG_API_URL)).header("content-Type", "sendOrderDetails/json").POST(HttpRequest.BodyPublishers.ofString(sb.toString())).build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                System.out.println("Order details sent successfully.");
+                return true;
+            } else {
+                System.out.println("Failed to send order details with status code: " + response.statusCode());
+                return false;
+            }
+
+        } catch (Exception e) {
+            System.out.println("couldnt reach team ISA Catalogue API: " + e.getMessage());
+            return false;
         }
 
-        return true;
+
+
+
     }
 
 

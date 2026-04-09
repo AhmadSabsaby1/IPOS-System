@@ -6,7 +6,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class ISALogin_Implementation implements ISALoginAPI {
-    private static final String ISA_LOGIN_API_URL = "http://127.0.0.1:8000/api";
+    private static final String ISA_LOGIN_API_URL = "https://webhook.site/e2225256-8db6-4234-ba8e-af3a51faa852";
     /// once we get the actual URL from the other teams we would replace them
 
 
@@ -22,13 +22,13 @@ public class ISALogin_Implementation implements ISALoginAPI {
 
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_LOGIN_API_URL)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_LOGIN_API_URL)).header("Content-Type", "merchantLogin/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
                 System.out.println("Login successfully.");
-                /// Either im splitting it or will be split in the login package
+                ///should get something in response to sendus to login page
                 String merchant = response.body();
                 return true;
             } else {

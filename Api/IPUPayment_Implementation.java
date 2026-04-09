@@ -8,7 +8,7 @@ import java.net.http.HttpResponse;
 
 public class IPUPayment_Implementation implements IPUPaymentAPI {
 
-    private static final String IPU_PAYMENT_API_URL = "https://api.ipupayment.com/submitPayment";
+    private static final String IPU_PAYMENT_API_URL = "https://webhook.site/e2225256-8db6-4234-ba8e-af3a51faa852";
     /// once we get the actual URL from the other teams we would replace them
 
 
@@ -24,7 +24,7 @@ public class IPUPayment_Implementation implements IPUPaymentAPI {
 
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(IPU_PAYMENT_API_URL)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(IPU_PAYMENT_API_URL)).header("Content-Type", "submitPayment/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 

@@ -12,7 +12,8 @@ import java.sql.ResultSet;
 
 public class IPUComm_Implementation implements IPUCommAPI {
 
-    private static final String IPU_COMM_URL = "https://webhook.site/5cf3ace0-37e4-415b-aeda-b502c7c0edd0";
+    ///i think WORKS!!
+    private static final String IPU_COMM_URL = "https://webhook.site/e2225256-8db6-4234-ba8e-af3a51faa852";
     /// once we get the actual URL from the other teams we would replace them
 
     @Override
@@ -30,7 +31,7 @@ public class IPUComm_Implementation implements IPUCommAPI {
         );
 
 
-                HttpRequest request = HttpRequest.newBuilder().uri(URI.create(IPU_COMM_URL)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
+                HttpRequest request = HttpRequest.newBuilder().uri(URI.create(IPU_COMM_URL)).header("Content-Type", "sendEmail/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -53,7 +54,7 @@ public class IPUComm_Implementation implements IPUCommAPI {
 
     }
 
-
+/// Sending order updates to the account holder
     @Override
     public boolean getOrderUpdate(int orderID, String status) {
 
@@ -64,7 +65,7 @@ public class IPUComm_Implementation implements IPUCommAPI {
 
 
             if (db.getOrderInfo(formattedID).next()) {
-                System.out.println("Order found in local database. Notifying API...");
+                System.out.println("Order found in database");
             }
 
 
@@ -75,7 +76,7 @@ public class IPUComm_Implementation implements IPUCommAPI {
 
 
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(IPU_COMM_URL)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(IPU_COMM_URL)).header("Content-Type", "getOrderUpdate/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 

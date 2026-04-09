@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class ISAOrder_Implementation implements ISAOrderAPI {
 
-    private static final String ISA_ORDER_API_URL = "https://api.isaorder.com/orderapi";
+    private static final String ISA_ORDER_API_URL = "https://webhook.site/e2225256-8db6-4234-ba8e-af3a51faa852";
     /// once we get the actual URL from the other teams we would replace them
 
 
@@ -35,16 +35,14 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
             }
             i++;
         }
-        sb.append("}");
         sb.append("]");
-
-
+        sb.append("}");
 
         String jsonRequestBody = sb.toString();
 
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "placeOrder/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -71,7 +69,7 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
 
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "application/json").GET().build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "trackOrderProgress/json").GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -93,7 +91,7 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
 
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "application/json").GET().build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "queryBalance/json").GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
@@ -105,7 +103,7 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
             }
 
         } catch (Exception e) {
-            System.out.println("couldnt reach team ISA Order API: " + e.getMessage());
+            System.out.println("couldnt reach team ISA Order API: ");
             return 0;
         }
 
@@ -116,13 +114,12 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
 
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "application/json").GET().build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "viewPreviousOrders/json").GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-                System.out.println("Order placed successfully.");
-                return new String[]{"Previous orders: Order1, Order2, Order3."};
+                System.out.println("Order retrieved successfully.");
 
             }
         } catch (Exception e) {
@@ -136,7 +133,7 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
     public String[] getCatalogue() {
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "application/json").GET().build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "getCatalogue/json").GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -158,7 +155,7 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
     public String[] viewInvoices(int merchantID) {
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "application/json").GET().build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "viewInvoices/json").GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
