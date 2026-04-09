@@ -78,13 +78,25 @@ public class DBLocalStock extends DBParent{
     /**
      * Returns the records that have the specified item name (description).
      * Not case-sensitive and will return any name that contains the string,
-     * including partial matches (E.G: getItemInfoByName("ara") will return
-     * the record for Paracetamol
+     * including partial matches (E.G: getItemByName("ara") will return
+     * the record for Paracetamol)
      */
     public ResultSet getItemByName(String itemName) throws SQLException {
         String sql = "SELECT * FROM LocalStock WHERE UPPER(description) LIKE UPPER(?)";
         PreparedStatement query = con.prepareStatement(sql);
         query.setString(1, "%"+itemName +"%");
+        return query.executeQuery();
+    }
+
+    /**
+     * Returns the records that have the specified item ID. Will return any ID that
+     * contains the string, including partial matches (E.G: getItemByID("001")
+     * will return the record for item with ID 1000001 and 2000010)
+     */
+    public ResultSet getItemByID(String id) throws SQLException {
+        String sql = "SELECT * FROM LocalStock WHERE itemID LIKE ?";
+        PreparedStatement query = con.prepareStatement(sql);
+        query.setString(1, "%"+id+"%");
         return query.executeQuery();
     }
 
