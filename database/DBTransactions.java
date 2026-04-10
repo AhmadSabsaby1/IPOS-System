@@ -53,9 +53,9 @@ public class DBTransactions extends DBParent {
      * and addOrderItem)
      */
     public String newTransaction(String paymentType, double amountReceived, String cardType,
-                               int firstFour, int lastFour, String expiryDate,
-                               String shippingAddress, String orderDate) throws SQLException {
-        String sql = "INSERT INTO Transactions VALUES (?,?,?,?,?,?,?,?,?)";
+                               int firstFour, int lastFour, String expiryDate, String shippingAddress,
+                                 String orderDate, double totalCost) throws SQLException {
+        String sql = "INSERT INTO Transactions VALUES (?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement query = con.prepareStatement(sql);
         String id = getUniqueID();
         query.setString(1, id);
@@ -67,6 +67,7 @@ public class DBTransactions extends DBParent {
         query.setString(7, expiryDate);
         query.setString(8, shippingAddress);
         query.setString(9, orderDate);
+        query.setDouble(10, totalCost);
         query.executeUpdate();
         return id;
     }

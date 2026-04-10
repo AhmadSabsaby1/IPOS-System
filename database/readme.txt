@@ -89,6 +89,7 @@ CREATE TABLE Transactions
     expiryDate VARCHAR(4),
     shippingAddress VARCHAR(45),
     orderDate VARCHAR(10),
+    totalCost DOUBLE unsigned,
     PRIMARY KEY (orderID)
 );
 
