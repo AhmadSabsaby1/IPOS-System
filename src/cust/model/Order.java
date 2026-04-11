@@ -1,5 +1,6 @@
 package cust.model;
 
+import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,6 +14,10 @@ public class Order {
     private double totalCost;
     private String orderDate;
 
+    private CardType cardType;
+    private String firstFour;
+    private String lastFour;
+
     private ArrayList<OrderItem> itemsOrdered;
 
     /// /////////////// ENUM //////////////////////
@@ -23,8 +28,12 @@ public class Order {
 
         private String paymentType;
 
-        public static String[] getOptions() {
-            return new String[] {NONE.toString(), CARD.toString(), CASH.toString()};
+        public static String[] getOccasionalOptions() {
+            return new String[] {CARD.toString(), CASH.toString()};
+        }
+
+        public static String[] getAccountOptions() {
+            return new String[] {NONE.toString(), CARD.toString()};
         }
 
         public static PaymentType getValue(String paymentType){
@@ -92,6 +101,10 @@ public class Order {
         paymentType = PaymentType.getValue(rs.getString("paymentType"));
         amountReceived = rs.getDouble("amountReceived");
         orderDate = rs.getString("orderDate");
+        firstFour = setFour(rs.getInt("firstFour"));
+        lastFour = setFour(rs.getInt("LastFour"));
+        cardType = CardType.getValue(rs.getString("cardType"));
+
         shippingAddress = rs.getString("shippingAddress");
         totalCost = rs.getDouble("totalCost");
     }
@@ -127,6 +140,19 @@ public class Order {
         return orderID;
     }
 
+    public CardType getCardType() {
+        return cardType;
+    }
+    public PaymentType getPaymentType(){
+        return paymentType;
+    }
+
+    public String getFirstFour(){
+        return firstFour;
+    }
+    public String getLastFour(){
+        return lastFour;
+    }
     public String getAccountHolderID() {
         return accountHolderID;
     }
@@ -148,11 +174,27 @@ public class Order {
 
     /// ////////////////////////////////////////
 
+    public Order setItemsOrdered(ArrayList<OrderItem> itemsOrdered) {
+        this.itemsOrdered = itemsOrdered;
+        return this;
+    }
+
     public String[] getOrderIdRowData(){
         return new String[]{orderID, Double.toString(totalCost), isPaid() ? "Yes" : "No", orderDate, "", "", "", "", ""};
     }
 
     public boolean isPaid(){
         return amountReceived == totalCost;
+    }
+
+    private String setFour(int n){
+        if (n < 10)
+            return "000" + n;
+        else if (n < 100)
+            return "00" + n;
+        else if (n < 1000)
+            return "0" + n;
+
+        return Integer.toString(n);
     }
 }

@@ -76,7 +76,7 @@ public class OrderCart extends JPanel {
         shippingAddressTextField = new JTextField();
 
         JLabel paymentTypeLabel = new JLabel("Payment Type:");
-        paymentTypeComboBox = new JComboBox<>(Order.PaymentType.getOptions());
+        paymentTypeComboBox = new JComboBox<>();
         cardTypeComboBox = new JComboBox<>(Order.CardType.getOptions());
 
         creditCardLabel = new JLabel("Credit Card Number:");
@@ -92,8 +92,6 @@ public class OrderCart extends JPanel {
 
         JLabel dateLabel = new JLabel("Order Date (yyyy-mm-dd):");
         orderDateTextField = new JTextField(LocalDate.now().toString());
-
-        paymentTypeChanged();
 
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
@@ -203,6 +201,9 @@ public class OrderCart extends JPanel {
     }
 
     private void paymentTypeChanged(){
+        if (paymentTypeComboBox.getSelectedItem() == null)
+            return;
+
         if (!paymentTypeComboBox.getSelectedItem().equals(Order.PaymentType.CARD.toString())){
             creditCardLabel.setVisible(false);
             securityCodeLabel.setVisible(false);
@@ -244,9 +245,32 @@ public class OrderCart extends JPanel {
             calculateGrandTotal();
     }
 
+    private void removeAllCartItems(){
+        cartTable.removeTableElements();
+        controller.removeAllCartItems();
+    }
+
     public void fillAccountDetails(AccountHolder account) {
         accountLabel.setText("Account Name: " + account.getName());
         accountHolder = account;
+
+        paymentTypeComboBox.removeAllItems();
+
+        String[] options;
+        if (account.isOccasional()) {
+            options = Order.PaymentType.getOccasionalOptions();
+        }else {
+            options = Order.PaymentType.getAccountOptions();
+        }
+
+        for (String s : options){
+            paymentTypeComboBox.addItem(s);
+        }
+
+        paymentTypeComboBox.repaint();
+        paymentTypeComboBox.setSelectedIndex(0);
+
+        paymentTypeChanged();
     }
 
     /// ////////// PRIVATE ///////////////////////
@@ -296,8 +320,7 @@ public class OrderCart extends JPanel {
         int dialogButton = JOptionPane.YES_NO_OPTION;
         int dialogResult = JOptionPane.showConfirmDialog(this, "Do you want to remove ALL items in the cart?", "Are you sure?", dialogButton);
         if(dialogResult == 0) {
-            cartTable.removeTableElements();
-            controller.removeAllCartItems();
+            removeAllCartItems();
             infoLabel.setText("");
             totalLabel.setText("");
             discountLabel.setText("");

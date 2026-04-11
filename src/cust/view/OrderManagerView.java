@@ -11,8 +11,9 @@ public class OrderManagerView extends JPanel {
     //Swing Object
     private TitleLabel titleLabel;
     private JButton backButton;
-    private JButton seeOrdersButton;
+    private JButton manageAccountOrdersButton;
     private JButton createOrderButton;
+    private JButton seeAllOrdersButton;
 
     static public String cardId(){
         return "OrderManagerView";
@@ -23,8 +24,9 @@ public class OrderManagerView extends JPanel {
 
         titleLabel = new TitleLabel("Order Manager");
         backButton = new JButton("Back to Main Menu");
-        seeOrdersButton = new JButton("See Orders");
-        createOrderButton = new JButton("Create Order");
+        manageAccountOrdersButton = new JButton("Manage Account Holder's Orders");
+        seeAllOrdersButton = new JButton("See All Orders");
+        createOrderButton = new JButton("Create an Order");
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
@@ -36,7 +38,8 @@ public class OrderManagerView extends JPanel {
                 .addComponent(titleLabel)
                 .addComponent(backButton)
                 .addGroup(layout.createSequentialGroup()
-                        .addComponent(seeOrdersButton)
+                        .addComponent(seeAllOrdersButton)
+                        .addComponent(manageAccountOrdersButton)
                         .addComponent(createOrderButton)
                 )
         );
@@ -47,13 +50,15 @@ public class OrderManagerView extends JPanel {
                 .addComponent(backButton)
                 .addGap(40)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(seeOrdersButton, 50, 50, 50)
+                        .addComponent(seeAllOrdersButton, 50, 50, 50)
+                        .addComponent(manageAccountOrdersButton, 50, 50, 50)
                         .addComponent(createOrderButton, 50, 50, 50)
                 )
         );
 
         backButton.addActionListener(e -> controller.goToHubScreen());
-        seeOrdersButton.addActionListener(e -> controller.goToSeeOrdersScreen());
+        manageAccountOrdersButton.addActionListener(e -> controller.goToManageAccountOrdersScreen());
         createOrderButton.addActionListener(e->controller.goToCreateOrderScreen());
+        seeAllOrdersButton.addActionListener(e->controller.goToSeeAllOrdersScreen());
     }
 }

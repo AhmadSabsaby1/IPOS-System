@@ -501,7 +501,9 @@ public class CUSTModel {
                     totalCost
             );
 
-            transactionsDB.newAccountTransaction(orderId, accountHolder.getAccountId());
+            if (!accountHolder.isOccasional())
+                transactionsDB.newAccountTransaction(orderId, accountHolder.getAccountId());
+
             for (OrderItem o : cartList){
                 transactionsDB.addOrderItem(orderId, o.getItemId(), o.getQuantity());
                 //TODO we do nothing if the item stock gets below 0
@@ -771,4 +773,69 @@ public class CUSTModel {
             System.out.println(ex.getMessage());
         }
     }
+
+    public ArrayList<Order> getAllOrders() {
+        ArrayList<Order> orders = new ArrayList<>();
+
+        try{
+            ResultSet rs = transactionsDB.getTransactions();
+            while (rs.next()) {
+                orders.add(new Order(rs).setItemsOrdered(getOrderItems(rs.getString("orderID"))));
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        return orders;
+    }
+
+    /*public ArrayList<Order> getOrdersByAccount(String accountHolderId) {
+        ArrayList<Order> orderList = new ArrayList<>();
+
+        String orderId;
+        String payment;
+        double amount;
+        String cardType;
+        int firstFour;
+        int lastFour;
+        String expiry;
+        String shipping;
+        String date;
+        String itemId;
+        ArrayList<OrderItem> itemList;
+        int quantity;
+        String description;
+        double totalCost;
+
+        try{
+            ResultSet tbai = transactionsDB.getTransactionsByAccountID(accountHolderId);
+            while(tbai.next()){
+                orderId = tbai.getString("orderId");
+                payment = tbai.getString("paymentType");
+                amount = tbai.getDouble("amountReceived");
+                cardType = tbai.getString("cardType");
+                firstFour = tbai.getInt("firstFour");
+                lastFour = tbai.getInt("lastFour");
+                expiry = tbai.getString("expiryDate");
+                shipping = tbai.getString("shippingAddress");
+                date = tbai.getString("orderDate");
+                totalCost = tbai.getDouble("totalCost");
+
+                itemList = getOrderItems(orderId);
+                orderList.add(new Order(
+                        orderId,
+                        payment,
+                        amount,
+                        shipping,
+                        date,
+                        totalCost,
+                        itemList
+                ));
+            }
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+
+        return orderList;
+    }*/
 }

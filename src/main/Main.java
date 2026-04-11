@@ -8,7 +8,6 @@ import javax.swing.*;
 public class Main {
     private MainView mainView;
 
-
     //VIEWS
     private MainMenuView mainMenuView;
     private CUSTController custController;

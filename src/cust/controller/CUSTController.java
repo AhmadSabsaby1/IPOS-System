@@ -17,7 +17,8 @@ public class CUSTController {
     private CreateAccountView createAccountView;
 
     private OrderManagerView orderManagerView;
-    private SeeOrdersView seeOrdersView;
+    private ManageAccountOrdersView manageAccountOrdersView;
+    private SeeAllOrdersView seeAllOrdersView;
     private CreateOrderView createOrderView;
     private OrderCart orderCart;
     private MakePaymentView makePaymentView;
@@ -30,7 +31,8 @@ public class CUSTController {
         modifyAccountView = new ModifyAccountView(this);
         createAccountView = new CreateAccountView(this);
         orderManagerView = new OrderManagerView(this);
-        seeOrdersView = new SeeOrdersView(this);
+        manageAccountOrdersView = new ManageAccountOrdersView(this);
+        seeAllOrdersView = new SeeAllOrdersView(this);
         createOrderView = new CreateOrderView(this);
         orderCart = new OrderCart(this);
         makePaymentView = new MakePaymentView(this);
@@ -42,7 +44,8 @@ public class CUSTController {
         mainView.addCardLayout(modifyAccountView, ModifyAccountView.cardId());
         mainView.addCardLayout(createAccountView, CreateAccountView.cardId());
         mainView.addCardLayout(orderManagerView, OrderManagerView.cardId());
-        mainView.addCardLayout(seeOrdersView, SeeOrdersView.cardId());
+        mainView.addCardLayout(manageAccountOrdersView, ManageAccountOrdersView.cardId());
+        mainView.addCardLayout(seeAllOrdersView, SeeAllOrdersView.cardId());
         mainView.addCardLayout(createOrderView, CreateOrderView.cardId());
         mainView.addCardLayout(orderCart, OrderCart.cardId());
         mainView.addCardLayout(makePaymentView, MakePaymentView.cardId());
@@ -54,6 +57,11 @@ public class CUSTController {
     }
 
     /// /////////// SCREEN CHANGES //////////////////
+
+    public void goToSeeAllOrdersScreen() {
+        seeAllOrdersView.populateTable(model.getAllOrders());
+        mainView.changeCardView(SeeAllOrdersView.cardId());
+    }
     public void goToHubScreen(){
         mainView.changeCardView(HubView.cardId());
     }
@@ -76,9 +84,9 @@ public class CUSTController {
         mainView.changeCardView(OrderManagerView.cardId());
     }
 
-    public void goToSeeOrdersScreen(){
-        seeOrdersView.populateAccounts();
-        mainView.changeCardView(SeeOrdersView.cardId());
+    public void goToManageAccountOrdersScreen(){
+        manageAccountOrdersView.populateAccounts();
+        mainView.changeCardView(ManageAccountOrdersView.cardId());
     }
 
     public void goToCreateOrderScreen() {
@@ -88,7 +96,11 @@ public class CUSTController {
     }
 
     public void goToCartScreen(String accountId) {
-        orderCart.fillAccountDetails(model.getAccountById(accountId));
+        if (accountId.equals(AccountHolder.OCCASIONAL_CUSTOMER_ID))
+            orderCart.fillAccountDetails(AccountHolder.occasionalAccountData());
+        else
+            orderCart.fillAccountDetails(model.getAccountById(accountId));
+
         orderCart.populateTable(model.getCartList());
         mainView.changeCardView(OrderCart.cardId());
     }

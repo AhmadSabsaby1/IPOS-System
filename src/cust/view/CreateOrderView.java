@@ -124,8 +124,9 @@ public class CreateOrderView extends JPanel {
     }
 
     public void populateAccounts(ArrayList<AccountHolder> accounts){
-        //puts every element of the item list in the table
         accountTable.removeTableElements();
+
+        accountTable.addRow(AccountHolder.occasionalRowData());
 
         for (AccountHolder a : accounts){
             accountTable.addRow(a.accountRowData());
@@ -151,8 +152,24 @@ public class CreateOrderView extends JPanel {
             return;
         }
 
+        if (!accountTable.getSelectedRowColumn(2).equals(AccountHolder.AccountStatus.NORMAL.toString()) && !accountTable.getSelectedRowColumn(2).isEmpty()) {
+            infoLabel.setText("The selected account is currently " + accountTable.getSelectedRowColumn(2) + ". No orders can be made");
+            return;
+        }
+
+        if (accountIndex != accountTable.getSelectedRow()){
+            int dialogButton = JOptionPane.YES_NO_OPTION;
+            int dialogResult = JOptionPane.showConfirmDialog(this, "The items where added to a different account. Do you want to remove ALL items currently in the cart?", "Are you sure?", dialogButton);
+            if(dialogResult == 0) {
+                controller.removeAllCartItems();
+                infoLabel.setText("All items in the cart removed");
+            }
+            return;
+        }
+
         infoLabel.setText("");
         accountIndex = accountTable.getSelectedRow();
+
         controller.goToCartScreen(accountTable.getSelectedRowColumn(0));
     }
 
@@ -172,7 +189,7 @@ public class CreateOrderView extends JPanel {
     }
 
     private void addToCart(){
-        if (!accountTable.getSelectedRowColumn(2).equals(AccountHolder.AccountStatus.NORMAL.toString())) {
+        if (!accountTable.getSelectedRowColumn(2).equals(AccountHolder.AccountStatus.NORMAL.toString()) && !accountTable.getSelectedRowColumn(2).isEmpty()) {
             infoLabel.setText("The selected account is currently " + accountTable.getSelectedRowColumn(2) + ". No orders can be made");
             return;
         }
@@ -182,7 +199,6 @@ public class CreateOrderView extends JPanel {
             return;
         }
 
-        int quantity;
         LocalItem item = getSelectedItem();
         if (item == null) //it should never be null, but just in case
             return;
@@ -200,6 +216,7 @@ public class CreateOrderView extends JPanel {
             return;
         }
 
+        int quantity;
         //we must do a try-catch to check if the parseInt is able to transform
         // the input the user has introduced into an int. If it can't, then the
         // user introduced the input wrong
@@ -214,6 +231,13 @@ public class CreateOrderView extends JPanel {
         if (quantity < 1){
             infoLabel.setText("You must enter a positive quantity of items.");
             return;
+        }
+
+        if(accountIndex == -1){
+            accountIndex = accountTable.getSelectedRow();
+        }else if (accountIndex != accountTable.getSelectedRow()){
+            controller.removeAllCartItems();
+            accountIndex = accountTable.getSelectedRow();
         }
 
         //everything is ok, so we add the item to the cart

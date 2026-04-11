@@ -162,7 +162,7 @@ public class MakePaymentView extends JPanel {
         );
 
         //creates the listener for the button to change the view back to the catalogue
-        backToOrdersButton.addActionListener(e->controller.goToSeeOrdersScreen());
+        backToOrdersButton.addActionListener(e->controller.goToManageAccountOrdersScreen());
         finishPaymentButton.addActionListener(e-> finishPayment());
     }
 

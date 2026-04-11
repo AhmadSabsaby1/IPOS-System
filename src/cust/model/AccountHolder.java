@@ -22,6 +22,9 @@ public class AccountHolder {
     public static String STATUS_1ST = "Status 1st";
     public static String STATUS_2ND = "Status 2nd";
 
+    public static String OCCASIONAL_CUSTOMER_ID = "OC";
+    public static String OCCASIONAL_CUSTOMER_NAME = "OCCASIONAL CUSTOMER";
+
 
     private String accountId;
     private String name;
@@ -143,6 +146,39 @@ public class AccountHolder {
         }
     }
     /// ////////////// END OF ENUMS ///////////////////////////
+
+    public static String[] occasionalRowData(){
+        return new String[] {OCCASIONAL_CUSTOMER_ID, OCCASIONAL_CUSTOMER_NAME, ""};
+    }
+
+    public static AccountHolder occasionalAccountData(){
+        return new AccountHolder(
+                OCCASIONAL_CUSTOMER_ID,
+                OCCASIONAL_CUSTOMER_NAME
+        );
+    }
+
+    public AccountHolder(String accountId, String name) {
+        this.accountId = accountId;
+        this.name = name;
+        address = "";
+        phoneNumber = "";
+        email = "";
+        balance = 0;
+        balanceLimit = 0;
+        discountType = DiscountType.NONE;
+
+        fixedDiscount = 0;
+        tier1Threshold = 0;
+        tier2Threshold = 0;
+        tier1Discount = 0;
+        tier2Discount = 0;
+        tier3Discount = 0;
+
+        status = AccountStatus.NORMAL;
+        status1stReminder = ReminderStatus.NO_NEED;
+        status2ndReminder = ReminderStatus.NO_NEED;
+    }
 
     public AccountHolder(ResultSet rs) throws SQLException {
         if (rs.isBeforeFirst())
@@ -389,5 +425,9 @@ public class AccountHolder {
 
     public String[] accountRowData(){
         return new String[] {accountId, name, status.toString()};
+    }
+
+    public boolean isOccasional(){
+        return accountId.equals(OCCASIONAL_CUSTOMER_ID);
     }
 }

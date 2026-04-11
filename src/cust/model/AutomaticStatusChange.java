@@ -11,6 +11,7 @@ public class AutomaticStatusChange {
 
         int currentDay = LocalDate.now().getDayOfMonth();
 
+        //currentDay = 16;
         if (testForDay && currentDay < 15)
             return;
 
