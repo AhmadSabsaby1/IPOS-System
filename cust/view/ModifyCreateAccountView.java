@@ -112,13 +112,13 @@ public class ModifyCreateAccountView extends JPanel {
     public void modifyAccountField(String field, String value) {
     }
 
-    protected class FieldComp extends JPanel {
+    protected static class FieldComp extends JPanel {
         private String fieldName;
         private String data;
         private FieldType fieldType;
         private String[] choices;
 
-        private enum FieldType {
+        private static enum FieldType {
             STRING,
             INT_4_DIGITS,
             DOUBLE,
@@ -179,7 +179,6 @@ public class ModifyCreateAccountView extends JPanel {
 
             if (newFieldInput != null) {
                 setFieldData(newFieldInput);
-                modifyAccountField(fieldName, newFieldInput);
             }
         }
 

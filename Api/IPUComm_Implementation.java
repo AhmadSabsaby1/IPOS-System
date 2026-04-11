@@ -1,6 +1,5 @@
 package Api;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -20,31 +19,28 @@ public class IPUComm_Implementation implements IPUCommAPI {
         );
 
         try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(IPU_COMM_URL))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody))
+                    .build();
 
-            HttpRequest request = HttpRequest.newBuilder().build().uri(URI.create(IPU_COMM_URL)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-                System.out.println("Email sent sucessfully.");
+                System.out.println("Email sent successfully.");
                 return true;
             } else {
-                System.out.println("Email sending failed with status code: ");
+                System.out.println("Email sending failed with status code: " + response.statusCode());
                 return false;
             }
 
-
         } catch (Exception e) {
-
-            System.out.println("couldnt reach team IPU Comms: " + e.getMessage());
+            System.out.println("Couldn't reach team IPU Comms: " + e.getMessage());
             return false;
-
         }
-
-
-        return false;
     }
-
 
     @Override
     public boolean getOrderUpdate(int orderID, String status) {
@@ -54,22 +50,26 @@ public class IPUComm_Implementation implements IPUCommAPI {
         );
 
         try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(IPU_COMM_URL))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody))
+                    .build();
 
-            HttpRequest request = HttpRequest.newBuilder().build().uri(URI.create(IPU_COMM_URL)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-                System.out.println("Order update sent sucessfully.");
+                System.out.println("Order update sent successfully.");
                 return true;
             } else {
-                System.out.println("Order update failed with status code: ");
+                System.out.println("Order update failed with status code: " + response.statusCode());
                 return false;
             }
 
         } catch (Exception e) {
+            System.out.println("Couldn't reach team IPU Comms: " + e.getMessage());
             return false;
         }
-
     }
 }
