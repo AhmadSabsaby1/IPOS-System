@@ -2,6 +2,7 @@ package main;
 
 import cust.controller.CUSTController;
 import ord.controller.ORDController;
+import rpt.controller.RPTController;
 import users.model.Session;
 import users.view.LoginFrame;
 import users.view.UserManagementFrame;
@@ -17,11 +18,10 @@ public class Main {
     private ORDController ordController;
     private LoginFrame loginFrame;
     private UserManagementFrame userManagementFrame;
+    private RPTController rptController;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Main::new);
-        //SwingUtilities.invokeLater(CUSTController::new);
-        //SwingUtilities.invokeLater(ORDController::new);
     }
 
     public Main(){
@@ -30,6 +30,14 @@ public class Main {
     }
 
     /// /////////// SCREEN SWITCH /////////////////
+    public void goToMainMenu(){
+        mainView = new MainView();
+        mainMenuView = new MainMenuView(this);
+
+        mainView.addCardLayout(mainMenuView, MainMenuView.cardId());
+        mainMenuView.checkPerms();
+    }
+
     public void goToCust() {
         custController = new CUSTController();
         mainView.dispose();
@@ -40,14 +48,6 @@ public class Main {
         mainView.dispose();
     }
 
-    public void goToMainMenu(){
-        mainView = new MainView();
-        mainMenuView = new MainMenuView(this);
-
-        mainView.addCardLayout(mainMenuView, MainMenuView.cardId());
-        mainMenuView.checkPerms();
-    }
-
     public void goToUsers(){
         loginFrame = new LoginFrame();
         mainView.dispose();
@@ -55,6 +55,11 @@ public class Main {
 
     public void goToUserManagement() {
         userManagementFrame = new UserManagementFrame();
+        mainView.dispose();
+    }
+
+    public void goToRPT() {
+        rptController = new RPTController();
         mainView.dispose();
     }
 

@@ -1,7 +1,6 @@
 package main;
 
 import custom.TitleLabel;
-import users.model.Session;
 import users.model.UserRole;
 
 import javax.swing.*;
@@ -14,6 +13,7 @@ public class MainMenuView extends JPanel {
     private JButton goToOrdButton;
     private JButton goToLoguinButton;
     private JButton goToUserManagementButton;
+    private JButton goToRPTButton;
 
     public static String cardId(){
         return "MainMenuView";
@@ -26,6 +26,7 @@ public class MainMenuView extends JPanel {
         goToOrdButton = new JButton("Order from IPOS-SA");
         goToLoguinButton = new JButton("Log In");
         goToUserManagementButton = new JButton("Manage Users");
+        goToRPTButton = new JButton("Generate Reports");
 
         checkPerms();
 
@@ -41,6 +42,7 @@ public class MainMenuView extends JPanel {
                 .addComponent(goToUserManagementButton)
                 .addComponent(goToCustButton)
                 .addComponent(goToOrdButton)
+                .addComponent(goToRPTButton)
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
@@ -50,12 +52,14 @@ public class MainMenuView extends JPanel {
                 .addComponent(goToUserManagementButton, 50, 50, 50)
                 .addComponent(goToCustButton, 50, 50, 50)
                 .addComponent(goToOrdButton, 50, 50, 50)
+                .addComponent(goToRPTButton, 50, 50, 50)
         );
 
         goToCustButton.addActionListener(e->main.goToCust());
         goToOrdButton.addActionListener(e->main.goToOrd());
         goToLoguinButton.addActionListener(e->main.goToUsers());
         goToUserManagementButton.addActionListener(e->main.goToUserManagement());
+        goToRPTButton.addActionListener(e->main.goToRPT());
     }
 
     public void checkPerms(){
@@ -68,12 +72,15 @@ public class MainMenuView extends JPanel {
             goToUserManagementButton.setVisible(false);
             goToOrdButton.setVisible(false);
             goToCustButton.setVisible(false);
+            goToRPTButton.setVisible(false);
         } else if (role == UserRole.ADMIN){
             goToUserManagementButton.setVisible(true);
             goToOrdButton.setVisible(true);
             goToCustButton.setVisible(true);
+            goToRPTButton.setVisible(true);
         } else if (role == UserRole.PHARMACIST) {
             goToUserManagementButton.setVisible(false);
+            goToRPTButton.setVisible(false);
 
             goToOrdButton.setVisible(true);
             goToCustButton.setVisible(true);
@@ -82,6 +89,7 @@ public class MainMenuView extends JPanel {
 
             goToOrdButton.setVisible(true);
             goToCustButton.setVisible(true);
+            goToRPTButton.setVisible(true);
         }
     }
 }
