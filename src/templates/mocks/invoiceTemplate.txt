@@ -1,0 +1,20 @@
+[CUSTOMER_ADDRESS}											[MERCHANT_ADDRESS]
+													[MERCHANT_PHONE]
+
+													[CURRENT_DATE]
+
+Dear Mr. Smith,
+						INVOICE NO.: 197362
+Account No: CSM000123
+						[ORDER_LIST]
+
+						Total 106.80
+						VAT @ 17.5% 18.69
+						Amount Due 125.49
+
+
+
+Thank you for your valued custom. We look forward to receiving your payment in due course.
+ 					
+				Yours sincerely,
+ 						[MERCHANT_NAME]

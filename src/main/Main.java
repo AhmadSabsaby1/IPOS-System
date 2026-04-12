@@ -3,6 +3,7 @@ package main;
 import cust.controller.CUSTController;
 import ord.controller.ORDController;
 import rpt.controller.RPTController;
+import templates.controller.TemplateController;
 import users.model.Session;
 import users.view.LoginFrame;
 import users.view.UserManagementFrame;
@@ -19,6 +20,7 @@ public class Main {
     private LoginFrame loginFrame;
     private UserManagementFrame userManagementFrame;
     private RPTController rptController;
+    private TemplateController templateController;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Main::new);
@@ -60,6 +62,11 @@ public class Main {
 
     public void goToRPT() {
         rptController = new RPTController();
+        mainView.dispose();
+    }
+
+    public void goToTemplates(){
+        templateController = new TemplateController();
         mainView.dispose();
     }
 

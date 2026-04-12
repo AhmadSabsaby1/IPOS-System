@@ -14,6 +14,7 @@ public class MainMenuView extends JPanel {
     private JButton goToLoguinButton;
     private JButton goToUserManagementButton;
     private JButton goToRPTButton;
+    private JButton goToTemplatesButton;
 
     public static String cardId(){
         return "MainMenuView";
@@ -23,10 +24,11 @@ public class MainMenuView extends JPanel {
 
         TitleLabel titleLabel = new TitleLabel("IPOS-CA: Main Menu");
         goToCustButton = new JButton("Manage Account Holders and Orders");
-        goToOrdButton = new JButton("Order from IPOS-SA");
+        goToOrdButton = new JButton("Order Stock from IPOS-SA");
         goToLoguinButton = new JButton("Log In");
         goToUserManagementButton = new JButton("Manage Users");
         goToRPTButton = new JButton("Generate Reports");
+        goToTemplatesButton = new JButton("Manage Templates");
 
         checkPerms();
 
@@ -43,16 +45,18 @@ public class MainMenuView extends JPanel {
                 .addComponent(goToCustButton)
                 .addComponent(goToOrdButton)
                 .addComponent(goToRPTButton)
+                .addComponent(goToTemplatesButton)
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addComponent(titleLabel)
                 .addGap(40)
-                .addComponent(goToLoguinButton, 50, 50, 50)
+                .addComponent(goToLoguinButton, 75, 75, 75)
                 .addComponent(goToUserManagementButton, 50, 50, 50)
                 .addComponent(goToCustButton, 50, 50, 50)
                 .addComponent(goToOrdButton, 50, 50, 50)
                 .addComponent(goToRPTButton, 50, 50, 50)
+                .addComponent(goToTemplatesButton, 50, 50, 50)
         );
 
         goToCustButton.addActionListener(e->main.goToCust());
@@ -60,6 +64,7 @@ public class MainMenuView extends JPanel {
         goToLoguinButton.addActionListener(e->main.goToUsers());
         goToUserManagementButton.addActionListener(e->main.goToUserManagement());
         goToRPTButton.addActionListener(e->main.goToRPT());
+        goToTemplatesButton.addActionListener(e->main.goToTemplates());
     }
 
     public void checkPerms(){
@@ -73,14 +78,17 @@ public class MainMenuView extends JPanel {
             goToOrdButton.setVisible(false);
             goToCustButton.setVisible(false);
             goToRPTButton.setVisible(false);
+            goToTemplatesButton.setVisible(false);
         } else if (role == UserRole.ADMIN){
             goToUserManagementButton.setVisible(true);
             goToOrdButton.setVisible(true);
             goToCustButton.setVisible(true);
             goToRPTButton.setVisible(true);
+            goToTemplatesButton.setVisible(true);
         } else if (role == UserRole.PHARMACIST) {
             goToUserManagementButton.setVisible(false);
             goToRPTButton.setVisible(false);
+            goToTemplatesButton.setVisible(false);
 
             goToOrdButton.setVisible(true);
             goToCustButton.setVisible(true);
@@ -90,6 +98,7 @@ public class MainMenuView extends JPanel {
             goToOrdButton.setVisible(true);
             goToCustButton.setVisible(true);
             goToRPTButton.setVisible(true);
+            goToTemplatesButton.setVisible(true);
         }
     }
 }
