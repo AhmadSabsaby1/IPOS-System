@@ -1,5 +1,6 @@
 package ord.controller;
 
+import main.Global;
 import ord.model.CartItem;
 import ord.model.Item;
 import ord.model.ORDModel;
@@ -15,6 +16,7 @@ public class ORDController {
     private HubView hubView;
     private PreviousOrdersView previousOrdersView;
     private OrderProgressView orderProgressView;
+    private MerchantLoginView merchantLoginView;
 
     //the view for the cart screen
     private CartView cartView;
@@ -28,6 +30,7 @@ public class ORDController {
         previousOrdersView = new PreviousOrdersView(this);
         orderProgressView = new OrderProgressView(this);
         hubView = new HubView(this);
+        merchantLoginView = new MerchantLoginView(this);
         mainView = new ORDMainView();
 
         //adds the views to the main view, each with its own id.
@@ -35,7 +38,9 @@ public class ORDController {
         mainView.addCardLayout(catalogueView, CatalogueView.cardId());
         mainView.addCardLayout(cartView, CartView.cardId());
         mainView.addCardLayout(previousOrdersView, PreviousOrdersView.cardId());
-        mainView.addCardLayout(orderProgressView, OrderProgressView.cardID());
+        mainView.addCardLayout(orderProgressView, OrderProgressView.cardId());
+        mainView.addCardLayout(merchantLoginView, MerchantLoginView.cardId());
+
 
         //instantiates the model
         model = new ORDModel();
@@ -48,6 +53,16 @@ public class ORDController {
     }
 
     ////////////// SCREEN CHANGES ////////////
+
+    public void goToMainMenu() {
+        Global.get().goToMainMenu();
+        mainView.dispose();
+    }
+
+    public void goToLogin() {
+        mainView.changeCardView(MerchantLoginView.cardId());
+    }
+
     /**
      * Orders the main view to change the view to the cart
      */
@@ -75,7 +90,7 @@ public class ORDController {
 
     public void goToOrderProgressScreen() {
         orderProgressView.populateTable(model.getOrders(merchantId));
-        mainView.changeCardView(OrderProgressView.cardID());
+        mainView.changeCardView(OrderProgressView.cardId());
     }
 
     ////////////////////////////////////////////////////////

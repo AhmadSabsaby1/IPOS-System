@@ -16,7 +16,7 @@ public class OrderProgressView extends JPanel {
     private JButton backButton;
     private CTable progressTable;
 
-    static public String cardID(){
+    static public String cardId(){
         return "OrderProgressView";
     }
 
