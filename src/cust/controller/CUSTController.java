@@ -2,6 +2,7 @@ package cust.controller;
 
 import cust.model.*;
 import cust.view.*;
+import main.Global;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -57,6 +58,11 @@ public class CUSTController {
     }
 
     /// /////////// SCREEN CHANGES //////////////////
+
+    public void goToMainMenu() {
+        Global.get().goToMainMenu();
+        mainView.dispose();
+    }
 
     public void goToSeeAllOrdersScreen() {
         seeAllOrdersView.populateTable(model.getAllOrders());

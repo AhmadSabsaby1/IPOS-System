@@ -6,8 +6,6 @@ import custom.TitleLabel;
 import javax.swing.*;
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.MonthDay;
-import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
 
 public class HubView extends JPanel {
@@ -26,10 +24,10 @@ public class HubView extends JPanel {
     public HubView(CUSTController controller){
         this.controller = controller;
 
-        titleLabel = new TitleLabel("CUST - Manage Account Holders and Orders");
+        titleLabel = new TitleLabel("CUST/Sales - Manage Account Holders and Sales");
         accountButton = new JButton("Manage Account Holders");
-        ordersButton = new JButton("Manage Orders");
-        backButton = new JButton("Test");
+        ordersButton = new JButton("Manage Sales");
+        backButton = new JButton("Back to Main Menu");
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
@@ -60,8 +58,12 @@ public class HubView extends JPanel {
         accountButton.addActionListener(e->controller.goToAccountHolderManagerScreen());
         ordersButton.addActionListener(e->controller.goToOrderManagerScreen());
 
-        backButton.addActionListener(e->test());
-        backButton.setVisible(false);
+        backButton.addActionListener(e-> goToMainMenu());
+        //backButton.setVisible(false);
+    }
+
+    private void goToMainMenu(){
+        controller.goToMainMenu();
     }
 
     private void test(){

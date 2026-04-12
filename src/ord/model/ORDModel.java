@@ -24,24 +24,20 @@ public class ORDModel {
     /// /////////////// PRIVATE //////////////////
     private void populateCatalogue() {
         //TODO get the catalogue
-        //String[] rawCat = ISAOrderAPI.getCatalogue();
-        String[] rawCat = new String[]{
-                "{\"itemId\":\"100000001\", \"description\":\"Paracetamol\", \"packageType\":\"box\", \"unit\":\"Caps\", \"unitsInAPack\":20, \"packageCost\":0.1}",
-                "{\"itemId\":\"100000002\", \"description\":\"Aspirin\", \"packageType\":\"box\", \"unit\":\"Caps\", \"unitsInAPack\":20, \"packageCost\":0.5}"
-        };
+        String[] rawCat = ISAOrderAPI.getCatalogue();
 
         catalogueSA = new ArrayList<>();
         for (String json : rawCat) {
             JsonObject o = JsonObject.parse(json);
-            System.out.println("JsonString: " + o.toJsonString());
+            //System.out.println("JsonString: " + o.toJsonString());
             catalogueSA.add(new Item(
-                    o.get("itemId"),
+                    o.get("id"),
                     o.get("description"),
-                    o.get("packageType"),
+                    o.get("package_type"),
                     o.get("unit"),
-                    o.getInt("unitsInAPack"),
-                    o.getDouble("packageCost"),
-                    0,
+                    o.getInt("units_per_pack"),
+                    o.getDouble("package_cost"),
+                    o.getInt("stock_quantity"),
                     0
             ));
         }
@@ -52,6 +48,35 @@ public class ORDModel {
         return catalogueSA;
     }
 
+    //API: Viewpreviousorders()
+    /*
+    ```json
+{
+  "id": "uuid",
+  "merchant_id": "uuid",
+  "merchant_name": "string",
+  "order_date": "2026-04-12",
+  "status": "accepted | processing | dispatched | delivered",
+  "total": 150.00,
+  "discount_amount": 5.00,
+  "amount_due": 145.00,
+  "dispatched_date": "2026-04-13 | null",
+  "expected_delivery": "2026-04-15 | null",
+  "courier": "string | null",
+  "courier_ref": "string | null",
+  "items": [
+    {
+      "id": "uuid",
+      "product_id": "uuid",
+      "product_name": "string",
+      "quantity": 10,
+      "unit_price": 15.00,
+      "cost": 150.00
+    }
+  ]
+}
+```
+     */
     public ArrayList<Order> getOrders(String merchantId){
         ArrayList<Order> orders = new ArrayList<>();
         //TODO make it String

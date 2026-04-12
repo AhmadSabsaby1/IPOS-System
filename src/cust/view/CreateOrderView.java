@@ -66,7 +66,7 @@ public class CreateOrderView extends JPanel {
                         .addComponent(goToCartButton)
                 )
                 .addComponent(selectAccountLabel)
-                .addComponent(accountTable.getScrollPane())
+                .addComponent(accountTable.getScrollPane(), 600, 600, 600)
                 .addGroup(layout.createSequentialGroup()
                         .addComponent(searchButton, 100, 100, 100)
                         .addComponent(searchTextField, 200, 200, 200)
