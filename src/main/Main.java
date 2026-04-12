@@ -2,6 +2,9 @@ package main;
 
 import cust.controller.CUSTController;
 import ord.controller.ORDController;
+import users.model.Session;
+import users.view.LoginFrame;
+import users.view.UserManagementFrame;
 
 import javax.swing.*;
 
@@ -12,6 +15,8 @@ public class Main {
     private MainMenuView mainMenuView;
     private CUSTController custController;
     private ORDController ordController;
+    private LoginFrame loginFrame;
+    private UserManagementFrame userManagementFrame;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Main::new);
@@ -40,6 +45,17 @@ public class Main {
         mainMenuView = new MainMenuView(this);
 
         mainView.addCardLayout(mainMenuView, MainMenuView.cardId());
+        mainMenuView.checkPerms();
+    }
+
+    public void goToUsers(){
+        loginFrame = new LoginFrame();
+        mainView.dispose();
+    }
+
+    public void goToUserManagement() {
+        userManagementFrame = new UserManagementFrame();
+        mainView.dispose();
     }
 
     /// ////////////////////////////////////////

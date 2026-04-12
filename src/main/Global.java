@@ -1,5 +1,8 @@
 package main;
 
+import users.model.Session;
+import users.model.UserRole;
+
 public class Global {
     private static final Global singleton = new Global();
     private Main main;
@@ -15,5 +18,9 @@ public class Global {
 
     public void goToMainMenu(){
         main.goToMainMenu();
+    }
+
+    public UserRole getUserRole() {
+        return Session.getInstance().getUserRole();
     }
 }
