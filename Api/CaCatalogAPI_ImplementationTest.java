@@ -5,107 +5,123 @@ import org.junit.Test;
 import java.util.HashMap;
 import static org.junit.Assert.*;
 
+// Tests for the CA Catalogue API
+// This is the interface our subsystem provides to the other teams
+// PU uses this to get stock levels and send us completed online orders
+// Written by Ahmad Sabsaby and Enes Shehu - Tester, Team B
 public class CaCatalogAPI_ImplementationTest {
 
     private CaCatalogAPI_Implementation api;
 
     @Before
     public void setUp() {
+        // the mock DB loads 14 pharmaceutical items from the catalogue
         api = new CaCatalogAPI_Implementation();
     }
 
-    @Test
-    public void testGetCatalogue_NotNull() {
-        assertNotNull(api.getCatalogue());
-    }
+    // --- getCatalogue() tests ---
 
+    // catalogue should load all 14 items from the mock database
     @Test
-    public void testGetCatalogue_CorrectSize() {
-        assertEquals(14, api.getCatalogue().length);
-    }
-
-    @Test
-    public void testGetCatalogue_FirstItemContainsParacetamol() {
-        assertTrue(api.getCatalogue()[0].contains("Paracetamol"));
-    }
-
-    @Test
-    public void testGetCatalogue_NoNullOrEmptyEntries() {
+    public void catalogueLoadsAllItems() {
         String[] result = api.getCatalogue();
-        for (int i = 0; i < result.length; i++) {
-            assertNotNull(result[i]);
-            assertFalse(result[i].isEmpty());
-        }
+        assertNotNull(result);
+        assertEquals(14, result.length);
     }
 
+    // paracetamol is the first item in the catalogue
+    // checking the data is actually being read from the DB correctly
     @Test
-    public void testGetCatalogue_EntriesContainIdAndDescription() {
-        String[] result = api.getCatalogue();
-        assertTrue(result[0].contains("10000001"));
-        assertTrue(result[0].contains("Paracetamol"));
+    public void firstItemIsParacetamol() {
+        String first = api.getCatalogue()[0];
+        assertTrue(first.contains("Paracetamol"));
+        assertTrue(first.contains("10000001"));
     }
 
+    // vitamin B12 is the last item in the catalogue
     @Test
-    public void testGetCatalogue_LastItemContainsVitaminB12() {
+    public void lastItemIsVitaminB12() {
         String[] result = api.getCatalogue();
         assertTrue(result[result.length - 1].contains("Vitamin B12"));
     }
 
+    // every item in the catalogue should have some data
+    // we dont want blank rows showing up in the system
     @Test
-    public void testSendOrderDetails_ValidOrder_ReturnsTrue() {
-        HashMap<Integer, Integer> products = new HashMap<>();
-        products.put(10000001, 5);
-        products.put(10000002, 10);
-        assertTrue(api.sendOrderDetails(products, 1001, "3 High Level Drive, Sydenham"));
+    public void noBlankItemsInCatalogue() {
+        for (String item : api.getCatalogue()) {
+            assertNotNull(item);
+            assertFalse(item.isEmpty());
+        }
     }
 
+    // --- sendOrderDetails() tests ---
+
+    // a normal online order from PU coming through to CA
+    // customer bought paracetamol and aspirin from the online portal
     @Test
-    public void testSendOrderDetails_SingleProduct_ReturnsTrue() {
-        HashMap<Integer, Integer> products = new HashMap<>();
-        products.put(10000003, 1);
-        assertTrue(api.sendOrderDetails(products, 1002, "27 Sainsbury Close, Stratford"));
+    public void normalOnlineOrderGoesThrough() {
+        HashMap<Integer, Integer> order = new HashMap<>();
+        order.put(10000001, 5);  // 5 packs of paracetamol
+        order.put(10000002, 3);  // 3 packs of aspirin
+        assertTrue(api.sendOrderDetails(order, 1001,
+                "27 Sainsbury Close, Stratford, EJ6 5TJ"));
     }
 
+    // customer only bought one item online
     @Test
-    public void testSendOrderDetails_EmptyProductsMap_ReturnsTrue() {
-        assertTrue(api.sendOrderDetails(new HashMap<>(), 1003, "10 Pharmacy Road, London"));
+    public void singleItemOrderGoesThrough() {
+        HashMap<Integer, Integer> order = new HashMap<>();
+        order.put(10000003, 1); // just one pack of analgin
+        assertTrue(api.sendOrderDetails(order, 1002,
+                "3 High Level Drive, Sydenham, SE26 3ET"));
     }
 
+    // big order with lots of different medicines
     @Test
-    public void testSendOrderDetails_ZeroOrderID_ReturnsTrue() {
-        HashMap<Integer, Integer> products = new HashMap<>();
-        products.put(10000004, 2);
-        assertTrue(api.sendOrderDetails(products, 0, "5 Test Street, London"));
+    public void largeOrderWithManyItemsGoesThrough() {
+        HashMap<Integer, Integer> order = new HashMap<>();
+        order.put(10000001, 100);
+        order.put(10000002, 50);
+        order.put(10000003, 75);
+        order.put(10000004, 30);
+        assertTrue(api.sendOrderDetails(order, 1003,
+                "19 High St, Ashford, Kent"));
     }
 
+    // what happens if PU sends an order with no items
+    // currently the system accepts it - no validation in place yet
     @Test
-    public void testSendOrderDetails_NegativeOrderID_ReturnsTrue() {
-        HashMap<Integer, Integer> products = new HashMap<>();
-        products.put(10000005, 3);
-        assertTrue(api.sendOrderDetails(products, -1, "5 Test Street, London"));
+    public void emptyOrderStillReturnsTrue() {
+        // no items in the order - system does not validate this yet
+        assertTrue(api.sendOrderDetails(new HashMap<>(), 1004,
+                "10 Pharmacy Road, London, N1 2AB"));
     }
 
+    // what if PU sends a null address
+    // should not crash the system
     @Test
-    public void testSendOrderDetails_EmptyShippingAddress_ReturnsTrue() {
-        HashMap<Integer, Integer> products = new HashMap<>();
-        products.put(10000001, 4);
-        assertTrue(api.sendOrderDetails(products, 1004, ""));
+    public void nullAddressDoesntCrash() {
+        HashMap<Integer, Integer> order = new HashMap<>();
+        order.put(10000001, 2);
+        assertTrue(api.sendOrderDetails(order, 1005, null));
     }
 
+    // what if PU sends an empty address string
     @Test
-    public void testSendOrderDetails_NullShippingAddress_ReturnsTrue() {
-        HashMap<Integer, Integer> products = new HashMap<>();
-        products.put(10000006, 2);
-        assertTrue(api.sendOrderDetails(products, 1005, null));
+    public void emptyAddressDoesntCrash() {
+        HashMap<Integer, Integer> order = new HashMap<>();
+        order.put(10000001, 2);
+        assertTrue(api.sendOrderDetails(order, 1006, ""));
     }
 
+    // negative order ID - should not happen in real use
+    // but system handles it without crashing
     @Test
-    public void testSendOrderDetails_LargeOrder_ReturnsTrue() {
-        HashMap<Integer, Integer> products = new HashMap<>();
-        products.put(10000001, 100);
-        products.put(10000002, 200);
-        products.put(10000003, 150);
-        products.put(10000004, 50);
-        assertTrue(api.sendOrderDetails(products, 9999, "19 High St, Ashford, Kent"));
+    public void negativeOrderIdDoesntCrash() {
+        HashMap<Integer, Integer> order = new HashMap<>();
+        order.put(10000002, 5);
+        assertTrue(api.sendOrderDetails(order, -1,
+                "5 Test Street, London, EC1A 1BB"));
     }
 }

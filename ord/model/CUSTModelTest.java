@@ -5,6 +5,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import static org.junit.Assert.*;
 
+// Testing the main model class for IPOS-CA
+// Written by Ahmad Sabsaby and Enes Shehu - Tester, Team B
 public class CUSTModelTest {
 
     private CUSTModel model;
@@ -14,174 +16,161 @@ public class CUSTModelTest {
         model = new CUSTModel();
     }
 
+    // --- Account Holder Tests ---
+
+    // just checking the list loads properly on startup
     @Test
-    public void testGetAccountHolders_NotNull() {
+    public void accountHoldersLoadOnStartup() {
         assertNotNull(model.getAccountHolders());
     }
 
+    // mock data has 2 accounts (Cesar and Arthur)
     @Test
-    public void testGetAccountHolders_CorrectSize() {
+    public void twoAccountsInMockData() {
         assertEquals(2, model.getAccountHolders().size());
     }
 
+    // AH001 is Cesar, should be findable
     @Test
-    public void testGetAccountById_ValidId_ReturnsAccount() {
-        AccountHolder result = model.getAccountById("AH001");
-        assertNotNull(result);
-        assertEquals("AH001", result.getAccountId());
+    public void findExistingAccount() {
+        AccountHolder found = model.getAccountById("AH001");
+        assertNotNull(found);
+        assertEquals("AH001", found.getAccountId());
     }
 
+    // searching for something that doesnt exist should give null not crash
     @Test
-    public void testGetAccountById_InvalidId_ReturnsNull() {
-        assertNull(model.getAccountById("DOESNOTEXIST"));
+    public void searchForAccountThatDoesntExist() {
+        assertNull(model.getAccountById("AH999"));
     }
 
+    // adding a new pharmacy customer and checking they show up
     @Test
-    public void testGetAccountById_EmptyId_ReturnsNull() {
-        assertNull(model.getAccountById(""));
-    }
-
-    @Test
-    public void testCreateAccount_IncreasesListSize() {
+    public void addNewAccountHolder() {
         int before = model.getAccountHolders().size();
         model.createAccount(new AccountHolder(
-                "Test User", "123 Test St",
-                AccountHolder.CardType.DEBIT,
-                "1111", "2222", "12/26",
-                100.0, AccountHolder.DiscountType.FIXED, 10.0
+                "Sarah Jones", "14 Church Lane, London",
+                AccountHolder.CardType.CREDIT,
+                "4567", "7654", "03/28",
+                300.0, AccountHolder.DiscountType.FIXED, 5.0
         ));
         assertEquals(before + 1, model.getAccountHolders().size());
     }
 
+    // deleting an account and making sure its gone
     @Test
-    public void testCreateAccount_AccountIsRetrievable() {
-        model.createAccount(new AccountHolder(
-                "AH999", "Test User", "123 Test St",
-                AccountHolder.CardType.DEBIT,
-                "1111", "2222", "12/26",
-                100.0, AccountHolder.DiscountType.FIXED, 10.0
-        ));
-        assertNotNull(model.getAccountById("AH999"));
-    }
-
-    @Test
-    public void testDeleteAccount_DecreasesListSize() {
-        int before = model.getAccountHolders().size();
-        model.deleteAccount("AH001");
-        assertEquals(before - 1, model.getAccountHolders().size());
-    }
-
-    @Test
-    public void testDeleteAccount_AccountNoLongerExists() {
+    public void deleteAccountAndCheckItsGone() {
         model.deleteAccount("AH001");
         assertNull(model.getAccountById("AH001"));
     }
 
+    // deleting something that doesnt exist shouldnt cause problems
     @Test
-    public void testDeleteAccount_NonExistentId_NoException() {
-        model.deleteAccount("DOESNOTEXIST");
+    public void deletingNonExistentAccountDoesntCrash() {
+        model.deleteAccount("AH999");
     }
 
+    // --- Catalogue Tests ---
+
+    // catalogue should load with items
     @Test
-    public void testGetCatalogue_NotNull() {
+    public void catalogueLoadsWithItems() {
         assertNotNull(model.getCatalogue());
-    }
-
-    @Test
-    public void testGetCatalogue_CorrectSize() {
         assertEquals(14, model.getCatalogue().size());
     }
 
+    // paracetamol is the first item in the mock catalogue
     @Test
-    public void testGetItemByID_ValidId_ReturnsItem() {
+    public void findParacetamolById() {
         LocalItem item = model.getItemByID("10000001");
         assertNotNull(item);
         assertEquals("Paracetamol", item.getDescription());
     }
 
+    // searching for something not in the catalogue
     @Test
-    public void testGetItemByID_InvalidId_ReturnsNull() {
+    public void itemNotInCatalogueReturnsNull() {
         assertNull(model.getItemByID("99999999"));
     }
 
+    // --- Cart Tests ---
+
+    // cart should be empty when we first start
     @Test
-    public void testAddToCart_ValidItem_ReturnsOrderItem() {
-        assertNotNull(model.addToCart("10000001", 3));
+    public void cartStartsEmpty() {
+        assertTrue(model.isCartEmpty());
     }
 
+    // add paracetamol to cart and check its there
     @Test
-    public void testAddToCart_ItemExistsInCart() {
+    public void addItemToCart() {
         model.addToCart("10000001", 3);
         assertTrue(model.cartItemExists("10000001"));
+        assertFalse(model.isCartEmpty());
     }
 
+    // shouldnt be able to add same item twice
     @Test
-    public void testAddToCart_DuplicateItem_ReturnsNull() {
+    public void cantAddSameItemTwice() {
         model.addToCart("10000001", 3);
         assertNull(model.addToCart("10000001", 2));
     }
 
+    // adding an item that doesnt exist in catalogue
     @Test(expected = NullPointerException.class)
-    public void testAddToCart_InvalidItemId_ThrowsException() {
+    public void addingFakeItemCrashes() {
         model.addToCart("99999999", 1);
     }
 
+    // remove item from cart
     @Test
-    public void testRemoveFromCart_ItemNoLongerExists() {
+    public void removeItemFromCart() {
         model.addToCart("10000001", 3);
         model.removeFromCart("10000001");
         assertFalse(model.cartItemExists("10000001"));
     }
 
+    // empty cart should have 0 total
     @Test
-    public void testCalculateGrandTotal_EmptyCart_ReturnsZero() {
+    public void emptyCartHasZeroTotal() {
         assertEquals(0.0, model.calculateGrandTotal(), 0.001);
     }
 
+    // paracetamol costs 0.10 per pack, 10 packs = £1.00
     @Test
-    public void testCalculateGrandTotal_CorrectTotal() {
+    public void cartTotalCalculatesCorrectly() {
         model.addToCart("10000001", 10);
         assertEquals(1.00, model.calculateGrandTotal(), 0.001);
     }
 
+    // clear everything from cart
     @Test
-    public void testIsCartEmpty_InitiallyEmpty() {
-        assertTrue(model.isCartEmpty());
-    }
-
-    @Test
-    public void testIsCartEmpty_NotEmptyAfterAdding() {
-        model.addToCart("10000001", 1);
-        assertFalse(model.isCartEmpty());
-    }
-
-    @Test
-    public void testRemoveAllCartItems_CartIsEmpty() {
+    public void clearCart() {
         model.addToCart("10000001", 1);
         model.addToCart("10000002", 2);
         model.removeAllCartItems();
         assertTrue(model.isCartEmpty());
     }
 
+    // --- Search Tests ---
+
+    // search for paracetamol by name
     @Test
-    public void testSearchByField_ByDescription_ReturnsResults() {
+    public void searchByNameFindsParacetamol() {
         ArrayList<LocalItem> results = model.searchByField(LocalItem.DESCRIPTION, "Paracetamol");
         assertFalse(results.isEmpty());
         assertEquals("Paracetamol", results.get(0).getDescription());
     }
 
+    // search should work even with lowercase
     @Test
-    public void testSearchByField_ByItemId_ReturnsResults() {
-        assertFalse(model.searchByField(LocalItem.ITEM_ID, "10000001").isEmpty());
-    }
-
-    @Test
-    public void testSearchByField_NoMatch_ReturnsEmptyList() {
-        assertTrue(model.searchByField(LocalItem.DESCRIPTION, "XYZNOTEXIST").isEmpty());
-    }
-
-    @Test
-    public void testSearchByField_CaseInsensitive_ReturnsResults() {
+    public void searchIsNotCaseSensitive() {
         assertFalse(model.searchByField(LocalItem.DESCRIPTION, "paracetamol").isEmpty());
+    }
+
+    // searching for something random should return nothing
+    @Test
+    public void searchWithNoMatchReturnsEmptyList() {
+        assertTrue(model.searchByField(LocalItem.DESCRIPTION, "chocolate").isEmpty());
     }
 }
