@@ -68,43 +68,43 @@ public class AccountHolderTest {
         assertEquals(150.0, account.getBalance(), 0.001);
     }
 
-    // customer hasnt paid by the 15th so account gets suspended
+    // cust hasnt paid what he owes so account gets suspended
     @Test
-    public void accountGetsSuspended() {
+    public void SuspendAcc() {
         account.modifyField(AccountHolder.STATUS, "suspended");
         assertEquals("suspended", account.getStatus());
     }
 
-    // customer still hasnt paid by end of month so goes to default
+    // cust still hasnt paid by end of month so acc goes to default
     @Test
-    public void accountGoesIntoDefault() {
+    public void PutAccIntoDefault() {
         account.modifyField(AccountHolder.STATUS, "in_default");
         assertEquals("in_default", account.getStatus());
     }
 
-    // first reminder is now due because customer hasnt paid
+    // send first reminder because cust did not pay yet
     @Test
-    public void firstReminderBecomeDue() {
+    public void SendFirstReminder() {
         account.modifyField(AccountHolder.STATUS_1ST, "due");
         assertEquals(AccountHolder.ReminderStatus.DUE, account.getStatus1stReminder());
     }
 
-    // second reminder has been sent to the customer
+    // send second reminder to cust because cust still did not pay
     @Test
-    public void secondReminderSent() {
+    public void SecondReminderSent() {
         account.modifyField(AccountHolder.STATUS_2ND, "sent");
         assertEquals(AccountHolder.ReminderStatus.SENT, account.getStatus2ndReminder());
     }
 
     // passing in a field name that doesnt exist shouldnt crash the system
     @Test
-    public void updatingUnknownFieldDoesntCrash() {
+    public void UnkownFieldThusDoNotCrash() {
         account.modifyField("SOMETHINGWRONG", "somevalue");
     }
 
-    // the account row shown in the table should have id, name and status
+    // the account shown in the table should have id, name and status
     @Test
-    public void accountRowShowsCorrectData() {
+    public void CorrectAccDetails() {
         String[] row = account.accountRowData();
         assertEquals(3, row.length);
         assertEquals("AH001", row[0]);
@@ -115,7 +115,7 @@ public class AccountHolderTest {
     // checking the discount types work correctly
     // merchants can set fixed or flexible discounts for their customers
     @Test
-    public void discountTypesWorkCorrectly() {
+    public void CorrectDiscountTypeWorking() {
         assertEquals(AccountHolder.DiscountType.FIXED,
                 AccountHolder.DiscountType.getValue("fixed"));
         assertEquals(AccountHolder.DiscountType.FLEXIBLE,
