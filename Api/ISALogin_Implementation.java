@@ -1,65 +1,87 @@
 package Api;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class ISALogin_Implementation implements ISALoginAPI {
-    private static final String ISA_LOGIN_API_URL = "https://webhook.site/e2225256-8db6-4234-ba8e-af3a51faa852";
+    private static final String ISA_LOGIN_API_URL = "https://grtggfghfgh.free.beeceptor.com";
+    /// to logni call GET .../api/auth/login
+    /// after login call GET .../api/merchants/me
+    //String TOken
+
     /// once we get the actual URL from the other teams we would replace them
-
-
 
 
     @Override
     public boolean merchantLogin(String username, String password) {
 
         String jsonRequestBody = String.format(
-                "{\"username\": %s, \"password\": \"%s\"}",
+                "{\"username\": \"%s\", \"password\": \"%s\"}",
                 username, password
         );
 
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_LOGIN_API_URL)).header("Content-Type", "merchantLogin/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
+            HttpRequest loginRequest = HttpRequest.newBuilder().uri(URI.create(ISA_LOGIN_API_URL + "/api/auth/login")).header("Content-Type", "merchantLogin/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
             HttpClient client = HttpClient.newHttpClient();
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> loginResponse = client.send(loginRequest, HttpResponse.BodyHandlers.ofString());
 
-            if (response.statusCode() == 200) {
-                System.out.println("Login successfully.");
-                ///should get something in response to sendus to login page
-                String merchant = response.body();
-                return true;
-            } else {
-                System.out.println("Wrong username or password, status code: " + response.statusCode());
+            if (loginResponse.statusCode() == 200) {
+                SessionManager.token = loginResponse.body().split("\"access_token\":\"")[1].split("\"")[0];
+                HttpRequest infoRequest = HttpRequest.newBuilder().uri(URI.create(ISA_LOGIN_API_URL + "/api/merchants/me")).header("Authorization","Bearer" + SessionManager.token).POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
+                client = HttpClient.newHttpClient();
+                HttpResponse<String> infoResponse = client.send(infoRequest, HttpResponse.BodyHandlers.ofString());
+
+                if (infoResponse.statusCode() == 200) {
+                    SessionManager.merchant_Id = infoResponse.body().split("\"id\":\"")[1].split("\"")[0];
+                    System.out.println("Login successfully.");
+                    return true;
+                }
+            }
+            else if (loginResponse.statusCode() == 401) {
+                System.out.println("Unauthorized: Wrong username or password.");
+                return false;
+            }
+            else if (loginResponse.statusCode() == 402) {
+                System.out.println("Account is inactive, contact support.");
+            }
+            else {
+                System.out.println("failed to reach ISA" + loginResponse.statusCode());
                 return false;
             }
 
-
+            return false;
         } catch (Exception e) {
 
             System.out.println("couldnt reach team ISA Login API: " + e.getMessage());
             return false;
-
         }
-
     }
 
 
     @Override
-    public boolean merchantDisconnect(int merchantID) {
-        //idk look around or ask how to do
+    public boolean merchantDisconnect() {
+        String jsonRequestBody = "";
+        try {
+            HttpRequest logoutRequest = HttpRequest.newBuilder().uri(URI.create(ISA_LOGIN_API_URL + "/api/auth/logout")).header("Authorization","Bearer" + SessionManager.token).POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
+            HttpClient client = HttpClient.newHttpClient();
+            HttpResponse<String> logoutResponse = client.send(logoutRequest, HttpResponse.BodyHandlers.ofString());
+            if (logoutResponse.statusCode() == 200) {
+                SessionManager.token = "";
+                SessionManager.merchant_Id = "";
+                return true;
+            }
+            else {
+                System.out.println("failed to reach ISA" + logoutResponse.statusCode());
+                return false;
+            }
 
-
-
-
-        return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
-
-
-
-
 }
-
 

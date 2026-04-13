@@ -5,7 +5,6 @@
       <option name="customHeaders">
         <set>
           <option value="content;" />
-          <option value="Bearer" />
         </set>
       </option>
     </inspection_tool>
