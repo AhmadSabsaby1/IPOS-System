@@ -5,6 +5,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
+import java.util.UUID;
+import java.util.UUID.*;
 
 
 public class ISAOrder_Implementation implements ISAOrderAPI {
@@ -26,7 +28,8 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
 
         for (int productId : orderDetails.keySet()) {
             int quantity = orderDetails.get(productId);
-            sb.append("{").append("\"productId\":\"").append(productId).append("\",")
+            UUID productUUID = UUID.fromString(String.valueOf(productId));
+            sb.append("{").append("\"productId\":\"").append(productUUID).append("\",")
                     .append("\"quantity\":\"").append(quantity).append("\"}");
 
 
@@ -69,8 +72,9 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
     public String trackOrderProgress(String orderID) {
 
         try {
+            UUID orderUUID = UUID.fromString(orderID);
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL +"/orders/" + orderID)).header("Content-Type", "trackOrderProgress/json").GET().build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL +"/orders/" + orderUUID)).header("Content-Type", "trackOrderProgress/json").GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -96,7 +100,17 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                return response.body();
+                String body = response.body();
+                String merchant_uuid = body.split("\"merchant_id\":")[1].split("\"")[1];
+                String merchant_id = UUID.fromString(merchant_uuid).toString();
+                String credit_limit = body.split("\"credit_limit\":")[1].split("\"")[0].trim();
+                String outstandBalance = body.split("\"oustanding_balance\":")[1].split("\"")[0].trim();
+                String availBalance = body.split("\"available_balance\":")[1].split("\"")[0].trim();
+
+                double creditLimit = Double.parseDouble(credit_limit);
+                double outstandingBalance = Double.parseDouble(outstandBalance);
+                double availableBalance = Double.parseDouble(availBalance);
+                return new MerchantBalance(merchant_id, creditLimit, outstandingBalance,availableBalance).toString();
 
             } else {
                 System.out.println("Failed to retrieve balance: " + response.statusCode());

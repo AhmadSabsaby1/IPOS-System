@@ -6,6 +6,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import static java.lang.String.*;
+
 public class ISALogin_Implementation implements ISALoginAPI {
     private static final String ISA_LOGIN_API_URL = "https://grtggfghfgh.free.beeceptor.com";
     /// to logni call GET .../api/auth/login
@@ -18,7 +20,7 @@ public class ISALogin_Implementation implements ISALoginAPI {
     @Override
     public boolean merchantLogin(String username, String password) {
 
-        String jsonRequestBody = String.format(
+        String jsonRequestBody = format(
                 "{\"username\": \"%s\", \"password\": \"%s\"}",
                 username, password
         );
