@@ -44,9 +44,9 @@ public class AccountHolderTest {
         assertEquals(AccountHolder.ReminderStatus.NO_NEED, account.getStatus2ndReminder());
     }
 
-    // just checking the basic details come back correctly
+    // just checks the acc details come back correctly
     @Test
-    public void basicDetailsAreCorrect() {
+    public void SetUpDetailsCorrect() {
         assertEquals("AH001", account.getAccountId());
         assertEquals("Ahmad Sabsaby", account.getName());
         assertEquals(250.0, account.getBalance(), 0.001);
@@ -54,16 +54,16 @@ public class AccountHolderTest {
         assertEquals("fixed", account.getDiscountType());
     }
 
-    // pharmacy manager updates the customers name
+    // pharmacy manager updates the cust name
     @Test
-    public void updateCustomerName() {
-        account.modifyField(AccountHolder.NAME, "Jane Smith");
-        assertEquals("Jane Smith", account.getName());
+    public void updateCustName() {
+        account.modifyField(AccountHolder.NAME, "Ahmad Sabsaby");
+        assertEquals("Ahmad Sabsaby", account.getName());
     }
 
-    // customer pays off some debt so balance is updated
+    // cust pays off his debt so balance gets updated
     @Test
-    public void updateCustomerBalance() {
+    public void updateCustBalance() {
         account.modifyField(AccountHolder.BALANCE, "150.0");
         assertEquals(150.0, account.getBalance(), 0.001);
     }
