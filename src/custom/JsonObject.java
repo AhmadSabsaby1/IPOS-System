@@ -11,10 +11,10 @@ public class JsonObject {
         String jsonString = json;
 
         if (json.charAt(0) == '{')
-            jsonString = jsonString.substring(1, json.length() - 1);
+            jsonString = jsonString.substring(1);
 
         if (json.charAt(json.length() - 1) == '}')
-            jsonString = jsonString.substring(1, json.length() - 1);
+            jsonString = jsonString.substring(0, json.length() - 2);
 
         String[] fields = jsonString.split(",");
         for (String s : fields) {
@@ -39,12 +39,12 @@ public class JsonObject {
 
     public static String[] parseArray(String json) {
         //[{"item_id":"I10101","item_name":"killme"},{"item_id":"I202022","item_name":"killme now"}]
-        String jsonString;
-        if (json.charAt(0) == '[') {}
-            jsonString = json.substring(1, json.length() - 1);
+        String jsonString = json;
+        if (json.charAt(0) == '[')
+            jsonString = jsonString.substring(1);
 
         if (json.charAt(json.length() - 1) == ']')
-            jsonString = json.substring(1, json.length() - 1);
+            jsonString = jsonString.substring(0, json.length() - 2);
 
         //{"item_id":"I10101","item_name":"killme"},{"item_id":"I202022","item_name":"killme now"}
 
