@@ -1,30 +1,33 @@
 package Api;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
+import java.util.UUID;
+import java.util.UUID.*;
+
 
 public class ISAOrder_Implementation implements ISAOrderAPI {
+    private static final String ISA_ORDER_API_URL = "https://grtggfghfgh.free.beeceptor.com";
 
-    private static final String ISA_ORDER_API_URL = "https://webhook.site/e2225256-8db6-4234-ba8e-af3a51faa852";
+
     /// once we get the actual URL from the other teams we would replace them
-
     @Override
-    public boolean placeOrder(int merchantID, HashMap<Integer, Integer> orderDetails) {
+    public boolean placeOrder(HashMap<Integer, Integer> orderDetails) {
 
         StringBuilder sb= new StringBuilder();
 
-        sb.append("{").append("\"merchantId\":\"").append(merchantID).append("\",");
-        sb.append("\"orderDetails\":[");
+
+        sb.append("\"items\":[");
 
         int i = 0;
 
         for (int productId : orderDetails.keySet()) {
             int quantity = orderDetails.get(productId);
-            sb.append("{").append("\"productId\":\"").append(productId).append("\",")
+            UUID productUUID = UUID.fromString(String.valueOf(productId));
+            sb.append("{").append("\"productId\":\"").append(productUUID).append("\",")
                     .append("\"quantity\":\"").append(quantity).append("\"}");
 
 
@@ -41,7 +44,7 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
 
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "placeOrder/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "placeOrder/json").header("Authorization","Bearer" + SessionManager.token).POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -53,6 +56,7 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
                 return false;
             }
 
+
         } catch (Exception e) {
 
             System.out.println("couldnt reach team ISA Order: " + e.getMessage());
@@ -63,9 +67,12 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
     }
 
     @Override
-    public String trackOrderProgress(int orderID) {
+    public String trackOrderProgress(String orderID) {
+
         try {
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "trackOrderProgress/json").GET().build();
+            UUID orderUUID = UUID.fromString(orderID);
+
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL +"/orders/" + orderUUID)).header("Content-Type", "trackOrderProgress/json").GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -82,32 +89,44 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
     }
 
     @Override
-    public int queryBalance(int merchantID) {
+    public String queryBalance(String merchantID) {
+
         try {
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "queryBalance/json").GET().build();
+
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL + "/merchants/" + SessionManager.merchant_Id+"/balance")).header("Content-Type", "queryBalance/json").header("Authorization","Bearer" + SessionManager.token).GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                System.out.println("Balance retrieved successfully.");
-                return Integer.parseInt(response.body());
+                String body = response.body();
+                String merchant_uuid = body.split("\"merchant_id\":")[1].split("\"")[1];
+                String merchant_id = UUID.fromString(merchant_uuid).toString();
+                String credit_limit = body.split("\"credit_limit\":")[1].split("\"")[0].trim();
+                String outstandBalance = body.split("\"oustanding_balance\":")[1].split("\"")[0].trim();
+                String availBalance = body.split("\"available_balance\":")[1].split("\"")[0].trim();
+
+                double creditLimit = Double.parseDouble(credit_limit);
+                double outstandingBalance = Double.parseDouble(outstandBalance);
+                double availableBalance = Double.parseDouble(availBalance);
+                return new MerchantBalance(merchant_id, creditLimit, outstandingBalance,availableBalance).toString();
+
             } else {
-                System.out.println("Failed to retrieve balance with status code: " + response.statusCode());
-                return 0;
+                System.out.println("Failed to retrieve balance: " + response.statusCode());
+                return "{}";
+
             }
 
         } catch (Exception e) {
             System.out.println("couldnt reach team ISA Order API: ");
-            return 0;
+
         }
 
+        return "";
     }
 
     @Override
-    public String[] viewPreviousOrders(int merchantID) {
-
+    public String[] viewPreviousOrders(String merchantID) {
         try {
-
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "viewPreviousOrders/json").GET().build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL+"/orders")).header("Content-Type", "viewPreviousOrders/json").header("Authorization","Bearer" + SessionManager.token).GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -122,11 +141,46 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
         return new String[0];
     }
 
+
+    /**Catalogue response
+     [
+        {
+         "id": "b9d3c2a1-aaaa-4b5c-8d9e-000000000001",
+         "product_code": "AMOX-500",
+         "name": "Amoxicillin 500mg Capsules",
+         "description": "Broad-spectrum antibiotic capsules",
+         "package_type": "Box",
+         "unit": "capsule",
+         "units_per_pack": 21,
+         "package_cost": 4.50,
+         "stock_quantity": 340,
+         "min_stock_level": 50,
+         "restock_percentage": 10.00,
+         "created_at": "2026-01-10T09:00:00Z",
+         "updated_at": "2026-04-01T12:00:00Z"
+        },
+        {
+         "id": "b9d3c2a1-bbbb-4b5c-8d9e-000000000002",
+         "product_code": "IBUP-400",
+         "name": "Ibuprofen 400mg Tablets",
+         "description": "Anti-inflammatory pain relief tablets",
+         "package_type": "Box",
+         "unit": "tablet",
+         "units_per_pack": 24,
+         "package_cost": 2.80,
+         "stock_quantity": 600,
+         "min_stock_level": 100,
+         "restock_percentage": 10.00,
+         "created_at": "2026-01-10T09:00:00Z",
+         "updated_at": "2026-04-01T12:00:00Z"
+        }
+     ]*/
+
     @Override
     public String[] getCatalogue() {
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "getCatalogue/json").GET().build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL +"/catalogue")).header("Content-Type", "getCatalogue/json").GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -144,11 +198,23 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
     }
 
 
+
+    /**Invoice response
+     * [
+     {
+     "id": "e1f2a3b4-cccc-4444-9999-aabbccddeeff",
+     "order_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+     "merchant_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+     "invoice_date": "2026-04-12",
+     "total_amount": 59.00,
+     "discount_amount": 2.95,
+     "amount_due": 56.05
+     }, ...]*/
     @Override
-    public String[] viewInvoices(int merchantID) {
+    public String[] viewInvoices(String merchantID) {
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "viewInvoices/json").GET().build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "viewInvoices/json").header("Authorization","Bearer" + SessionManager.token).GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -162,6 +228,29 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
             System.out.println("couldnt reach team ISA Order API: " + e.getMessage());
             return new String[0];
         }
+    }
+
+
+    @Override
+    public String[] viewIndividualInvoice(String orderID) {
+        try {
+
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL+ "/api/orders/" + orderID +"/invoice")).header("Content-Type", "viewIndividualInvoice/json").header("Authorization","Bearer" + SessionManager.token).GET().build();
+            HttpClient client = HttpClient.newHttpClient();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                System.out.println("Invoice fetched sucessfully.");
+                return new String[]{response.body()};
+            } else {
+                return new String[0];
+            }
+        } catch (Exception e) {
+            System.out.println("couldnt reach team ISA Order API: " + e.getMessage());
+            return new String[0];
+        }
+
+
     }
 }
 

@@ -41,7 +41,6 @@ public class ORDController {
         mainView.addCardLayout(orderProgressView, OrderProgressView.cardId());
         mainView.addCardLayout(merchantLoginView, MerchantLoginView.cardId());
 
-
         //instantiates the model
         model = new ORDModel();
 
@@ -158,5 +157,9 @@ public class ORDController {
 
     public ArrayList<Item> searchByField(String field, String searchText) {
         return model.searchByField(field, searchText);
+    }
+
+    public void merchantLogin(String username, String password) {
+        model.merchantLogin(username, password);
     }
 }

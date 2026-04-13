@@ -1,15 +1,21 @@
 package ord.model;
 
+import Api.ISALogin_Implementation;
 import Api.ISAOrder_Implementation;
 import custom.JsonObject;
+import ord.offlineData.OfflineOrderAPI;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ORDModel {
     private ISAOrder_Implementation ISAOrderAPI;
+    private ISALogin_Implementation ISALoginAPI;
     
     private ArrayList<Item> catalogueSA;
+    private OfflineOrderAPI offlineOrderAPI;
 
     //the cart list of items
     private ArrayList<CartItem> cartList;
@@ -18,13 +24,42 @@ public class ORDModel {
         cartList = new ArrayList<>();
 
         ISAOrderAPI = new ISAOrder_Implementation();
+        ISALoginAPI = new ISALogin_Implementation();
         populateCatalogue();
+
+        offlineOrderAPI = new OfflineOrderAPI();
     }
 
     /// /////////////// PRIVATE //////////////////
+
+    private void populateCatalogueOffline(){
+        catalogueSA = new ArrayList<>();
+        catalogueSA.add(new Item("SA10000001", "Paracetamol", "box", "caps", 20, 0.10, 10345, 300));
+        catalogueSA.add(new Item("SA10000002", "Aspirin", "box", "caps", 20, 0.50, 12453, 500));
+        catalogueSA.add(new Item("SA10000003", "Analgin", "box", "caps", 10, 1.20, 4235, 200));
+        catalogueSA.add(new Item("SA10000004", "Celebrex, caps 100 mg", "box", "caps", 10, 10.00, 3420, 200));
+        catalogueSA.add(new Item("SA10000005", "Celebrex, caps 200 mg", "box", "caps", 10, 18.50, 1450, 150));
+        catalogueSA.add(new Item("SA10000006", "Retin-A Tretin, 30 g", "box", "caps", 20, 25.00, 2013, 200));
+        catalogueSA.add(new Item("SA10000007", "Lipitor TB, 20 mg", "box", "caps", 30, 15.50, 1562, 200));
+        catalogueSA.add(new Item("SA10000008", "Claritin CR, 60g", "box", "caps", 20, 19.50, 2540, 200));
+
+        catalogueSA.add(new Item("SA20000004", "Iodine tincture", "bottle", "ml", 100, 0.30, 22134, 200));
+        catalogueSA.add(new Item("SA20000005", "Rhynol", "bottle", "ml", 200, 2.50, 1908, 300));
+
+        catalogueSA.add(new Item("SA30000001", "Ospen", "box", "caps", 20, 10.50, 809, 200));
+        catalogueSA.add(new Item("SA30000002", "Amopen", "box", "caps", 30, 15.00, 1340, 300));
+
+        catalogueSA.add(new Item("SA40000001", "Vitamin C", "box", "caps", 30, 1.20, 3258, 300));
+        catalogueSA.add(new Item("SA40000002", "Vitamin B12", "box", "caps", 30, 1.30, 2673, 300));
+    }
     private void populateCatalogue() {
-        //TODO get the catalogue
         String[] rawCat = ISAOrderAPI.getCatalogue();
+        //right now they respond with a greeting... so let's see if this catches it
+        if (rawCat == null || rawCat.length == 0 || !rawCat[0].contains("{")) {
+            //something went wrong fetching the catalogue
+            populateCatalogueOffline();
+            return;
+        }
 
         catalogueSA = new ArrayList<>();
         for (String json : rawCat) {
@@ -48,46 +83,47 @@ public class ORDModel {
         return catalogueSA;
     }
 
-    //API: Viewpreviousorders()
-    /*
-    ```json
-{
-  "id": "uuid",
-  "merchant_id": "uuid",
-  "merchant_name": "string",
-  "order_date": "2026-04-12",
-  "status": "accepted | processing | dispatched | delivered",
-  "total": 150.00,
-  "discount_amount": 5.00,
-  "amount_due": 145.00,
-  "dispatched_date": "2026-04-13 | null",
-  "expected_delivery": "2026-04-15 | null",
-  "courier": "string | null",
-  "courier_ref": "string | null",
-  "items": [
-    {
-      "id": "uuid",
-      "product_id": "uuid",
-      "product_name": "string",
-      "quantity": 10,
-      "unit_price": 15.00,
-      "cost": 150.00
-    }
-  ]
-}
-```
-     */
-    public ArrayList<Order> getOrders(String merchantId){
-        ArrayList<Order> orders = new ArrayList<>();
-        //TODO make it String
-        String [] rawOrders = ISAOrderAPI.viewPreviousOrders(1);
+    public ArrayList<OrderSA> getOrders(String merchantId){
+        //Viewpreviousorders
+        ArrayList<OrderSA> orders = new ArrayList<>();
+        String [] rawOrders = ISAOrderAPI.viewPreviousOrders(merchantId);
+
+        //right now they respond with a greeting... so let's see if this catches it
+        if (rawOrders == null || rawOrders.length == 0 || !rawOrders[0].contains("{")) {
+            //something went wrong fetching the catalogue
+            System.out.println("No API orders: " + Arrays.toString(rawOrders));
+            return offlineOrderAPI.getOrders(merchantId);
+        }
+
         for (String json : rawOrders) {
             JsonObject o = JsonObject.parse(json);
-            //TODO fill the orders
-            //orders.add(new Order());
+            orders.add(new OrderSA(
+                    o.get("merchant_id"),
+                    o.get("id"),
+                    o.get("order_date"),
+                    o.getDouble("total"),
+                    o.getDouble("discount_amount"),
+                    o.getDouble("amount_due"),
+                    o.get("status"),
+                    orderedItemsFromJson(JsonObject.parseArray(o.get("items")))
+            ));
         }
 
         return orders;
+    }
+
+    private ArrayList<CartItem> orderedItemsFromJson(String[] jsonArray){
+        ArrayList<CartItem> items = new ArrayList<>();
+        for (String json : jsonArray) {
+            JsonObject o = JsonObject.parse(json);
+            items.add(new CartItem(
+                    o.get("product_id"),
+                    o.get("product_name"),
+                    o.getInt("quantity"),
+                    o.getDouble(o.get("cost"))
+            ));
+        }
+        return items;
     }
 
     public Item getItemByID(String id) {
@@ -129,16 +165,18 @@ public class ORDModel {
     }
 
     public void createOrder(String merchantId){
-        //TODO create the order and send it to SA
-        Map<String, String> orderDetails = new HashMap<>();
+        Map<String, Integer> orderDetails = new HashMap<>();
 
         for (CartItem i : cartList) {
-            orderDetails.put("itemId", i.getItemId());
-            orderDetails.put("quantity", String.valueOf(i.getQuantity()));
+            orderDetails.put(i.getItemId(), i.getQuantity());
+        }
+
+        //TODO change from Map<int, int> to <string, int>
+        if (!ISAOrderAPI.placeOrder(new HashMap<>())){
+            offlineOrderAPI.createOrder(merchantId, calculateGrandTotal(), cartList);
         }
 
         cartList = new ArrayList<>();
-        //ISAOrderAPI.placeOrder(merchantId, orderDetails);
     }
 
     public void removeAllCartItems() {
@@ -188,5 +226,14 @@ public class ORDModel {
         }
 
         return found;
+    }
+
+    public void merchantLogin(String username, String password) {
+        if (!ISALoginAPI.merchantLogin(username, password)){
+            //mock login
+            return;
+        }
+
+
     }
 }

@@ -39,7 +39,7 @@ public class ApiTest {
         System.out.println("Send Order Details Success: " + sendOrderResult);
 
 
-        
+
 
 
         ///IPU COMM TEST-allhere
@@ -70,36 +70,38 @@ public class ApiTest {
         ///ISA ORDER TEST-allhere
 
         /// placeOrder.POST
+        //for merchant
         System.out.println("--- Testing placeOrder ---");
         HashMap<Integer, Integer> cart = new HashMap<>();
         cart.put(1001, 10);
         cart.put(1002, 2);
-        boolean placeResult = ISAapi.placeOrder(55, cart);
+        boolean placeResult = ISAapi.placeOrder( cart);
         System.out.println("Place Order Success: " + placeResult);
 
         /// trackOrderProgress.GET()
         System.out.println("\n--- Testing trackOrderProgress ---");
-        String orderStatus = ISAapi.trackOrderProgress(12345);
+        String orderStatus = ISAapi.trackOrderProgress("12345");
         System.out.println("Order Status: " + orderStatus);
 
         ///queryBalance.GET()
         System.out.println("\n--- Testing queryBalance ---");
-        int balance = ISAapi.queryBalance(55);
-        System.out.println("Balance: " + balance);
+        String balance = ISAapi.queryBalance(SessionManager.merchant_Id );
+        System.out.println(balance);
 
         /// viewPreviousOrders.GET()
         System.out.println("\n--- Testing viewPreviousOrders ---");
-        String[] previousOrders = ISAapi.viewPreviousOrders(55);
+        String[] previousOrders = ISAapi.viewPreviousOrders("55");
         System.out.println("Previous Orders: " + Arrays.toString(previousOrders));
 
         /// getCatalogue.GET()
+        //get sa catalogue
         System.out.println("\n--- Testing getCatalogue ---");
         String[] getCatalogue = ISAapi.getCatalogue();
         System.out.println("Catalogue Body: " + Arrays.toString(getCatalogue));
 
         ///viewInvoices.GET()
         System.out.println("\n--- Testing viewInvoices---");
-        String[]  viewInvoices = ISAapi.viewInvoices(55);
+        String[]  viewInvoices = ISAapi.viewInvoices("55");
         System.out.println("Catalogue Body: " + Arrays.toString(viewInvoices));
 
 

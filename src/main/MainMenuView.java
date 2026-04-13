@@ -1,9 +1,14 @@
 package main;
 
+import Api.ISAOrderAPI;
+import Api.ISAOrder_Implementation;
+import custom.JsonObject;
 import custom.TitleLabel;
+import ord.model.Item;
 import users.model.UserRole;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class MainMenuView extends JPanel {
     private Main main;
@@ -21,6 +26,8 @@ public class MainMenuView extends JPanel {
     }
     public MainMenuView(Main main) {
         this.main = main;
+
+        JButton testButton = new JButton("Test");
 
         TitleLabel titleLabel = new TitleLabel("IPOS-CA: Main Menu");
         goToCustButton = new JButton("Manage Account Holders and Orders");
@@ -46,6 +53,7 @@ public class MainMenuView extends JPanel {
                 .addComponent(goToOrdButton)
                 .addComponent(goToRPTButton)
                 .addComponent(goToTemplatesButton)
+                .addComponent(testButton)
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
@@ -57,6 +65,7 @@ public class MainMenuView extends JPanel {
                 .addComponent(goToOrdButton, 50, 50, 50)
                 .addComponent(goToRPTButton, 50, 50, 50)
                 .addComponent(goToTemplatesButton, 50, 50, 50)
+                .addComponent(testButton)
         );
 
         goToCustButton.addActionListener(e->main.goToCust());
@@ -65,6 +74,12 @@ public class MainMenuView extends JPanel {
         goToUserManagementButton.addActionListener(e->main.goToUserManagement());
         goToRPTButton.addActionListener(e->main.goToRPT());
         goToTemplatesButton.addActionListener(e->main.goToTemplates());
+
+        testButton.addActionListener(e->test());
+    }
+
+    private void test(){
+
     }
 
     public void checkPerms(){
@@ -100,5 +115,8 @@ public class MainMenuView extends JPanel {
             goToRPTButton.setVisible(true);
             goToTemplatesButton.setVisible(true);
         }
+
+        //TODO remove this, debug only!!
+        goToOrdButton.setVisible(true);
     }
 }

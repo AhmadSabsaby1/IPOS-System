@@ -4,7 +4,6 @@ import cust.controller.CUSTController;
 import ord.controller.ORDController;
 import rpt.controller.RPTController;
 import templates.controller.TemplateController;
-import users.model.Session;
 import users.view.LoginFrame;
 import users.view.UserManagementFrame;
 

@@ -17,6 +17,16 @@ public class HubView extends JPanel {
     private JButton goToPreviousOrdersButton;
     private JButton goToOrderProgressButton;
 
+    //merchant details
+    private JLabel companyNameLabel;
+    private JLabel accountNumberLabel;
+    private JLabel addressLabel;
+    private JLabel contactPhoneLabel;
+    private JLabel creditLimitLabel;
+    private JLabel discountPlanTypeLabel;
+    private JLabel fixedDiscountRateTypeLabel;
+
+
     static public String cardId(){
         return "HubView";
     }
@@ -31,6 +41,15 @@ public class HubView extends JPanel {
         goToLogoutButton = new JButton("Logout");
         backButton = new JButton("Back to the Main Menu");
         loginButton = new JButton("Login");
+
+        //merchant details
+        companyNameLabel = new JLabel();
+        accountNumberLabel = new JLabel();
+        addressLabel = new JLabel();
+        contactPhoneLabel = new JLabel();
+        creditLimitLabel = new JLabel();
+        discountPlanTypeLabel = new JLabel();
+        fixedDiscountRateTypeLabel = new JLabel();
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
@@ -48,6 +67,13 @@ public class HubView extends JPanel {
                         .addComponent(goToOrderProgressButton)
                 )
                 .addComponent(goToLogoutButton)
+                .addComponent(companyNameLabel)
+                .addComponent(accountNumberLabel)
+                .addComponent(addressLabel)
+                .addComponent(contactPhoneLabel)
+                .addComponent(creditLimitLabel)
+                .addComponent(discountPlanTypeLabel)
+                .addComponent(fixedDiscountRateTypeLabel)
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
@@ -63,6 +89,14 @@ public class HubView extends JPanel {
                 )
                 .addGap(50)
                 .addComponent(goToLogoutButton)
+                .addComponent(goToLogoutButton)
+                .addComponent(companyNameLabel)
+                .addComponent(accountNumberLabel)
+                .addComponent(addressLabel)
+                .addComponent(contactPhoneLabel)
+                .addComponent(creditLimitLabel)
+                .addComponent(discountPlanTypeLabel)
+                .addComponent(fixedDiscountRateTypeLabel)
         );
 
         goToCatalogueButton.addActionListener(e -> controller.goToCatalogueScreen());

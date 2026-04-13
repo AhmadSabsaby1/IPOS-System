@@ -3,7 +3,7 @@ package ord.view;
 import custom.CTable;
 import custom.TitleLabel;
 import ord.controller.ORDController;
-import ord.model.Order;
+import ord.model.OrderSA;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +29,7 @@ public class PreviousOrdersView extends JPanel {
         backButton = new JButton("Back to Main Menu");
         totalsLabel = new JLabel();
         totalsLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
-        ordersTable = new CTable(Order.previousOrdersColumnId());
+        ordersTable = new CTable(OrderSA.previousOrdersColumnId());
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
@@ -56,10 +56,10 @@ public class PreviousOrdersView extends JPanel {
         backButton.addActionListener(e -> controller.goToHubScreen());
     }
 
-    public void populateOrdersTable(ArrayList<Order> orders) {
+    public void populateOrdersTable(ArrayList<OrderSA> orders) {
         ordersTable.removeTableElements();
 
-        for (Order order : orders) {
+        for (OrderSA order : orders) {
             ordersTable.addRow(order.getPrevOrdersRowData());
             for (var i = 0; i < order.getItemsOrdered().size(); i++) {
                 ordersTable.addRow(order.getPrevOrderItemRowData(i));

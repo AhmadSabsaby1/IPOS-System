@@ -5,6 +5,7 @@ import ord.controller.ORDController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class MerchantLoginView extends JPanel {
     private ORDController controller;
@@ -52,6 +53,7 @@ public class MerchantLoginView extends JPanel {
 
     private void login() {
         //TODO do the actual login
-        controller.goToMainMenu();
+        controller.merchantLogin(usernameField.getText(), Arrays.toString(passwordField.getPassword()));
+        controller.goToHubScreen();
     }
 }

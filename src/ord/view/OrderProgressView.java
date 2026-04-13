@@ -3,7 +3,7 @@ package ord.view;
 import custom.CTable;
 import custom.TitleLabel;
 import ord.controller.ORDController;
-import ord.model.Order;
+import ord.model.OrderSA;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class OrderProgressView extends JPanel {
 
         titleLabel = new TitleLabel("See Orders Progress");
         backButton = new JButton("Back to Main Menu");
-        progressTable = new CTable(Order.orderProgressColumnId());
+        progressTable = new CTable(OrderSA.orderProgressColumnId());
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
@@ -50,7 +50,7 @@ public class OrderProgressView extends JPanel {
         backButton.addActionListener(e -> controller.goToHubScreen());
     }
 
-    public void populateTable(ArrayList<Order> orders){
+    public void populateTable(ArrayList<OrderSA> orders){
         progressTable.removeTableElements();
         if (orders.isEmpty())
             return;
@@ -60,9 +60,9 @@ public class OrderProgressView extends JPanel {
         int nDelivered = 0;
         int nPaid = 0;
 
-        for (Order order : orders){
+        for (OrderSA order : orders){
             progressTable.addRow(order.getOrderProgressRowData());
-            totalAmount += order.getCost();
+            totalAmount += order.getTotal();
         }
 
         progressTable.addRow(new String[] {"TOTAL:", Integer.toString(orders.size()), Double.toString(totalAmount), Integer.toString(nDispatched), Integer.toString(nDelivered), Integer.toString(nPaid)});

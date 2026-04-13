@@ -16,7 +16,7 @@ import ord.model.Item;
 public class CaCatalogAPI_Implementation implements ICACatalogAPI {
 
     private DBLocalStock InternalDB = new DBLocalStock();
-    private static final String ISA_CATALOG_API_URL = "https://webhook.site/e2225256-8db6-4234-ba8e-af3a51faa852";
+    private static final String ISA_CATALOG_API_URL = "https://webhook.site/0fdea722-071a-4e8b-8500-3631becf3e11";
 
     public CaCatalogAPI_Implementation() throws SQLException, ClassNotFoundException {
         super();
