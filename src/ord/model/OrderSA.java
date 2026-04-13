@@ -52,6 +52,10 @@ public class OrderSA {
         return total;
     }
 
+    public double getAmountDue(){
+        return amountDue;
+    }
+
     public String getStatus() {
         return orderStatus;
     }

@@ -1,16 +1,19 @@
 package ord.view;
 
+import Api.SessionManager;
 import custom.TitleLabel;
 import ord.controller.ORDController;
+import users.model.Session;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class HubView extends JPanel {
     private ORDController controller;
 
     //Swing Objects
     private TitleLabel titleLabel;
-    private JButton goToLogoutButton;
+    private JButton logoutButton;
     private JButton loginButton;
     private JButton backButton;
     private JButton goToCatalogueButton;
@@ -38,18 +41,37 @@ public class HubView extends JPanel {
         goToCatalogueButton = new JButton("Buy From Catalogue");
         goToPreviousOrdersButton = new JButton("See Previous Orders");
         goToOrderProgressButton = new JButton("See Order Progress");
-        goToLogoutButton = new JButton("Logout");
+        logoutButton = new JButton("Logout");
         backButton = new JButton("Back to the Main Menu");
         loginButton = new JButton("Login");
 
         //merchant details
         companyNameLabel = new JLabel();
+        companyNameLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
         accountNumberLabel = new JLabel();
+        accountNumberLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
         addressLabel = new JLabel();
+        addressLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
         contactPhoneLabel = new JLabel();
+        contactPhoneLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
         creditLimitLabel = new JLabel();
+        creditLimitLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
         discountPlanTypeLabel = new JLabel();
+        discountPlanTypeLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
         fixedDiscountRateTypeLabel = new JLabel();
+        fixedDiscountRateTypeLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+
+        if (SessionManager.merchant_Id.isEmpty()){
+            //no merchant logged in
+            loginButton.setVisible(true);
+
+            logoutButton.setVisible(false);
+        }else{
+            //merchant logged in
+            logoutButton.setVisible(true);
+            fillMerchantDetails();
+            loginButton.setVisible(false);
+        }
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
@@ -66,7 +88,7 @@ public class HubView extends JPanel {
                         .addComponent(goToPreviousOrdersButton)
                         .addComponent(goToOrderProgressButton)
                 )
-                .addComponent(goToLogoutButton)
+                .addComponent(logoutButton)
                 .addComponent(companyNameLabel)
                 .addComponent(accountNumberLabel)
                 .addComponent(addressLabel)
@@ -88,8 +110,8 @@ public class HubView extends JPanel {
                         .addComponent(goToOrderProgressButton, 50, 50, 50)
                 )
                 .addGap(50)
-                .addComponent(goToLogoutButton)
-                .addComponent(goToLogoutButton)
+                .addComponent(logoutButton)
+                .addComponent(logoutButton)
                 .addComponent(companyNameLabel)
                 .addComponent(accountNumberLabel)
                 .addComponent(addressLabel)
@@ -104,7 +126,17 @@ public class HubView extends JPanel {
         goToOrderProgressButton.addActionListener(e -> controller.goToOrderProgressScreen());
         backButton.addActionListener(e->controller.goToMainMenu());
         loginButton.addActionListener(e->login());
-        goToLogoutButton.addActionListener(e->logout());
+        logoutButton.addActionListener(e->logout());
+    }
+
+    private void fillMerchantDetails() {
+        companyNameLabel.setText("Account Holder Name: ");
+        accountNumberLabel.setText("Account Number: ");
+        addressLabel.setText("Address: ");
+        contactPhoneLabel.setText("Phone: ");
+        creditLimitLabel.setText("Credit Limit: ");
+        discountPlanTypeLabel.setText("Discount Plan:");
+        fixedDiscountRateTypeLabel.setText("Fixed Discount: ");
     }
 
     private void login(){
@@ -112,6 +144,8 @@ public class HubView extends JPanel {
     }
 
     private void logout(){
+        //TODO actual logout
+        SessionManager.merchant_Id = "";
 
     }
 }

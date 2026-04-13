@@ -1,5 +1,6 @@
 package ord.view;
 
+import Api.SessionManager;
 import custom.TitleLabel;
 import ord.controller.ORDController;
 
@@ -12,6 +13,7 @@ public class MerchantLoginView extends JPanel {
     private JButton loginButton;
     private JTextField usernameField;
     private JPasswordField passwordField;
+    private JLabel infoLabel;
 
 
     public static String cardId() {
@@ -30,22 +32,24 @@ public class MerchantLoginView extends JPanel {
         passwordField = new JPasswordField();
         passwordLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
         loginButton = new JButton("Login");
+        infoLabel = new JLabel();
 
         JPanel mainPanel = new JPanel();
         mainPanel.setSize(380, 150);
         add(mainPanel);
 
-        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setLayout(new BorderLayout(5, 5));
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
         JPanel loginPanel = new JPanel();
         loginPanel.setBorder(BorderFactory.createEtchedBorder());
         mainPanel.add(loginPanel, BorderLayout.CENTER);
-        loginPanel.setLayout(new GridLayout(2, 2));
+        loginPanel.setLayout(new GridLayout(3, 2, 5, 5));
         loginPanel.add(usernameLabel);
         loginPanel.add(usernameField);
         loginPanel.add(passwordLabel);
         loginPanel.add(passwordField);
+        loginPanel.add(infoLabel);
         mainPanel.add(loginButton, BorderLayout.SOUTH);
 
         loginButton.addActionListener(e->login());
@@ -53,7 +57,11 @@ public class MerchantLoginView extends JPanel {
 
     private void login() {
         //TODO do the actual login
-        controller.merchantLogin(usernameField.getText(), Arrays.toString(passwordField.getPassword()));
-        controller.goToHubScreen();
+        if (controller.merchantLogin(usernameField.getText(), new String(passwordField.getPassword()))){
+            SessionManager.merchant_Id = "someMerchantID";
+            controller.goToHubScreen();
+        }else{
+            infoLabel.setText("Incorrect login");
+        }
     }
 }

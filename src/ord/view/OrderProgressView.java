@@ -62,9 +62,9 @@ public class OrderProgressView extends JPanel {
 
         for (OrderSA order : orders){
             progressTable.addRow(order.getOrderProgressRowData());
-            totalAmount += order.getTotal();
+            totalAmount += order.getAmountDue();
         }
 
-        progressTable.addRow(new String[] {"TOTAL:", Integer.toString(orders.size()), Double.toString(totalAmount), Integer.toString(nDispatched), Integer.toString(nDelivered), Integer.toString(nPaid)});
+        //progressTable.addRow(new String[] {"TOTAL:", Integer.toString(orders.size()), Double.toString(totalAmount), Integer.toString(nDispatched), Integer.toString(nDelivered), Integer.toString(nPaid)});
     }
 }

@@ -1,25 +1,30 @@
 package ord.offlineData;
 
+import Api.SessionManager;
+
+import java.util.ArrayList;
+
 public class OfflineUserDB {
-    private String id;
-    private String userName;
-    private String password;
+    private ArrayList<MerchantUser> users;
 
-    public OfflineUserDB(String id, String userName, String password) {
-        this.id = id;
-        this.userName = userName;
-        this.password = password;
+    public OfflineUserDB() {
+        populateOfflineDB();
     }
 
-    public String getId() {
-        return id;
+    private void populateOfflineDB() {
+        users = new ArrayList<>();
+        users.add(new MerchantUser("ACC01", "city", "north"));
+        users.add(new MerchantUser("ACC02", "a", "a"));
     }
 
-    public String getUserName() {
-        return userName;
-    }
+    public boolean checkCredentials(String username, String password) {
+        for (MerchantUser u : users) {
+            if (u.getUserName().equals(username) && u.getPassword().equals(password)) {
+                SessionManager.merchant_Id = u.getId();
+                return true;
+            }
+        }
 
-    public String getPassword() {
-        return password;
+        return false;
     }
 }

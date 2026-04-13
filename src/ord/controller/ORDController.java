@@ -46,9 +46,6 @@ public class ORDController {
 
         //populates the catalogue table with the catalogue the model provides
         catalogueView.populateCatalogue(getCatalogue());
-
-        //MOCK
-        merchantId = "mu001";
     }
 
     ////////////// SCREEN CHANGES ////////////
@@ -79,7 +76,7 @@ public class ORDController {
     }
 
     public void goToPreviousOrdersScreen(){
-        previousOrdersView.populateOrdersTable(model.getOrders(merchantId));
+        previousOrdersView.populateOrdersTable(model.getOrders());
         mainView.changeCardView(PreviousOrdersView.cardId());
     }
 
@@ -88,7 +85,7 @@ public class ORDController {
     }
 
     public void goToOrderProgressScreen() {
-        orderProgressView.populateTable(model.getOrders(merchantId));
+        orderProgressView.populateTable(model.getOrders());
         mainView.changeCardView(OrderProgressView.cardId());
     }
 
@@ -128,7 +125,7 @@ public class ORDController {
     }
 
     public void createOrder(){
-        model.createOrder(merchantId);
+        model.createOrder();
     }
 
     public void removeAllCartItems() {
@@ -159,7 +156,7 @@ public class ORDController {
         return model.searchByField(field, searchText);
     }
 
-    public void merchantLogin(String username, String password) {
-        model.merchantLogin(username, password);
+    public boolean merchantLogin(String username, String password) {
+        return model.merchantLogin(username, password);
     }
 }

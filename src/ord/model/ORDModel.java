@@ -2,8 +2,10 @@ package ord.model;
 
 import Api.ISALogin_Implementation;
 import Api.ISAOrder_Implementation;
+import Api.SessionManager;
 import custom.JsonObject;
 import ord.offlineData.OfflineOrderAPI;
+import ord.offlineData.OfflineUserDB;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +18,7 @@ public class ORDModel {
     
     private ArrayList<Item> catalogueSA;
     private OfflineOrderAPI offlineOrderAPI;
+    private OfflineUserDB offlineUserDB;
 
     //the cart list of items
     private ArrayList<CartItem> cartList;
@@ -28,6 +31,7 @@ public class ORDModel {
         populateCatalogue();
 
         offlineOrderAPI = new OfflineOrderAPI();
+        offlineUserDB = new OfflineUserDB();
     }
 
     /// /////////////// PRIVATE //////////////////
@@ -83,16 +87,16 @@ public class ORDModel {
         return catalogueSA;
     }
 
-    public ArrayList<OrderSA> getOrders(String merchantId){
+    public ArrayList<OrderSA> getOrders(){
         //Viewpreviousorders
         ArrayList<OrderSA> orders = new ArrayList<>();
-        String [] rawOrders = ISAOrderAPI.viewPreviousOrders(merchantId);
+        String [] rawOrders = ISAOrderAPI.viewPreviousOrders(SessionManager.merchant_Id);
 
         //right now they respond with a greeting... so let's see if this catches it
         if (rawOrders == null || rawOrders.length == 0 || !rawOrders[0].contains("{")) {
             //something went wrong fetching the catalogue
             System.out.println("No API orders: " + Arrays.toString(rawOrders));
-            return offlineOrderAPI.getOrders(merchantId);
+            return offlineOrderAPI.getOrders();
         }
 
         for (String json : rawOrders) {
@@ -164,7 +168,7 @@ public class ORDModel {
         return false;
     }
 
-    public void createOrder(String merchantId){
+    public void createOrder(){
         Map<String, Integer> orderDetails = new HashMap<>();
 
         for (CartItem i : cartList) {
@@ -173,7 +177,7 @@ public class ORDModel {
 
         //TODO change from Map<int, int> to <string, int>
         if (!ISAOrderAPI.placeOrder(new HashMap<>())){
-            offlineOrderAPI.createOrder(merchantId, calculateGrandTotal(), cartList);
+            offlineOrderAPI.createOrder(SessionManager.merchant_Id, calculateGrandTotal(), cartList);
         }
 
         cartList = new ArrayList<>();
@@ -228,12 +232,12 @@ public class ORDModel {
         return found;
     }
 
-    public void merchantLogin(String username, String password) {
+    public boolean merchantLogin(String username, String password) {
         if (!ISALoginAPI.merchantLogin(username, password)){
-            //mock login
-            return;
+            //offline login check
+            return offlineUserDB.checkCredentials(username, password);
         }
 
-
+        return true;
     }
 }

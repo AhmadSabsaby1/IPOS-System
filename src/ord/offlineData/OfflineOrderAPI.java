@@ -1,5 +1,6 @@
 package ord.offlineData;
 
+import Api.SessionManager;
 import ord.model.CartItem;
 import ord.model.OrderSA;
 
@@ -49,11 +50,11 @@ public class OfflineOrderAPI {
         ));
     }
 
-    public ArrayList<OrderSA> getOrders(String merchantId) {
+    public ArrayList<OrderSA> getOrders() {
         ArrayList<OrderSA> previousOrdersByMerchant = new ArrayList<>();
         for (OrderSA order : orderDB) {
             //TODO merchant ID is relevant? remove?
-            if (order.getMerchantID().equals(merchantId))
+            if (order.getMerchantID().equals(SessionManager.merchant_Id))
                 previousOrdersByMerchant.add(order);
         }
 
