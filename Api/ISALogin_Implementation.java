@@ -43,6 +43,7 @@ public class ISALogin_Implementation implements ISALoginAPI {
                     SessionManager.merchant_Id = infoResponse.body().split("\"id\":\"")[1].split("\"")[0];
                     SessionManager.user_ID = infoResponse.body().split("\"user_Id\":\"")[1].split("\"")[0];
                     SessionManager.account_number = infoResponse.body().split("\"accountNumber\":\"")[1].split("\"")[0];
+                    SessionManager.company_name = infoResponse.body().split("\"companyName\":\"")[1].split("\"")[0];
                     SessionManager.contact_name = infoResponse.body().split("\"contactName\":\"")[1].split("\"")[0];
                     SessionManager.contact_email = infoResponse.body().split("\"contactEmail\":\"")[1].split("\"")[0];
                     SessionManager.contact_phone = infoResponse.body().split("\"contact\":\"")[1].split("\"")[0];

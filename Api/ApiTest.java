@@ -72,9 +72,9 @@ public class ApiTest {
         /// placeOrder.POST
         //for merchant
         System.out.println("--- Testing placeOrder ---");
-        HashMap<String, String> cart = new HashMap<>();
-        cart.put("10000001", "10");
-        cart.put("10000002", "2");
+        HashMap<String, Integer> cart = new HashMap<>();
+        cart.put("10000001", 10);
+        cart.put("10000002", 2);
         boolean placeResult = ISAapi.placeOrder( cart);
         System.out.println("Place Order Success: " + placeResult);
 

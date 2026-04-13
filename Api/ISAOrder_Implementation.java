@@ -17,7 +17,7 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
 
 
     @Override
-    public boolean placeOrder(HashMap<String, String> orderDetails) {
+    public boolean placeOrder(HashMap<String, Integer> orderDetails) {
 
         StringBuilder sb= new StringBuilder();
 
@@ -27,7 +27,7 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
         int i = 0;
 
         for (String productId : orderDetails.keySet()) {
-            String quantity = orderDetails.get(productId);
+            int quantity = orderDetails.get(productId);
             sb.append("{").append("\"productId\":\"").append(productId).append("\",")
                     .append("\"quantity\":\"").append(quantity).append("\"}");
 
