@@ -38,7 +38,20 @@ public class ISALogin_Implementation implements ISALoginAPI {
                 HttpResponse<String> infoResponse = client.send(infoRequest, HttpResponse.BodyHandlers.ofString());
 
                 if (infoResponse.statusCode() == 200) {
+                    ///profile info
+
                     SessionManager.merchant_Id = infoResponse.body().split("\"id\":\"")[1].split("\"")[0];
+                    SessionManager.user_ID = infoResponse.body().split("\"user_Id\":\"")[1].split("\"")[0];
+                    SessionManager.account_number = infoResponse.body().split("\"accountNumber\":\"")[1].split("\"")[0];
+                    SessionManager.contact_name = infoResponse.body().split("\"contactName\":\"")[1].split("\"")[0];
+                    SessionManager.contact_email = infoResponse.body().split("\"contactEmail\":\"")[1].split("\"")[0];
+                    SessionManager.contact_phone = infoResponse.body().split("\"contact\":\"")[1].split("\"")[0];
+                    SessionManager.address = infoResponse.body().split("\"address\":\"")[1].split("\"")[0];
+                    SessionManager.credit_limit = Double.parseDouble(infoResponse.body().split("\"creditLimit\":\"")[1].split("\"")[0]);
+                    SessionManager.discount_plan_type = infoResponse.body().split("\"discountPlanType\":\"")[1].split("\"")[0];
+                    SessionManager.account_status = infoResponse.body().split("\"accountStatus\":\"")[1].split("\"")[0];
+                    SessionManager.fixed_discount_rate = Double.parseDouble(infoResponse.body().split("\"fixedDiscountRate\":\"")[1].split("\"")[0]);
+
                     System.out.println("Login successfully.");
                     return true;
                 }

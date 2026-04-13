@@ -8,7 +8,7 @@ public interface ISAOrderAPI {
 	 * Sends to the SA an order that consists of a product and its quantiy.
 	 * @param orderDetails The product's ID of the order and its quantity, stored in a HashMap where the key is the product's ID and the value is the quantity of that product in the order
 	 */
-	abstract boolean placeOrder(HashMap<Integer, Integer> orderDetails);
+	abstract boolean placeOrder(HashMap<String, String> orderDetails);
 
 	/**
 	 * Requests to the SA the progress of an order.
@@ -40,11 +40,5 @@ public interface ISAOrderAPI {
 	 */
 	abstract String[] viewInvoices(String merchantID);
 
-
-	/**
-	 * Requests to the SA the invoice for a merchant.
-	 * @param order_id UUID of the individual invoice the merchant wants to view
-	 */
-	abstract String[] viewIndividualInvoice( String order_id);
 
 }
