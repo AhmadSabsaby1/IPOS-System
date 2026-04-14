@@ -7,7 +7,11 @@ import custom.TitleLabel;
 import ord.model.Item;
 import users.model.UserRole;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainMenuView extends JPanel {
@@ -33,12 +37,20 @@ public class MainMenuView extends JPanel {
 
         TitleLabel titleLabel = new TitleLabel("IPOS-CA: Main Menu");
         goToCustButton = new JButton("Manage Account Holders and Orders");
-        goToOrdButton = new JButton("Order Stock from IPOS-SA");
+        goToOrdButton = new JButton("Manage Orders from IPOS-SA");
         goToLoguinButton = new JButton("Log In");
         goToUserManagementButton = new JButton("Manage Users");
         goToRPTButton = new JButton("Generate Reports");
         goToTemplatesButton = new JButton("Manage Templates");
         goToStockButton = new JButton("Manage Stock");
+        BufferedImage logo = null;
+        try{
+            logo = ImageIO.read(new File("Images/Pentasolutions Logo.png"));
+        } catch (IOException e) {
+            System.out.println("Logo not found");
+        }
+
+        JLabel logoPicture = new JLabel(new ImageIcon(logo));
 
         checkPerms();
 
@@ -49,6 +61,7 @@ public class MainMenuView extends JPanel {
         layout.setAutoCreateContainerGaps(true);
 
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addComponent(logoPicture)
                 .addComponent(titleLabel)
                 .addComponent(goToLoguinButton)
                 .addComponent(goToUserManagementButton)
@@ -61,6 +74,7 @@ public class MainMenuView extends JPanel {
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
+                .addComponent(logoPicture)
                 .addComponent(titleLabel)
                 .addGap(40)
                 .addComponent(goToLoguinButton, 75, 75, 75)

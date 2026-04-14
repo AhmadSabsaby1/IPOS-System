@@ -88,6 +88,7 @@ public class SeeAllOrdersView extends JPanel {
     }
 
     public void populateTable(ArrayList<Order> orders){
+        ordersTable.removeTableElements();
         this.orders = orders;
 
         for (Order o : orders){
