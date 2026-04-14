@@ -10,7 +10,7 @@ import java.util.UUID.*;
 
 
 public class ISAOrder_Implementation implements ISAOrderAPI {
-    private static final String ISA_ORDER_API_URL = "https://pioiyuo.free.beeceptor.com";
+    private static final String ISA_ORDER_API_URL = "https://thevylethomsa.free.beeceptor.com";
 
 
     /// once we get the actual URL from the other teams we would replace them
@@ -30,8 +30,6 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
             int quantity = orderDetails.get(productId);
             sb.append("{").append("\"productId\":\"").append(productId).append("\",")
                     .append("\"quantity\":\"").append(quantity).append("\"}");
-
-
             if (i < orderDetails.size() - 1) {
                 sb.append(",");
 
@@ -45,7 +43,7 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
 
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "placeOrder/json").header("Authorization","Bearer" + SessionManager.token).POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "application/json").header("Authorization","Bearer " + SessionManager.token).POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -71,9 +69,9 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
     public String trackOrderProgress(String orderID) {
 
         try {
-            UUID orderUUID = UUID.fromString(orderID);
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL +"/orders/" + orderUUID)).header("Content-Type", "trackOrderProgress/json").GET().build();
+
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL +"/orders/" + orderID)).header("Content-Type", "application/json").GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -95,20 +93,27 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
 
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL + "/merchants/" + SessionManager.merchant_Id+"/balance")).header("Content-Type", "queryBalance/json").header("Authorization","Bearer" + SessionManager.token).GET().build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL + "/merchants/" + SessionManager.merchant_Id+"/balance")).header("Content-Type", "application/json").header("Authorization","Bearer " + SessionManager.token).GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
                 String body = response.body();
-                String merchant_id = body.split("\"merchant_id\":")[1].split("\"")[1];
-                String credit_limit = body.split("\"credit_limit\":")[1].split("\"")[0].trim();
-                String outstandBalance = body.split("\"oustanding_balance\":")[1].split("\"")[0].trim();
-                String availBalance = body.split("\"available_balance\":")[1].split("\"")[0].trim();
+                String merchant_id = body.split("\"merchant_id\": ")[1].split("\"")[1];
+                String credit_limit = body.split("\"credit_limit\": ")[1].split(",")[0];
+                String outstandBalance = body.split("\"outstanding_balance\": ")[1].split(",")[0];
+                String availBalance = body.split("\"available_credit\": ")[1].split("}")[0];
+
 
                 double creditLimit = Double.parseDouble(credit_limit);
                 double outstandingBalance = Double.parseDouble(outstandBalance);
                 double availableBalance = Double.parseDouble(availBalance);
+
+                System.out.println(merchant_id);
+                System.out.println(creditLimit);
+                System.out.println(outstandingBalance);
+                System.out.println(availableBalance);
                 return new MerchantBalance(merchant_id, creditLimit, outstandingBalance,availableBalance).toString();
+
 
             } else {
                 System.out.println("Failed to retrieve balance: " + response.statusCode());
@@ -129,7 +134,7 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
 
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL+"/orders")).header("Content-Type", "viewPreviousOrders/json").header("Authorization","Bearer" + SessionManager.token).GET().build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL+"/orders")).header("Content-Type", "application/json").header("Authorization","Bearer " + SessionManager.token).GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -184,7 +189,7 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
     public String[] getCatalogue() {
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL +"/catalogue")).header("Content-Type", "getCatalogue/json").GET().build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL +"/catalogue")).header("Content-Type", "application/json").GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -218,7 +223,7 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
     public String[] viewInvoices(String merchantID) {
         try {
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "viewInvoices/json").header("Authorization","Bearer" + SessionManager.token).GET().build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL)).header("Content-Type", "application/json").header("Authorization","Bearer " + SessionManager.token).GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 

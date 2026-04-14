@@ -2,12 +2,12 @@ package Api;
 
 public class
 SessionManager {
-    public static String token = "";
+    public static String token = "tokepisswtaer";
 
 
 
 ///merchant profile data
-    public static String merchant_Id = "";
+    public static String merchant_Id = "eq23";
     public static String user_ID = "";
     public static String account_number = "";
     public static String company_name = "";
@@ -19,5 +19,5 @@ SessionManager {
     public static String discount_plan_type = "";
     public static double fixed_discount_rate = 0.0;
     public static String account_status = "";
-    public static String flexible_thresholds = "";
+    public static String flexible_thresholds = null;
 }

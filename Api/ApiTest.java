@@ -15,6 +15,12 @@ public class ApiTest {
 
         ///CA CATALOG TEST
 
+        /// merchantLogin.POST
+        ISALogin_Implementation loginAPI = new ISALogin_Implementation();
+        System.out.println("\n--- Testing merchantLogin ---");
+        boolean loginResult = loginAPI.merchantLogin("testUser", "testPassword");
+        System.out.println("Login Success: " + loginResult);
+
         ///getCatalogue.POST
         try {
             System.out.println("--- Testing getCatalogue ---");
@@ -109,11 +115,7 @@ public class ApiTest {
 
         ///ISA LOGIN TEST
 
-        /// merchantLogin.POST
-        ISALogin_Implementation loginAPI = new ISALogin_Implementation();
-        System.out.println("\n--- Testing merchantLogin ---");
-        boolean loginResult = loginAPI.merchantLogin("testUser", "testPassword");
-        System.out.println("Login Success: " + loginResult);
+
 
         //merchantDisconnect
 
