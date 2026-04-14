@@ -1,17 +1,44 @@
 package stock.model;
 
+import database.DBLocalStock;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class STOCKModel {
 
     private ArrayList<StockItem> stock;
+    private DBLocalStock db;
 
     public STOCKModel() {
         stock = new ArrayList<>();
-        loadMockData();
+        try {
+            db = new DBLocalStock();
+            loadFromDB();
+        } catch (Exception e) {
+            System.out.println("DB connection failed, loading mock data: " + e.getMessage());
+            loadMockData();
+        }
     }
 
-    // Cosymed Ltd stock from the brief - 100% markup, 0% VAT
+    // load stock from the real database
+    private void loadFromDB() throws Exception {
+        ResultSet rs = db.getStock();
+        while (rs.next()) {
+            stock.add(new StockItem(
+                    rs.getString("itemID"),
+                    rs.getString("description"),
+                    rs.getString("packageType"),
+                    rs.getString("unit"),
+                    rs.getInt("unitsInAPack"),
+                    rs.getDouble("packageCost"),
+                    rs.getInt("retailMarkUpRate"),
+                    rs.getInt("availability"),
+                    rs.getInt("stockLimit")
+            ));
+        }
+    }
+
+    // fallback mock data if DB fails
     private void loadMockData() {
         stock.add(new StockItem("10000001", "Paracetamol", "Box", "Caps", 20, 0.10, 100, 121, 10));
         stock.add(new StockItem("10000002", "Aspirin", "Box", "Caps", 20, 0.50, 100, 201, 15));
@@ -37,18 +64,37 @@ public class STOCKModel {
         return null;
     }
 
-    public void addItem(StockItem item) { stock.add(item); }
+    public void addItem(StockItem item) {
+        try {
+            db.newProduct(item.getDesc(), item.getPackageType(), item.getUnit(),
+                    item.getUnitsPerPack(), item.getBulkCost(), item.getQty(),
+                    item.getMinQty(), (int) item.getMarkup());
+        } catch (Exception e) {
+            System.out.println("Could not save to DB: " + e.getMessage());
+        }
+        stock.add(item);
+    }
 
     public boolean addQty(String id, int n) {
         StockItem item = getById(id);
         if (item == null) return false;
         item.addQty(n);
+        try {
+            db.updateStock(id, item.getQty());
+        } catch (Exception e) {
+            System.out.println("Could not update DB: " + e.getMessage());
+        }
         return true;
     }
 
     public boolean deleteItem(String id) {
         StockItem item = getById(id);
         if (item == null) return false;
+        try {
+            db.deleteProduct(id);
+        } catch (Exception e) {
+            System.out.println("Could not delete from DB: " + e.getMessage());
+        }
         stock.remove(item);
         return true;
     }

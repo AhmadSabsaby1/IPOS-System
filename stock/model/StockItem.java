@@ -73,8 +73,14 @@ public class StockItem {
                 String.valueOf(minQty)};
     }
 
+    // getters
     public String getId() { return id; }
     public String getDesc() { return desc; }
+    public String getPackageType() { return pkgType; }
+    public String getUnit() { return unit; }
+    public int getUnitsPerPack() { return unitsPerPack; }
+    public double getBulkCost() { return bulkCost; }
+    public double getMarkup() { return markup; }
     public int getQty() { return qty; }
     public int getMinQty() { return minQty; }
 

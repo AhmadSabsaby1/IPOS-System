@@ -1,7 +1,15 @@
-1. Set up local mysql database
-2. (Intellij, right side) Database -> New -> Data Source -> MySQL
-3. Set up with URL
-4. Put the correct URL, username and password in DBParent class (Keep
+Local MySQL database set up:
+1. Install MySQL
+2. Open MySQL Command Client
+3. Log in with your password (if you have forgotten it, reinstall MySQL)
+4. Set up database (bottom of file)
+
+Link MySQL and Intellij:
+1. (Intellij, right side) Database -> New -> Data Source -> MySQL
+2. Set up with URL:
+    2a. Fill in user (default is root), password and Database (choose iposca)
+    2b. Apply (If errors occur, try refreshing)
+3. Put the correct URL, username and password in DBParent class (Keep
 the ?useSSL=false at the end, it did not work on my end without it)
 
 Global Library set up:
@@ -19,3 +27,115 @@ Note: These classes will NOT check for null values and other such errors. This i
 you are using to interact with the database classes.
 
 Any errors or lacking functionality found please send a message in the discord or through whatsapp directly
+
+Database set up commands: (Paste these on your command line client to create the database; you will only need to do this once)
+
+CREATE DATABASE IPOSCA;
+
+USE IPOSCA
+
+CREATE TABLE Users
+(
+    username VARCHAR(45) NOT NULL,
+    password VARCHAR(45) NOT NULL,
+    role VARCHAR(45) NOT NULL,
+    PRIMARY KEY (username)
+);
+
+CREATE TABLE AccountHolders
+(
+    accountID VARCHAR(7) NOT NULL,
+    name VARCHAR(45) NOT NULL,
+    address VARCHAR(45) NOT NULL,
+    balance DOUBLE unsigned,
+    balanceLimit INT unsigned,
+    discountType VARCHAR(10),
+    discount DOUBLE unsigned,
+    tier1Discount DOUBLE unsigned,
+    tier1Threshold INT unsigned,
+    tier2Discount DOUBLE unsigned,
+    tier2Threshold INT unsigned,
+    tier3Discount DOUBLE unsigned,
+    status VARCHAR(10),
+    status1stReminder VARCHAR(7),
+    status2ndReminder VARCHAR(7),
+    phoneNum VARCHAR(20),
+    email VARCHAR(45),
+    PRIMARY KEY (accountID)
+);
+
+CREATE TABLE LocalStock
+(
+    itemID VARCHAR(20) NOT NULL,
+    description VARCHAR(45) NOT NULL,
+    packageType VARCHAR(12),
+    unit VARCHAR(8),
+    unitsInAPack INT unsigned,
+    packageCost DOUBLE unsigned,
+    availability INT unsigned,
+    stockLimit INT unsigned,
+    retailMarkUpRate INT unsigned,
+    PRIMARY KEY (itemID)
+);
+
+CREATE TABLE Transactions
+(
+    orderID VARCHAR(8) NOT NULL,
+    paymentType VARCHAR(4),
+    amountReceived DOUBLE unsigned,
+    cardType VARCHAR(10),
+    firstFour INT unsigned,
+    LastFour INT unsigned,
+    expiryDate VARCHAR(4),
+    shippingAddress VARCHAR(45),
+    orderDate VARCHAR(10),
+    totalCost DOUBLE unsigned,
+    PRIMARY KEY (orderID)
+);
+
+CREATE TABLE AccountHolders_Transactions
+(
+    orderID VARCHAR(8) NOT NULL,
+    accountID VARCHAR(7) NOT NULL,
+    FOREIGN KEY (orderID) REFERENCES Transactions(orderID),
+    FOREIGN KEY (accountID) REFERENCES AccountHolders(accountID),
+    PRIMARY KEY (orderID, accountID)
+);
+
+CREATE TABLE LocalStock_Transactions
+(
+    itemID VARCHAR(20) NOT NULL,
+    orderID VARCHAR(8) NOT NULL,
+    quantity INT unsigned NOT NULL,
+    FOREIGN KEY (itemID) REFERENCES LocalStock(itemID),
+    FOREIGN KEY (orderID) REFERENCES Transactions(orderID),
+    PRIMARY KEY (itemID, orderID)
+);
+
+SAMPLE DATA INSERT: (This can be done any time after the database is created as long as no primary keys are duplicated)
+
+INSERT INTO Users VALUES
+('sysdba', 'masterkey', 'Administrator'),
+('manager', 'Get_it_done', 'Director of Operations/Manager'),
+('accountant', 'Count_money', 'Senior accountant'),
+('clerk', 'Paperwork', 'Accountant');
+
+INSERT INTO AccountHolders VALUES
+('ACC0001', 'Ms Eva Bauyer', '1, Liverpool street, London EC2V 8NS', 0, 500, 'Fixed', 0.03, 0, 0, 0, 0, 0, 'normal', 'no need', 'no need', '02073218001', 'evabauyer@gmail.com'),
+('ACC0002', 'Ms Glynne Morisson', '1, Liverpool street, London EC2V 8NS', 0, 500, 'Variable',0, 0, 100, 0.01, 300, 0.02, 'normal', 'no need', 'no need', '02073218001', 'morrisonglynne@gmail.com');
+
+INSERT INTO LocalStock VALUES
+('10000001', 'Paracetamol', 'Box', 'Caps', 20, 0.10, 121, 10, 100),
+('10000002', 'Aspirin', 'Box', 'Caps', 20, 0.50, 201, 15, 100),
+('10000003', 'Analgin', 'Box', 'Caps', 10, 1.20, 25, 10, 100),
+('10000004', 'Celebrex, caps 100 mg', 'Box', 'Caps', 10, 10.00, 43, 10, 100),
+('10000005', 'Celebrex, caps 200 mg', 'Box', 'Caps', 10, 18.50, 35, 5, 100),
+('10000006', 'Retin-A Tretin, 30 g', 'Box', 'Caps', 20, 25.00, 28, 10, 100),
+('10000007', 'Lipitor TB, 20 mg', 'Box', 'Caps', 30, 15.50, 10, 10, 100),
+('10000008', 'Claritin CR, 60g', 'Box', 'Caps', 20, 19.50, 21, 10, 100),
+('20000004', 'Iodine tincture', 'Bottle', 'Ml', 100, 0.30, 35, 10, 100),
+('20000005', 'Rhynol', 'Bottle', 'Ml', 200, 2.50, 14, 15, 100),
+('30000001', 'Ospen', 'Box', 'Caps', 20, 10.50, 78, 10, 100),
+('30000002', 'Amopen', 'Box', 'Caps', 30, 15.00, 90, 15, 100),
+('40000001', 'Vitamin C', 'Box', 'Caps', 30, 1.20, 22, 15, 100),
+('40000002', 'Vitamin B12', 'Box', 'Caps', 30, 1.30, 43, 15, 100);
