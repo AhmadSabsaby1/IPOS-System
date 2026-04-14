@@ -2,28 +2,27 @@ package ord.offlineData;
 
 public class MerchantUser {
 
-    private String id;
     private String userName;
     private String password;
 
-    public String merchant_Id = "";
-    public String account_number = "";
-    public String company_name = "";
-    public String contact_name = "";
-    public String contact_email = "";
-    public String contact_phone = "";
+    private String merchant_Id = "";
+    private String account_number = "";
+    private String company_name = "";
+    private String contact_name = "";
+    private String contact_email = "";
+    private String contact_phone = "";
 
-    public String address = "";
-    public double credit_limit = 0.0;
-    public String discount_plan_type = "";
-    public double fixed_discount_rate = 0.0;
-    public String account_status = "";
-    public String flexible_thresholds = "";
-    public int tier_1_threshold = 1000;
-    public int tier_2_threshold = 2000;
-    public double tier_1_discount = 0.0;
-    public double tier_2_discount = 0.01;
-    public double tier_3_discount = 0.02;
+    private String address = "";
+    private double credit_limit = 0.0;
+    private String discount_plan_type = "";
+    private double fixed_discount_rate = 0.0;
+    private String account_status = "";
+    private String flexible_thresholds = "";
+    private int tier_1_threshold = 0;
+    private int tier_2_threshold = 0;
+    private double tier_1_discount = 0;
+    private double tier_2_discount = 0;
+    private double tier_3_discount = 0;
 
     public MerchantUser(
             String userName,
@@ -39,8 +38,11 @@ public class MerchantUser {
             String discount_plan_type,
             double fixed_discount_rate,
             String account_status,
-            String flexible_thresholds) {
-        this.id = id;
+            int tier_1_threshold,
+            int tier_2_threshold,
+            double tier_1_discount,
+            double tier_2_discount,
+            double tier_3_discount) {
         this.userName = userName;
         this.password = password;
         this.merchant_Id = merchant_Id;
@@ -56,14 +58,13 @@ public class MerchantUser {
         this.account_status = account_status;
         this.flexible_thresholds = flexible_thresholds;
 
-
+        this.tier_1_threshold = tier_1_threshold;
+        this.tier_2_threshold = tier_2_threshold;
+        this.tier_3_discount = tier_3_discount;
+        this.tier_1_discount = tier_1_discount;
+        this.tier_2_discount = tier_2_discount;
 
     }
-
-    public String getId() {
-        return id;
-    }
-
     public String getUserName() {
         return userName;
     }
@@ -118,5 +119,25 @@ public class MerchantUser {
 
     public String getFlexible_thresholds() {
         return flexible_thresholds;
+    }
+
+    public int getTier_1_threshold() {
+        return tier_1_threshold;
+    }
+
+    public int getTier_2_threshold() {
+        return tier_2_threshold;
+    }
+
+    public double getTier_1_discount() {
+        return tier_1_discount;
+    }
+
+    public double getTier_2_discount() {
+        return tier_2_discount;
+    }
+
+    public double getTier_3_discount() {
+        return tier_3_discount;
     }
 }

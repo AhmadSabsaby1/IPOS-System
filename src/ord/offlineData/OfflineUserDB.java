@@ -25,9 +25,13 @@ public class OfflineUserDB {
                 "25, Bond Street, London WC1V 8LS",
                 5000,
                 "flexible",
-                null,
+                0.0,
                 "normal",
-                null
+                1000,
+                2000,
+                0,
+                1,
+                2
         ));
     }
 
@@ -46,6 +50,11 @@ public class OfflineUserDB {
                 SessionManager.flexible_thresholds = u.getFlexible_thresholds();
                 SessionManager.contact_name = u.getContact_name();
                 SessionManager.discount_plan_type = u.getDiscount_plan_type();
+                SessionManager.tier_1_discount = u.getTier_1_discount();
+                SessionManager.tier_2_discount = u.getTier_2_discount();
+                SessionManager.tier_3_discount = u.getTier_3_discount();
+                SessionManager.tier_1_threshold = u.getTier_1_threshold();
+                SessionManager.tier_2_threshold = u.getTier_2_threshold();
 
                 System.out.println("Offline login");
                 return true;

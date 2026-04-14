@@ -29,6 +29,10 @@ public class HubView extends JPanel {
     private JLabel discountPlanTypeLabel;
     private JLabel fixedDiscountRateTypeLabel;
 
+    private JLabel tier1DiscountLabel;
+    private JLabel tier2DiscountLabel;
+    private JLabel tier3DiscountLabel;
+
 
     static public String cardId(){
         return "HubView";
@@ -60,6 +64,14 @@ public class HubView extends JPanel {
         discountPlanTypeLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
         fixedDiscountRateTypeLabel = new JLabel();
         fixedDiscountRateTypeLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+        fixedDiscountRateTypeLabel.setVisible(false);
+
+        tier1DiscountLabel = new JLabel();
+        tier1DiscountLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+        tier2DiscountLabel = new JLabel();
+        tier2DiscountLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+        tier3DiscountLabel = new JLabel();
+        tier3DiscountLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
 
         checkLogin();
 
@@ -86,6 +98,9 @@ public class HubView extends JPanel {
                 .addComponent(creditLimitLabel)
                 .addComponent(discountPlanTypeLabel)
                 .addComponent(fixedDiscountRateTypeLabel)
+                .addComponent(tier1DiscountLabel)
+                .addComponent(tier2DiscountLabel)
+                .addComponent(tier3DiscountLabel)
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
@@ -109,6 +124,9 @@ public class HubView extends JPanel {
                 .addComponent(creditLimitLabel)
                 .addComponent(discountPlanTypeLabel)
                 .addComponent(fixedDiscountRateTypeLabel)
+                .addComponent(tier1DiscountLabel)
+                .addComponent(tier2DiscountLabel)
+                .addComponent(tier3DiscountLabel)
         );
 
         goToCatalogueButton.addActionListener(e -> controller.goToCatalogueScreen());
@@ -125,8 +143,11 @@ public class HubView extends JPanel {
         addressLabel.setText("Address: " + SessionManager.address);
         contactPhoneLabel.setText("Phone: " + SessionManager.contact_phone);
         creditLimitLabel.setText("Credit Limit: " + SessionManager.credit_limit);
-        discountPlanTypeLabel.setText("Discount Plan:" + SessionManager.discount_plan_type);
-        fixedDiscountRateTypeLabel.setText("Fixed Discount: " + SessionManager.fixed_discount_rate);
+        discountPlanTypeLabel.setText("Discount Plan: " + SessionManager.discount_plan_type);
+        //fixedDiscountRateTypeLabel.setText("Fixed Discount: " + SessionManager.fixed_discount_rate);
+        tier1DiscountLabel.setText("Discount for < £" + SessionManager.tier_1_threshold + " is " + SessionManager.tier_1_discount + "%");
+        tier2DiscountLabel.setText("Discount between £" + SessionManager.tier_1_threshold + " - £" + SessionManager.tier_2_threshold + " is " + SessionManager.tier_2_discount + "%");
+        tier3DiscountLabel.setText("Discount of £" + SessionManager.tier_2_threshold + "+" + " is " + SessionManager.tier_3_discount + "%");
     }
 
     private void login(){
@@ -136,7 +157,7 @@ public class HubView extends JPanel {
     private void logout(){
         //TODO actual logout
         SessionManager.merchant_Id = "";
-
+        checkLogin();
     }
 
     public void checkLogin() {
@@ -144,11 +165,18 @@ public class HubView extends JPanel {
             //no merchant logged in
             loginButton.setVisible(true);
 
+            goToOrderProgressButton.setVisible(false);
+            goToCatalogueButton.setVisible(false);
+            goToPreviousOrdersButton.setVisible(false);
             logoutButton.setVisible(false);
         }else{
             //merchant logged in
             logoutButton.setVisible(true);
+            goToOrderProgressButton.setVisible(true);
+            goToCatalogueButton.setVisible(true);
+            goToPreviousOrdersButton.setVisible(true);
             fillMerchantDetails();
+
             loginButton.setVisible(false);
         }
     }

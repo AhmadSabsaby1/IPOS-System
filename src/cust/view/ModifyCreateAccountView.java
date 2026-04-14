@@ -149,44 +149,6 @@ public class ModifyCreateAccountView extends JPanel {
                         )
                 )
         ;
-
-        /*horizontal
-                .addComponent(nameComp)
-                .addComponent(addressComp)
-                .addComponent(phoneNumberComp)
-                .addComponent(emailComp)
-                .addComponent(balanceComp)
-                .addComponent(balanceLimitComp)
-                .addComponent(discountTypeComp)
-                .addComponent(tier1DiscountComp)
-                .addComponent(tier1ThresholdComp)
-                .addComponent(tier2DiscountComp)
-                .addComponent(tier2ThresholdComp)
-                .addComponent(tier3DiscountComp)
-                .addComponent(fixedDiscountComp)
-                .addComponent(statusComp)
-                .addComponent(status1stComp)
-                .addComponent(status2ndComp)
-        ;
-
-        vertical
-                .addComponent(nameComp)
-                .addComponent(addressComp)
-                .addComponent(phoneNumberComp)
-                .addComponent(emailComp)
-                .addComponent(balanceComp)
-                .addComponent(balanceLimitComp)
-                .addComponent(discountTypeComp)
-                .addComponent(tier1DiscountComp)
-                .addComponent(tier1ThresholdComp)
-                .addComponent(tier2DiscountComp)
-                .addComponent(tier2ThresholdComp)
-                .addComponent(tier3DiscountComp)
-                .addComponent(fixedDiscountComp)
-                .addComponent(statusComp)
-                .addComponent(status1stComp)
-                .addComponent(status2ndComp)
-        ;*/
     }
 
     public void modifyAccountField(String field, String value) {

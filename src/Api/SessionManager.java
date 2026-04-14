@@ -20,4 +20,10 @@ SessionManager {
     public static double fixed_discount_rate = 0.0;
     public static String account_status = "";
     public static String flexible_thresholds = "";
+
+    public static int tier_1_threshold = 0;
+    public static int tier_2_threshold = 0;
+    public static double tier_1_discount = 0;
+    public static double tier_2_discount = 0;
+    public static double tier_3_discount = 0;
 }

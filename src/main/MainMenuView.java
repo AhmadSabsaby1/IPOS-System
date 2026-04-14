@@ -29,6 +29,7 @@ public class MainMenuView extends JPanel {
         this.main = main;
 
         JButton testButton = new JButton("Test");
+        testButton.setVisible(false);
 
         TitleLabel titleLabel = new TitleLabel("IPOS-CA: Main Menu");
         goToCustButton = new JButton("Manage Account Holders and Orders");
@@ -101,12 +102,14 @@ public class MainMenuView extends JPanel {
             goToCustButton.setVisible(false);
             goToRPTButton.setVisible(false);
             goToTemplatesButton.setVisible(false);
+            goToStockButton.setVisible(false);
         } else if (role == UserRole.ADMIN){
             goToUserManagementButton.setVisible(true);
             goToOrdButton.setVisible(true);
             goToCustButton.setVisible(true);
             goToRPTButton.setVisible(true);
             goToTemplatesButton.setVisible(true);
+            goToStockButton.setVisible(true);
         } else if (role == UserRole.PHARMACIST) {
             goToUserManagementButton.setVisible(false);
             goToRPTButton.setVisible(false);
@@ -114,6 +117,7 @@ public class MainMenuView extends JPanel {
 
             goToOrdButton.setVisible(true);
             goToCustButton.setVisible(true);
+            goToRPTButton.setVisible(true);
         } else if (role == UserRole.MANAGER) {
             goToUserManagementButton.setVisible(false);
 
@@ -121,9 +125,10 @@ public class MainMenuView extends JPanel {
             goToCustButton.setVisible(true);
             goToRPTButton.setVisible(true);
             goToTemplatesButton.setVisible(true);
+            goToStockButton.setVisible(true);
         }
 
         //TODO remove this, debug only!!
-        goToOrdButton.setVisible(true);
+        //goToOrdButton.setVisible(true);
     }
 }
