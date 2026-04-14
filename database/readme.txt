@@ -86,7 +86,7 @@ CREATE TABLE Transactions
     cardType VARCHAR(10),
     firstFour INT unsigned,
     LastFour INT unsigned,
-    expiryDate VARCHAR(4),
+    expiryDate VARCHAR(10),
     shippingAddress VARCHAR(45),
     orderDate VARCHAR(10),
     totalCost DOUBLE unsigned,
@@ -121,21 +121,75 @@ INSERT INTO Users VALUES
 ('clerk', 'Paperwork', 'Accountant');
 
 INSERT INTO AccountHolders VALUES
-('ACC0001', 'Ms Eva Bauyer', '1, Liverpool street, London EC2V 8NS', 0, 500, 'Fixed', 0.03, 0, 0, 0, 0, 0, 'normal', 'no need', 'no need', '02073218001', 'evabauyer@gmail.com'),
+('ACC0001', 'Ms Eva Bauyer', '1, Liverpool street, London EC2V 8NS', 79.74, 500, 'Fixed', 0.03, 0, 0, 0, 0, 0, 'suspended', 'sent', 'no need', '02073218001', 'evabauyer@gmail.com'),
 ('ACC0002', 'Ms Glynne Morisson', '1, Liverpool street, London EC2V 8NS', 0, 500, 'Variable',0, 0, 100, 0.01, 300, 0.02, 'normal', 'no need', 'no need', '02073218001', 'morrisonglynne@gmail.com');
 
 INSERT INTO LocalStock VALUES
-('10000001', 'Paracetamol', 'Box', 'Caps', 20, 0.10, 121, 10, 100),
-('10000002', 'Aspirin', 'Box', 'Caps', 20, 0.50, 201, 15, 100),
-('10000003', 'Analgin', 'Box', 'Caps', 10, 1.20, 25, 10, 100),
-('10000004', 'Celebrex, caps 100 mg', 'Box', 'Caps', 10, 10.00, 43, 10, 100),
-('10000005', 'Celebrex, caps 200 mg', 'Box', 'Caps', 10, 18.50, 35, 5, 100),
-('10000006', 'Retin-A Tretin, 30 g', 'Box', 'Caps', 20, 25.00, 28, 10, 100),
-('10000007', 'Lipitor TB, 20 mg', 'Box', 'Caps', 30, 15.50, 10, 10, 100),
-('10000008', 'Claritin CR, 60g', 'Box', 'Caps', 20, 19.50, 21, 10, 100),
-('20000004', 'Iodine tincture', 'Bottle', 'Ml', 100, 0.30, 35, 10, 100),
-('20000005', 'Rhynol', 'Bottle', 'Ml', 200, 2.50, 14, 15, 100),
-('30000001', 'Ospen', 'Box', 'Caps', 20, 10.50, 78, 10, 100),
-('30000002', 'Amopen', 'Box', 'Caps', 30, 15.00, 90, 15, 100),
-('40000001', 'Vitamin C', 'Box', 'Caps', 30, 1.20, 22, 15, 100),
-('40000002', 'Vitamin B12', 'Box', 'Caps', 30, 1.30, 43, 15, 100);
+('10000001', 'Paracetamol', 'Box', 'Caps', 20, 0.10, 131, 10, 100),
+('10000002', 'Aspirin', 'Box', 'Caps', 20, 0.50, 197, 15, 100),
+('10000003', 'Analgin', 'Box', 'Caps', 10, 1.20, 36, 10, 100),
+('10000004', 'Celebrex, caps 100 mg', 'Box', 'Caps', 10, 10.00, 37, 10, 100),
+('10000005', 'Celebrex, caps 200 mg', 'Box', 'Caps', 10, 18.50, 34, 5, 100),
+('10000006', 'Retin-A Tretin, 30 g', 'Box', 'Caps', 20, 25.00, 24, 10, 100),
+('10000007', 'Lipitor TB, 20 mg', 'Box', 'Caps', 30, 15.50, 9, 10, 100),
+('10000008', 'Claritin CR, 60g', 'Box', 'Caps', 20, 19.50, 20, 10, 100),
+('20000004', 'Iodine tincture', 'Bottle', 'Ml', 100, 0.30, 33, 10, 100),
+('20000005', 'Rhynol', 'Bottle', 'Ml', 200, 2.50, 32, 15, 100),
+('30000001', 'Ospen', 'Box', 'Caps', 20, 10.50, 84, 10, 100),
+('30000002', 'Amopen', 'Box', 'Caps', 30, 15.00, 125, 15, 100),
+('40000001', 'Vitamin C', 'Box', 'Caps', 30, 1.20, 18, 15, 100),
+('40000002', 'Vitamin B12', 'Box', 'Caps', 30, 1.30, 57, 15, 100);
+
+INSERT INTO Transactions VALUES
+('IP0001', 'Card', 0, '', 0, 0, '', '1, Liverpool street, London EC2V 8NS', '2026-03-01', 44.14),
+
+('IP0002', 'Cash', 4.60, '', 0, 0, '', '', '2026-03-03', 4.60),
+('IP0003', 'Card', 70.00, 'Credit', 1648, 9874, '2030/02/01', '', '2026-03-03', 70.00),
+('IP0004', 'Cash', 35.00, '', 0, 0, '', '', '2026-03-03', 35.00),
+('IP0005', 'Cash', 24.10, '', 0, 0, '', '', '2026-03-03', 24.10),
+('IP0006', 'Card', 23.40, 'Debit', 6255, 9909, '2029/11/20', '', '2026-03-03', 23.40),
+('IP0007', 'Cash', 47.60, '', 0, 0, '', '', '2026-03-03', 47.60),
+
+('IP0008', 'Card', 74.60, 'Credit', 8265, 2234, '2030/01/30', '1, Liverpool street, London EC2V 8NS', '2026-03-05', 74.60),
+
+('IP0009', 'Card', 0, '', 0, 0, '', '1, Liverpool street, London EC2V 8NS', '2026-04-01', 35.60);
+
+INSERT INTO LocalStock_Transactions VALUES
+('30000001', 'IP0001', 1),
+('30000002', 'IP0001', 2),
+('40000001', 'IP0001', 2),
+('40000002', 'IP0001', 2),
+
+('10000002', 'IP0002', 2),
+('10000003', 'IP0002', 3),
+
+('10000004', 'IP0003', 2),
+('10000006', 'IP0003', 2),
+
+('10000007', 'IP0004', 1),
+('10000008', 'IP0004', 1),
+
+('10000005', 'IP0005', 1),
+('20000004', 'IP0005', 2),
+('20000005', 'IP0005', 2),
+
+('30000001', 'IP0006', 2),
+('40000001', 'IP0006', 2),
+
+('30000002', 'IP0007', 3),
+('40000002', 'IP0007', 2),
+
+('30000001', 'IP0009', 1),
+('10000003', 'IP0009', 3),
+('10000004', 'IP0009', 2),
+('40000002', 'IP0009', 2),
+
+('10000002', 'IP0008', 2),
+('10000003', 'IP0008', 3),
+('10000004', 'IP0008', 2),
+('10000006', 'IP0008', 2);
+
+INSERT INTO AccountHolders_Transactions VALUES
+('IP0001', 'ACC0001'),
+('IP0008', 'ACC0002'),
+(orderID, 'ACC0001');
