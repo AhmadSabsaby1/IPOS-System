@@ -32,18 +32,20 @@ public class DBTransactions extends DBParent {
 
     /**
      * Updates the amount received, card type, first four and last four digits and the expiry date
-     * of a specified transaction. Does NOT ensure the payment being changed belongs to an account holder
+     * of a specified transaction. Also sets paymentType to "card". Does NOT ensure the payment being
+     * changed belongs to an account holder
      */
     public void modifyPaymentDetails(String orderID, double amountReceived, String cardType,
                                      int firstFour, int lastFour, String expiryDate) throws SQLException {
-        String sql = "UPDATE Transactions SET amountReceived = ?, cardType = ?, firstFour = ?, lastFour = ?, expiryDate = ? WHERE orderID = ?";
+        String sql = "UPDATE Transactions SET amountReceived = ?, cardType = ?, firstFour = ?, lastFour = ?, expiryDate = ?, paymentType = ? WHERE orderID = ?";
         PreparedStatement query = con.prepareStatement(sql);
         query.setDouble(1, amountReceived);
         query.setString(2, cardType);
         query.setInt(3, firstFour);
         query.setInt(4, lastFour);
         query.setString(5, expiryDate);
-        query.setString(6, orderID);
+        query.setString(6, "card");
+        query.setString(7, orderID);
         query.executeUpdate();
     }
 
