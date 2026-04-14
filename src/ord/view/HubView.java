@@ -33,6 +33,8 @@ public class HubView extends JPanel {
     private JLabel tier2DiscountLabel;
     private JLabel tier3DiscountLabel;
 
+    private JLabel outstandingBalanceLabel;
+
 
     static public String cardId(){
         return "HubView";
@@ -73,6 +75,9 @@ public class HubView extends JPanel {
         tier3DiscountLabel = new JLabel();
         tier3DiscountLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
 
+        outstandingBalanceLabel = new JLabel();
+        outstandingBalanceLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+
         checkLogin();
 
         GroupLayout layout = new GroupLayout(this);
@@ -96,6 +101,7 @@ public class HubView extends JPanel {
                 .addComponent(addressLabel)
                 .addComponent(contactPhoneLabel)
                 .addComponent(creditLimitLabel)
+                .addComponent(outstandingBalanceLabel)
                 .addComponent(discountPlanTypeLabel)
                 .addComponent(fixedDiscountRateTypeLabel)
                 .addComponent(tier1DiscountLabel)
@@ -122,6 +128,7 @@ public class HubView extends JPanel {
                 .addComponent(addressLabel)
                 .addComponent(contactPhoneLabel)
                 .addComponent(creditLimitLabel)
+                .addComponent(outstandingBalanceLabel)
                 .addComponent(discountPlanTypeLabel)
                 .addComponent(fixedDiscountRateTypeLabel)
                 .addComponent(tier1DiscountLabel)
@@ -150,20 +157,34 @@ public class HubView extends JPanel {
         tier3DiscountLabel.setText("Discount of £" + SessionManager.tier_2_threshold + "+" + " is " + SessionManager.tier_3_discount + "%");
     }
 
+    private void removeMerchantDetails() {
+        companyNameLabel.setText("");
+        accountNumberLabel.setText("");
+        addressLabel.setText("");
+        contactPhoneLabel.setText("");
+        creditLimitLabel.setText("");
+        discountPlanTypeLabel.setText("");
+        //fixedDiscountRateTypeLabel.setText("");
+        tier1DiscountLabel.setText("");
+        tier2DiscountLabel.setText("");
+        tier3DiscountLabel.setText("");
+    }
+
     private void login(){
         controller.goToLogin();
     }
 
     private void logout(){
-        //TODO actual logout
         SessionManager.merchant_Id = "";
         checkLogin();
+        removeMerchantDetails();
     }
 
     public void checkLogin() {
         if (SessionManager.merchant_Id.isEmpty()){
             //no merchant logged in
             loginButton.setVisible(true);
+            removeMerchantDetails();
 
             goToOrderProgressButton.setVisible(false);
             goToCatalogueButton.setVisible(false);

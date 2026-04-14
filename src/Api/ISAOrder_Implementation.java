@@ -92,9 +92,7 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
 
     @Override
     public String queryBalance(String merchantID) {
-
         try {
-
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL + "/merchants/" + SessionManager.merchant_Id+"/balance")).header("Content-Type", "queryBalance/json").header("Authorization","Bearer" + SessionManager.token).GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
