@@ -10,12 +10,14 @@ import java.util.UUID.*;
 
 
 public class ISAOrder_Implementation implements ISAOrderAPI {
-    private static final String ISA_ORDER_API_URL = "https://grtggfghfgh.free.beeceptor.com";
+    private static final String ISA_ORDER_API_URL = "https://pioiyuo.free.beeceptor.com";
 
 
     /// once we get the actual URL from the other teams we would replace them
+
+
     @Override
-    public boolean placeOrder(HashMap<Integer, Integer> orderDetails) {
+    public boolean placeOrder(HashMap<String, Integer> orderDetails) {
 
         StringBuilder sb= new StringBuilder();
 
@@ -24,10 +26,9 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
 
         int i = 0;
 
-        for (int productId : orderDetails.keySet()) {
+        for (String productId : orderDetails.keySet()) {
             int quantity = orderDetails.get(productId);
-            UUID productUUID = UUID.fromString(String.valueOf(productId));
-            sb.append("{").append("\"productId\":\"").append(productUUID).append("\",")
+            sb.append("{").append("\"productId\":\"").append(productId).append("\",")
                     .append("\"quantity\":\"").append(quantity).append("\"}");
 
 
@@ -76,6 +77,7 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
+
             if (response.statusCode() == 200) {
                 System.out.println("Order progress retrieved successfully.");
                 return response.body();
@@ -98,8 +100,7 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
                 String body = response.body();
-                String merchant_uuid = body.split("\"merchant_id\":")[1].split("\"")[1];
-                String merchant_id = UUID.fromString(merchant_uuid).toString();
+                String merchant_id = body.split("\"merchant_id\":")[1].split("\"")[1];
                 String credit_limit = body.split("\"credit_limit\":")[1].split("\"")[0].trim();
                 String outstandBalance = body.split("\"oustanding_balance\":")[1].split("\"")[0].trim();
                 String availBalance = body.split("\"available_balance\":")[1].split("\"")[0].trim();
@@ -125,13 +126,16 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
 
     @Override
     public String[] viewPreviousOrders(String merchantID) {
+
         try {
+
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL+"/orders")).header("Content-Type", "viewPreviousOrders/json").header("Authorization","Bearer" + SessionManager.token).GET().build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-                System.out.println("Order retrieved successfully.");
+                return response.body().replace("[", "").replace("]", "").split("},");
+
 
             }
         } catch (Exception e) {
@@ -230,28 +234,6 @@ public class ISAOrder_Implementation implements ISAOrderAPI {
         }
     }
 
-
-    @Override
-    public String[] viewIndividualInvoice(String orderID) {
-        try {
-
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_ORDER_API_URL+ "/api/orders/" + orderID +"/invoice")).header("Content-Type", "viewIndividualInvoice/json").header("Authorization","Bearer" + SessionManager.token).GET().build();
-            HttpClient client = HttpClient.newHttpClient();
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            if (response.statusCode() == 200) {
-                System.out.println("Invoice fetched sucessfully.");
-                return new String[]{response.body()};
-            } else {
-                return new String[0];
-            }
-        } catch (Exception e) {
-            System.out.println("couldnt reach team ISA Order API: " + e.getMessage());
-            return new String[0];
-        }
-
-
-    }
 }
 
 

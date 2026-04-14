@@ -61,17 +61,7 @@ public class HubView extends JPanel {
         fixedDiscountRateTypeLabel = new JLabel();
         fixedDiscountRateTypeLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
 
-        if (SessionManager.merchant_Id.isEmpty()){
-            //no merchant logged in
-            loginButton.setVisible(true);
-
-            logoutButton.setVisible(false);
-        }else{
-            //merchant logged in
-            logoutButton.setVisible(true);
-            fillMerchantDetails();
-            loginButton.setVisible(false);
-        }
+        checkLogin();
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
@@ -130,13 +120,13 @@ public class HubView extends JPanel {
     }
 
     private void fillMerchantDetails() {
-        companyNameLabel.setText("Account Holder Name: ");
-        accountNumberLabel.setText("Account Number: ");
-        addressLabel.setText("Address: ");
-        contactPhoneLabel.setText("Phone: ");
-        creditLimitLabel.setText("Credit Limit: ");
-        discountPlanTypeLabel.setText("Discount Plan:");
-        fixedDiscountRateTypeLabel.setText("Fixed Discount: ");
+        companyNameLabel.setText("Account Holder Name: " + SessionManager.company_name);
+        accountNumberLabel.setText("Account Number: " + SessionManager.account_number);
+        addressLabel.setText("Address: " + SessionManager.address);
+        contactPhoneLabel.setText("Phone: " + SessionManager.contact_phone);
+        creditLimitLabel.setText("Credit Limit: " + SessionManager.credit_limit);
+        discountPlanTypeLabel.setText("Discount Plan:" + SessionManager.discount_plan_type);
+        fixedDiscountRateTypeLabel.setText("Fixed Discount: " + SessionManager.fixed_discount_rate);
     }
 
     private void login(){
@@ -147,5 +137,19 @@ public class HubView extends JPanel {
         //TODO actual logout
         SessionManager.merchant_Id = "";
 
+    }
+
+    public void checkLogin() {
+        if (SessionManager.merchant_Id.isEmpty()){
+            //no merchant logged in
+            loginButton.setVisible(true);
+
+            logoutButton.setVisible(false);
+        }else{
+            //merchant logged in
+            logoutButton.setVisible(true);
+            fillMerchantDetails();
+            loginButton.setVisible(false);
+        }
     }
 }

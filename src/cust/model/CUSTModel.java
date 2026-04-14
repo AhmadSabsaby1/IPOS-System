@@ -1,5 +1,6 @@
 package cust.model;
 
+import Api.IPUPayment_Implementation;
 import database.DBAccountHolders;
 import database.DBLocalStock;
 import database.DBTransactions;
@@ -14,6 +15,7 @@ public class CUSTModel {
     private DBLocalStock localStockDB;
     private DBAccountHolders accountHoldersDB;
     private DBTransactions transactionsDB;
+    private IPUPayment_Implementation IPUPaymentAPI;
 
     //TEMP
     private ArrayList<AccountHolder> accountHolders;
@@ -25,6 +27,8 @@ public class CUSTModel {
     private Stack<String> orderDates;
 
     public CUSTModel(){
+        IPUPaymentAPI = new IPUPayment_Implementation();
+
         //MOCK_createAccountHolders();
         //MOCK_createCatalogue();
         MOCK_createStacks();
@@ -486,6 +490,8 @@ public class CUSTModel {
         if (paymentType.equals(Order.PaymentType.CARD.toString())) {
             firstFour = Integer.parseInt(creditCard.substring(0, 4));
             lastFour = Integer.parseInt(creditCard.substring(creditCard.length() - 4));
+            //TODO paymentAmount should be a double, card number a string, and so the expiry date
+            //IPUPaymentAPI.submitPayment((int) totalCost, accountHolder.getName(), creditCard, expiryDate, cardType);
         }
 
         try{

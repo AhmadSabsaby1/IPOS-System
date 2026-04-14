@@ -81,6 +81,7 @@ public class ORDController {
     }
 
     public void goToHubScreen(){
+        hubView.checkLogin();
         mainView.changeCardView(HubView.cardId());
     }
 

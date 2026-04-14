@@ -52,9 +52,6 @@ public class CUSTController {
         mainView.addCardLayout(makePaymentView, MakePaymentView.cardId());
 
         model = new CUSTModel();
-
-        //TODO put the automatic status change in another place?
-        model.computeAutomaticStatusChange();
     }
 
     /// /////////// SCREEN CHANGES //////////////////
@@ -69,6 +66,8 @@ public class CUSTController {
         mainView.changeCardView(SeeAllOrdersView.cardId());
     }
     public void goToHubScreen(){
+        //TODO put the automatic status change in another place?
+        model.computeAutomaticStatusChange();
         mainView.changeCardView(HubView.cardId());
     }
 

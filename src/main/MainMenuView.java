@@ -79,11 +79,9 @@ public class MainMenuView extends JPanel {
     }
 
     private void test(){
-        String[] a = {"{\"id\": \"10000001\", \"description\": \"Paracetamol\", \"items\":[{\"id\":\"10001\"}, {\"id\":\"10001\"}, {\"id\":\"10001\"}]}"};
-        for (String s : a) {
-            JsonObject o = JsonObject.parse(s);
-            String[] i = JsonObject.parseArray(o.get("items"));
-        }
+        String s = "1234567";
+        System.out.println(s.substring(1));
+        System.out.println(s.substring(0,s.length() - 1));
     }
 
     public void checkPerms(){

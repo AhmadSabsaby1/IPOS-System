@@ -33,8 +33,8 @@ public class ApiTest {
         ///sendOrderDetails.POST
         System.out.println("\n--- Testing sendOrderDetails ---");
         HashMap<Integer, Integer> orderDetails = new HashMap<>();
-        orderDetails.put(1001, 5);
-        orderDetails.put(1002, 3);
+        orderDetails.put(10000001, 5);
+        orderDetails.put(10000001, 3);
         boolean sendOrderResult = CAapi.sendOrderDetails(orderDetails,55,"longjohn");
         System.out.println("Send Order Details Success: " + sendOrderResult);
 
@@ -72,9 +72,9 @@ public class ApiTest {
         /// placeOrder.POST
         //for merchant
         System.out.println("--- Testing placeOrder ---");
-        HashMap<Integer, Integer> cart = new HashMap<>();
-        cart.put(1001, 10);
-        cart.put(1002, 2);
+        HashMap<String, Integer> cart = new HashMap<>();
+        cart.put("10000001", 10);
+        cart.put("10000002", 2);
         boolean placeResult = ISAapi.placeOrder( cart);
         System.out.println("Place Order Success: " + placeResult);
 

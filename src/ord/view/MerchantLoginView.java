@@ -56,9 +56,7 @@ public class MerchantLoginView extends JPanel {
     }
 
     private void login() {
-        //TODO do the actual login
         if (controller.merchantLogin(usernameField.getText(), new String(passwordField.getPassword()))){
-            SessionManager.merchant_Id = "someMerchantID";
             controller.goToHubScreen();
         }else{
             infoLabel.setText("Incorrect login");
