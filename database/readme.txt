@@ -115,14 +115,14 @@ CREATE TABLE LocalStock_Transactions
 SAMPLE DATA INSERT: (This can be done any time after the database is created as long as no primary keys are duplicated)
 
 INSERT INTO Users VALUES
-('sysdba', 'masterkey', 'Administrator'),
-('manager', 'Get_it_done', 'Director of Operations/Manager'),
-('accountant', 'Count_money', 'Senior accountant'),
-('clerk', 'Paperwork', 'Accountant');
+('sysdba', 'masterkey', 'ADMIN'),
+('manager', 'Get_it_done', 'MANAGER'),
+('accountant', 'Count_money', 'PHARMACIST'),
+('clerk', 'Paperwork', 'PHARMACIST');
 
 INSERT INTO AccountHolders VALUES
-('ACC0001', 'Ms Eva Bauyer', '1, Liverpool street, London EC2V 8NS', 79.74, 500, 'Fixed', 0.03, 0, 0, 0, 0, 0, 'suspended', 'sent', 'no need', '02073218001', 'evabauyer@gmail.com'),
-('ACC0002', 'Ms Glynne Morisson', '1, Liverpool street, London EC2V 8NS', 0, 500, 'Variable',0, 0, 100, 0.01, 300, 0.02, 'normal', 'no need', 'no need', '02073218001', 'morrisonglynne@gmail.com');
+('ACC0001', 'Ms Eva Bauyer', '1, Liverpool street, London EC2V 8NS', 79.74, 500, 'fixed', 0.03, 0, 0, 0, 0, 0, 'suspended', 'sent', 'no_need', '02073218001', 'evabauyer@gmail.com'),
+('ACC0002', 'Ms Glynne Morisson', '1, Liverpool street, London EC2V 8NS', 0, 500, 'flexible', 0, 0, 100, 0.01, 300, 0.02, 'normal', 'no_need', 'no_need', '02073218001', 'morrisonglynne@gmail.com');
 
 INSERT INTO LocalStock VALUES
 ('10000001', 'Paracetamol', 'Box', 'Caps', 20, 0.10, 131, 10, 100),
@@ -192,4 +192,4 @@ INSERT INTO LocalStock_Transactions VALUES
 INSERT INTO AccountHolders_Transactions VALUES
 ('IP0001', 'ACC0001'),
 ('IP0008', 'ACC0002'),
-(orderID, 'ACC0001');
+('IP0009', 'ACC0001');
