@@ -20,6 +20,7 @@ public class MainMenuView extends JPanel {
     private JButton goToUserManagementButton;
     private JButton goToRPTButton;
     private JButton goToTemplatesButton;
+    private JButton goToStockButton;
 
     public static String cardId(){
         return "MainMenuView";
@@ -36,6 +37,7 @@ public class MainMenuView extends JPanel {
         goToUserManagementButton = new JButton("Manage Users");
         goToRPTButton = new JButton("Generate Reports");
         goToTemplatesButton = new JButton("Manage Templates");
+        goToStockButton = new JButton("Manage Stock");
 
         checkPerms();
 
@@ -53,6 +55,7 @@ public class MainMenuView extends JPanel {
                 .addComponent(goToOrdButton)
                 .addComponent(goToRPTButton)
                 .addComponent(goToTemplatesButton)
+                .addComponent(goToStockButton)
                 .addComponent(testButton)
         );
 
@@ -65,6 +68,7 @@ public class MainMenuView extends JPanel {
                 .addComponent(goToOrdButton, 50, 50, 50)
                 .addComponent(goToRPTButton, 50, 50, 50)
                 .addComponent(goToTemplatesButton, 50, 50, 50)
+                .addComponent(goToStockButton, 50, 50, 50)
                 .addComponent(testButton)
         );
 
@@ -74,6 +78,7 @@ public class MainMenuView extends JPanel {
         goToUserManagementButton.addActionListener(e->main.goToUserManagement());
         goToRPTButton.addActionListener(e->main.goToRPT());
         goToTemplatesButton.addActionListener(e->main.goToTemplates());
+        goToStockButton.addActionListener(e->main.goToStock());
 
         testButton.addActionListener(e->test());
     }

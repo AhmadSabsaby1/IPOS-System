@@ -3,6 +3,7 @@ package main;
 import cust.controller.CUSTController;
 import ord.controller.ORDController;
 import rpt.controller.RPTController;
+import stock.controller.STOCKController;
 import templates.controller.TemplateController;
 import users.view.LoginFrame;
 import users.view.UserManagementFrame;
@@ -20,6 +21,7 @@ public class Main {
     private UserManagementFrame userManagementFrame;
     private RPTController rptController;
     private TemplateController templateController;
+    private STOCKController stockController;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Main::new);
@@ -39,6 +41,10 @@ public class Main {
         mainMenuView.checkPerms();
     }
 
+    public void goToStock(){
+        stockController = new STOCKController();
+        mainView.dispose();
+    }
     public void goToCust() {
         custController = new CUSTController();
         mainView.dispose();
