@@ -19,11 +19,11 @@ public class MerchantUser {
     public double fixed_discount_rate = 0.0;
     public String account_status = "";
     public String flexible_thresholds = "";
-    public int tier_1_threshold = 0;
-    public int tier_2_threshold = 0;
+    public int tier_1_threshold = 1000;
+    public int tier_2_threshold = 2000;
     public double tier_1_discount = 0.0;
-    public double tier_2_discount = 0.0;
-    public double tier_3_discount = 0.0;
+    public double tier_2_discount = 0.01;
+    public double tier_3_discount = 0.02;
 
     public MerchantUser(
             String userName,

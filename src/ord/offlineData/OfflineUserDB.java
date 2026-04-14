@@ -14,18 +14,18 @@ public class OfflineUserDB {
     private void populateOfflineDB() {
         users = new ArrayList<>();
         users.add(new MerchantUser(
-                "a",
-                "a",
-                "askdakdjh",
-                "ACC001",
-                "Greenfield Killme",
-                "Mr. Shinigami-sama",
-                "4242@shinigami.com",
-                "42424242",
-                "42 Killme st.",
-                1000,
-                "fixed",
-                3,
+                "cosymed",
+                "bondstreet",
+                "Ahmad123",
+                "ACC0002",
+                "Cosymed Ltd",
+                "Mr Alex Wright",
+                "Sabsaby@hotmail.com",
+                "0207 321 8001",
+                "25, Bond Street, London WC1V 8LS",
+                5000,
+                "flexible",
+                null,
                 "normal",
                 null
         ));
