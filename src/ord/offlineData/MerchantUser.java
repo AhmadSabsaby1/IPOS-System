@@ -19,6 +19,11 @@ public class MerchantUser {
     public double fixed_discount_rate = 0.0;
     public String account_status = "";
     public String flexible_thresholds = "";
+    public int tier_1_threshold = 0;
+    public int tier_2_threshold = 0;
+    public double tier_1_discount = 0.0;
+    public double tier_2_discount = 0.0;
+    public double tier_3_discount = 0.0;
 
     public MerchantUser(
             String userName,
@@ -50,6 +55,8 @@ public class MerchantUser {
         this.fixed_discount_rate = fixed_discount_rate;
         this.account_status = account_status;
         this.flexible_thresholds = flexible_thresholds;
+
+
 
     }
 
