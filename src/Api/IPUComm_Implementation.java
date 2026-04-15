@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 public class IPUComm_Implementation implements IPUCommAPI {
 
     ///i think WORKS!!
-    private static final String IPU_COMM_URL = "https://webhook.site/e2225256-8db6-4234-ba8e-af3a51faa852";
+    private static final String IPU_COMM_URL = "https://thevylethomsa.free.beeceptor.com";
     /// once we get the actual URL from the other teams we would replace them
 
     @Override
@@ -31,7 +31,7 @@ public class IPUComm_Implementation implements IPUCommAPI {
         );
 
 
-                HttpRequest request = HttpRequest.newBuilder().uri(URI.create(IPU_COMM_URL)).header("Content-Type", "sendEmail/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
+                HttpRequest request = HttpRequest.newBuilder().uri(URI.create(IPU_COMM_URL)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -76,7 +76,7 @@ public class IPUComm_Implementation implements IPUCommAPI {
 
 
 
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(IPU_COMM_URL)).header("Content-Type", "getOrderUpdate/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(IPU_COMM_URL)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)).build();
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 

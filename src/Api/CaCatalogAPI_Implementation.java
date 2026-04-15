@@ -16,7 +16,7 @@ import ord.model.Item;
 public class CaCatalogAPI_Implementation implements ICACatalogAPI {
 
     private DBLocalStock InternalDB = new DBLocalStock();
-    private static final String ISA_CATALOG_API_URL = "https://webhook.site/0fdea722-071a-4e8b-8500-3631becf3e11";
+    private static final String ISA_CATALOG_API_URL = "https://thevylethomsa.free.beeceptor.com";
 
     public CaCatalogAPI_Implementation() throws SQLException, ClassNotFoundException {
         super();
@@ -79,7 +79,7 @@ public class CaCatalogAPI_Implementation implements ICACatalogAPI {
 
                     HttpClient client = HttpClient.newHttpClient( );
                     ///THIS WORKS!!
-                    HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_CATALOG_API_URL)).header("content-Type", "getCatalogue/json").POST(HttpRequest.BodyPublishers.ofString(sb.toString())).build();
+                    HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_CATALOG_API_URL)).header("content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(sb.toString())).build();
                     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
                 } catch (Exception e) {
@@ -121,7 +121,7 @@ public class CaCatalogAPI_Implementation implements ICACatalogAPI {
 
             HttpClient client = HttpClient.newHttpClient( );
             ///THIS WORKS!!
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_CATALOG_API_URL)).header("content-Type", "sendOrderDetails/json").POST(HttpRequest.BodyPublishers.ofString(sb.toString())).build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(ISA_CATALOG_API_URL)).header("content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(sb.toString())).build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {

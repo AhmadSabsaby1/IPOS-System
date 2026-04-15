@@ -8,7 +8,7 @@ import java.net.http.HttpResponse;
 
 public class IPUPayment_Implementation implements IPUPaymentAPI {
 
-    private static final String IPU_PAYMENT_API_URL = "https://webhook.site/e2225256-8db6-4234-ba8e-af3a51faa852";
+    private static final String IPU_PAYMENT_API_URL = "https://thevylethomsa.free.beeceptor.com";
     /// once we get the actual URL from the other teams we would replace them
 
 

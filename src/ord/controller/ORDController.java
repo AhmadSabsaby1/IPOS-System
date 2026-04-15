@@ -25,6 +25,9 @@ public class ORDController {
     private String merchantId;
 
     public ORDController() {
+        //instantiates the model
+        model = new ORDModel();
+
         catalogueView = new CatalogueView(this);
         cartView = new CartView(this);
         previousOrdersView = new PreviousOrdersView(this);
@@ -40,9 +43,6 @@ public class ORDController {
         mainView.addCardLayout(previousOrdersView, PreviousOrdersView.cardId());
         mainView.addCardLayout(orderProgressView, OrderProgressView.cardId());
         mainView.addCardLayout(merchantLoginView, MerchantLoginView.cardId());
-
-        //instantiates the model
-        model = new ORDModel();
 
         //populates the catalogue table with the catalogue the model provides
         catalogueView.populateCatalogue(getCatalogue());
@@ -159,5 +159,9 @@ public class ORDController {
 
     public boolean merchantLogin(String username, String password) {
         return model.merchantLogin(username, password);
+    }
+
+    public String queryBalance() {
+        return model.queryBalance();
     }
 }

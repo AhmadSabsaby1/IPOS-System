@@ -8,11 +8,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Stack;
 
-/**
- * <strong>THIS IS A MOCK CLASS AND IT IS NOT REPRESENTATIVE OF ANY ACTUAL DB OR API CLASS</strong>
- * <p>Most of the returned values will be a <code>ResultSet</code>,a <code>JSon</code> object or
- * something like that. It <strong>WON'T</strong> be an <code>Item</code>.
- */
 public class OfflineOrderAPI {
     private ArrayList<OrderSA> orderDB;
 

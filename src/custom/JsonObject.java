@@ -7,6 +7,9 @@ public class JsonObject {
     private Map<String, String> values;
 
     public static JsonObject parse(String json) {
+        if (json == null || json.isEmpty() || json.equals("{}"))
+            return null;
+
         Map<String, String> map = new HashMap<>();
         String jsonString = json;
 

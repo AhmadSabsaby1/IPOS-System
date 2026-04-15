@@ -25,6 +25,7 @@ public class CUSTController {
     private MakePaymentView makePaymentView;
 
     public CUSTController(){
+        model = new CUSTModel();
         mainView = new CUSTMainView();
         accountManagerView = new AccountManagerView(this);
         hubView = new HubView(this);
@@ -51,7 +52,7 @@ public class CUSTController {
         mainView.addCardLayout(orderCart, OrderCart.cardId());
         mainView.addCardLayout(makePaymentView, MakePaymentView.cardId());
 
-        model = new CUSTModel();
+
     }
 
     /// /////////// SCREEN CHANGES //////////////////

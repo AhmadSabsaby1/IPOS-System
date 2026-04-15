@@ -1,6 +1,8 @@
 package ord.view;
 
+import Api.ISAOrderAPI;
 import Api.SessionManager;
+import custom.JsonObject;
 import custom.TitleLabel;
 import ord.controller.ORDController;
 import users.model.Session;
@@ -152,9 +154,19 @@ public class HubView extends JPanel {
         creditLimitLabel.setText("Credit Limit: " + SessionManager.credit_limit);
         discountPlanTypeLabel.setText("Discount Plan: " + SessionManager.discount_plan_type);
         //fixedDiscountRateTypeLabel.setText("Fixed Discount: " + SessionManager.fixed_discount_rate);
-        tier1DiscountLabel.setText("Discount for < £" + SessionManager.tier_1_threshold + " is " + SessionManager.tier_1_discount + "%");
-        tier2DiscountLabel.setText("Discount between £" + SessionManager.tier_1_threshold + " - £" + SessionManager.tier_2_threshold + " is " + SessionManager.tier_2_discount + "%");
-        tier3DiscountLabel.setText("Discount of £" + SessionManager.tier_2_threshold + "+" + " is " + SessionManager.tier_3_discount + "%");
+
+        JsonObject o = JsonObject.parse(controller.queryBalance());
+        if (o != null)
+            outstandingBalanceLabel.setText("Outstanding Balance: " + o.get("outstanding_balance"));
+        else
+            outstandingBalanceLabel.setText("Outstanding Balance: 0.0");
+
+        //tier1DiscountLabel.setText("Discount for < £" + SessionManager.tier_1_threshold + " is " + SessionManager.tier_1_discount + "%");
+        tier1DiscountLabel.setText("Discount for < £1000 is 0%");
+        //tier2DiscountLabel.setText("Discount between £" + SessionManager.tier_1_threshold + " - £" + SessionManager.tier_2_threshold + " is " + SessionManager.tier_2_discount + "%");
+        tier2DiscountLabel.setText("Discount between £1000 - £2000 is 1%");
+        //tier3DiscountLabel.setText("Discount of £" + SessionManager.tier_2_threshold + "+" + " is " + SessionManager.tier_3_discount + "%");
+        tier3DiscountLabel.setText("Discount of £2000+ is 2%");
     }
 
     private void removeMerchantDetails() {
@@ -163,6 +175,7 @@ public class HubView extends JPanel {
         addressLabel.setText("");
         contactPhoneLabel.setText("");
         creditLimitLabel.setText("");
+        outstandingBalanceLabel.setText("");
         discountPlanTypeLabel.setText("");
         //fixedDiscountRateTypeLabel.setText("");
         tier1DiscountLabel.setText("");

@@ -93,7 +93,7 @@ public class ORDModel {
         String [] rawOrders = ISAOrderAPI.viewPreviousOrders(SessionManager.merchant_Id);
 
         //right now they respond with a greeting... so let's see if this catches it
-        if (rawOrders == null || rawOrders.length == 0 || !rawOrders[0].contains("{")) {
+        if (rawOrders == null || rawOrders.length == 0 || !rawOrders[0].contains(":")) {
             //something went wrong fetching the catalogue
             System.out.println("No API orders: " + Arrays.toString(rawOrders));
             return offlineOrderAPI.getOrders();
@@ -169,14 +169,13 @@ public class ORDModel {
     }
 
     public void createOrder(){
-        Map<String, Integer> orderDetails = new HashMap<>();
+        HashMap<String, Integer> orderDetails = new HashMap<>();
 
         for (CartItem i : cartList) {
             orderDetails.put(i.getItemId(), i.getQuantity());
         }
 
-        //TODO change from Map<int, int> to <string, int>
-        if (!ISAOrderAPI.placeOrder(new HashMap<>())){
+        if (!ISAOrderAPI.placeOrder(orderDetails)){
             offlineOrderAPI.createOrder(SessionManager.merchant_Id, calculateGrandTotal(), cartList);
         }
 
@@ -239,5 +238,11 @@ public class ORDModel {
         }
 
         return true;
+    }
+
+    public String queryBalance() {
+        String s = ISAOrderAPI.queryBalance(SessionManager.merchant_Id);
+        s = s.replace("\n", "").replace(" ", "");
+        return s;
     }
 }
